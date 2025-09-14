@@ -1,0 +1,19 @@
+# Skeleton Stream Device Protocol for the Bilt iTest mixed system modulator system
+# Pete Owens 4/3/2015
+
+terminator   = LF;
+replytimeout = 1000;
+readtimeout  = 1000;
+
+get_name    { out "i\$1"; out "DEF?";        in "%30c";  }
+get_state   { out "i\$1"; out "STATE?";      in "%i";    }
+set_state   { out "i\$1"; out "STATE %1d";               }
+set_clear   { out "i\$1"; out "STATE:CLEAR";             }
+get_setcurr { out "i\$1"; out "CURR?";       in "%g";    }
+set_setcurr { out "i\$1"; out "CURR %.5f";               }
+get_curr    { out "i\$1"; out "MEAS:CURR?";  in "%g";    }
+get_volt    { out "i\$1"; out "MEAS:VOLT?";  in "%g";    }
+
+#set_group  { out "p\$1:DEF;INST:LIST \$2,\$3"; }
+
+######################################################################
