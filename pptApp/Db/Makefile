@@ -10,8 +10,8 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install)
 # databases, templates, substitutions like this
-DB += streamdevicesample.template
-DB += streamdevicesample.proto
+DB += ppt.template
+DB += ppt.proto
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
