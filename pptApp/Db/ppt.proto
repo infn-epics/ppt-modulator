@@ -10,129 +10,132 @@ ReadTimeout = 100;
 
 # ============================================================================
 # Binary format specifiers used:
-# %<H = little-endian unsigned short (16-bit, 0-65535)
-# %*r(count) = skip/discard count bytes from input
+# %#s = skip/discard # bytes from input
+# %{H} = read unsigned short (16-bit) in little-endian format
+# The {} format converter handles binary integer conversions
+# H = unsigned short (16-bit, little-endian on most systems)
 # ============================================================================
 
 # Heater Voltage 1 (bytes 0-1, WORD0)
 readHeaterVoltage1 {
-    in "%<H";
+    in "%{H}";
 }
 
 # Reservoir Voltage (bytes 4-5, WORD2)
 readReservoirVoltage {
-    in "%*2r%<H";  # skip 2 bytes (WORD1), read WORD2
+    in "%2s%{H}";  # skip 2 bytes (WORD1), read WORD2
 }
 
 # Total Current (bytes 8-9, WORD4)
 readTotalCurrent {
-    in "%*6r%<H";  # skip 6 bytes (WORD0-2), read WORD4
+    in "%6s%{H}";  # skip 6 bytes (WORD0-2), read WORD4
 }
 
 # Timer Preheating Minutes (bytes 12-13, WORD6)
 readTimerPreheatMin {
-    in "%*12r%<H";  # skip 12 bytes (WORD0-5), read WORD6
+    in "%12s%{H}";  # skip 12 bytes (WORD0-5), read WORD6
 }
 
 # Timer Preheating Seconds (bytes 16-17, WORD8)
 readTimerPreheatSec {
-    in "%*16r%<H";  # skip 16 bytes (WORD0-7), read WORD8
+    in "%16s%{H}";  # skip 16 bytes (WORD0-7), read WORD8
 }
 
 # Interlock Messages 1 (bytes 20-21, WORD10)
 readInterlockMsg1 {
-    in "%*20r%<H";  # skip 20 bytes (WORD0-9), read WORD10
+    in "%20s%{H}";  # skip 20 bytes (WORD0-9), read WORD10
 }
 
 # Status Messages 1 (bytes 24-25, WORD12)
 readStatusMsg1 {
-    in "%*24r%<H";  # skip 24 bytes (WORD0-11), read WORD12
+    in "%24s%{H}";  # skip 24 bytes (WORD0-11), read WORD12
 }
 
 # Heater Voltage 2 (bytes 28-29, WORD14)
 readHeaterVoltage2 {
-    in "%*28r%<H";  # skip 28 bytes (WORD0-13), read WORD14
+    in "%28s%{H}";  # skip 28 bytes (WORD0-13), read WORD14
 }
 
 # Heater Current (bytes 32-33, WORD16)
 readHeaterCurrent {
-    in "%*32r%<H";  # skip 32 bytes (WORD0-15), read WORD16
+    in "%32s%{H}";  # skip 32 bytes (WORD0-15), read WORD16
 }
 
 # Body Water Input Temperature (bytes 36-37, WORD18)
 readBodyWaterInTemp {
-    in "%*36r%<H";  # skip 36 bytes (WORD0-17), read WORD18
+    in "%36s%{H}";  # skip 36 bytes (WORD0-17), read WORD18
 }
 
 # Body Water Output Temperature (bytes 40-41, WORD20)
 readBodyWaterOutTemp {
-    in "%*40r%<H";  # skip 40 bytes (WORD0-19), read WORD20
+    in "%40s%{H}";  # skip 40 bytes (WORD0-19), read WORD20
 }
 
 # Body Water Flow (bytes 44-45, WORD22)
 readBodyWaterFlow {
-    in "%*44r%<H";  # skip 44 bytes (WORD0-21), read WORD22
+    in "%44s%{H}";  # skip 44 bytes (WORD0-21), read WORD22
 }
 
 # Timer Preheating 100% Minutes (bytes 48-49, WORD24)
 readTimerPreheat100Min {
-    in "%*48r%<H";  # skip 48 bytes (WORD0-23), read WORD24
+    in "%48s%{H}";  # skip 48 bytes (WORD0-23), read WORD24
 }
 
 # Timer Preheating 100% Seconds (bytes 52-53, WORD26)
 readTimerPreheat100Sec {
-    in "%*52r%<H";  # skip 52 bytes (WORD0-25), read WORD26
+    in "%52s%{H}";  # skip 52 bytes (WORD0-25), read WORD26
 }
 
 # Interlock Messages 2 (bytes 56-57, WORD28)
 readInterlockMsg2 {
-    in "%*56r%<H";  # skip 56 bytes (WORD0-27), read WORD28
+    in "%56s%{H}";  # skip 56 bytes (WORD0-27), read WORD28
 }
 
 # Status Messages 2 (bytes 60-61, WORD30)
 readStatusMsg2 {
-    in "%*60r%<H";  # skip 60 bytes (WORD0-29), read WORD30
+    in "%60s%{H}";  # skip 60 bytes (WORD0-29), read WORD30
 }
 
 # Klystron Voltage (bytes 64-65, WORD32)
 readKlystronVoltage {
-    in "%*64r%<H";  # skip 64 bytes (WORD0-31), read WORD32
+    in "%64s%{H}";  # skip 64 bytes (WORD0-31), read WORD32
 }
 
 # Klystron Current (bytes 68-69, WORD34)
 readKlystronCurrent {
-    in "%*68r%<H";  # skip 68 bytes (WORD0-33), read WORD34
+    in "%68s%{H}";  # skip 68 bytes (WORD0-33), read WORD34
 }
 
 # Magnet Voltage Coil 1 (bytes 72-73, WORD36)
 readMagnetVoltageCoil1 {
-    in "%*72r%<H";  # skip 72 bytes (WORD0-35), read WORD36
+    in "%72s%{H}";  # skip 72 bytes (WORD0-35), read WORD36
 }
 
 # Magnet Current Coil 1 (bytes 76-77, WORD38)
 readMagnetCurrentCoil1 {
-    in "%*76r%<H";  # skip 76 bytes (WORD0-37), read WORD38
+    in "%76s%{H}";  # skip 76 bytes (WORD0-37), read WORD38
 }
 
 # Magnet Voltage Coil 2 (bytes 80-81, WORD40)
 readMagnetVoltageCoil2 {
-    in "%*80r%<H";  # skip 80 bytes (WORD0-39), read WORD40
+    in "%80s%{H}";  # skip 80 bytes (WORD0-39), read WORD40
 }
 
 # Magnet Current Coil 2 (bytes 84-85, WORD42 - LAST WORD)
 readMagnetCurrentCoil2 {
-    in "%*84r%<H";  # skip 84 bytes (WORD0-41), read WORD42
+    in "%84s%{H}";  # skip 84 bytes (WORD0-41), read WORD42
 }
 
 # ============================================================================
 # NOTES:
 # ============================================================================
-# - Each protocol skips N bytes with %*Nr, then reads one 16-bit word with %<H
-# - %*r format: skips/discards bytes from input stream
-# - %<H format: reads little-endian unsigned short (16-bit, 0-65535)
+# - Each protocol skips N bytes with %Ns, then reads one 16-bit word with %{H}
+# - %Ns format: skips/discards N bytes from input stream
+# - %{H} format: reads unsigned short (16-bit) using binary converter
+#   H = unsigned short, little-endian (standard on x86/x86_64)
 # - StreamDevice caches the last device response, so all passive records triggered
 #   by FLNK chain read from the same cached 86-byte buffer (single TCP read)
 # - All values come from the same device response (atomic snapshot)
 # - No need for calc records or byte manipulation in database
-# - Values are automatically converted to EPICS native format
+# - Values are automatically converted to EPICS native format (double)
 # ============================================================================
