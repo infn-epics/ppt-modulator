@@ -1,9 +1,9 @@
 /*
  * pptDecode.c
  * 
- * aSub record subroutine to decode PPT Modulator binary data
+ * aSub record subroutines to decode PPT Modulator binary data
  * Input: 86 bytes (CHAR array) from TCP stream
- * Output: 22 values (DOUBLE arrays, one element each)
+ * Output: 22 values split across two aSub records (11 values each)
  * 
  * All 16-bit words are little-endian (LSB + MSB)
  */
@@ -20,13 +20,13 @@ static unsigned short getWord(const unsigned char *data, int offset) {
 }
 
 /*
- * pptDecodeData
+ * pptDecodeVoltagesCurrent
  * 
- * Decodes all 22 measurements from 86-byte buffer
+ * Decodes voltages and currents (11 values) from 86-byte buffer
  * 
  * INPA: Raw data buffer (CHAR array, 86 bytes)
  * 
- * VALA-VALV: Output values (DOUBLE, one element each)
+ * VALA-VALK: Output values (DOUBLE, one element each)
  *   A = HeaterVoltage1 (bytes 0-1, WORD0)
  *   B = HeaterVoltage2 (bytes 28-29, WORD14)
  *   C = ReservoirVoltage (bytes 4-5, WORD2)
@@ -38,19 +38,8 @@ static unsigned short getWord(const unsigned char *data, int offset) {
  *   I = KlystronCurrent (bytes 68-69, WORD34)
  *   J = MagnetCurrentCoil1 (bytes 76-77, WORD38)
  *   K = MagnetCurrentCoil2 (bytes 84-85, WORD42)
- *   L = BodyWaterInTemp (bytes 36-37, WORD18)
- *   M = BodyWaterOutTemp (bytes 40-41, WORD20)
- *   N = BodyWaterFlow (bytes 44-45, WORD22)
- *   O = TimerPreheatMin (bytes 12-13, WORD6)
- *   P = TimerPreheatSec (bytes 16-17, WORD8)
- *   Q = TimerPreheat100Min (bytes 48-49, WORD24)
- *   R = TimerPreheat100Sec (bytes 52-53, WORD26)
- *   S = InterlockMsg1 (bytes 20-21, WORD10)
- *   T = InterlockMsg2 (bytes 56-57, WORD28)
- *   U = StatusMsg1 (bytes 24-25, WORD12)
- *   V = StatusMsg2 (bytes 60-61, WORD30)
  */
-long pptDecodeData(aSubRecord *prec) {
+long pptDecodeVoltagesCurrent(aSubRecord *prec) {
     unsigned char *rawData = (unsigned char *)prec->a;
     double *outA = (double *)prec->vala;  /* HeaterVoltage1 */
     double *outB = (double *)prec->valb;  /* HeaterVoltage2 */
@@ -63,25 +52,14 @@ long pptDecodeData(aSubRecord *prec) {
     double *outI = (double *)prec->vali;  /* KlystronCurrent */
     double *outJ = (double *)prec->valj;  /* MagnetCurrentCoil1 */
     double *outK = (double *)prec->valk;  /* MagnetCurrentCoil2 */
-    double *outL = (double *)prec->vall;  /* BodyWaterInTemp */
-    double *outM = (double *)prec->valm;  /* BodyWaterOutTemp */
-    double *outN = (double *)prec->valn;  /* BodyWaterFlow */
-    double *outO = (double *)prec->valo;  /* TimerPreheatMin */
-    double *outP = (double *)prec->valp;  /* TimerPreheatSec */
-    double *outQ = (double *)prec->valq;  /* TimerPreheat100Min */
-    double *outR = (double *)prec->valr;  /* TimerPreheat100Sec */
-    double *outS = (double *)prec->vals;  /* InterlockMsg1 */
-    double *outT = (double *)prec->valt;  /* InterlockMsg2 */
-    double *outU = (double *)prec->valu;  /* StatusMsg1 */
-    double *outV = (double *)prec->valv;  /* StatusMsg2 */
 
     /* Check input size */
     if (prec->nea < 86) {
-        printf("pptDecodeData: Error - input buffer too small (%ld bytes, need 86)\n", prec->nea);
+        printf("pptDecodeVoltagesCurrent: Error - input buffer too small (%ld bytes, need 86)\n", prec->nea);
         return 1;
     }
 
-    /* Extract all 22 values */
+    /* Extract voltage and current values */
     *outA = (double)getWord(rawData, 0);   /* HeaterVoltage1 - WORD0 */
     *outB = (double)getWord(rawData, 28);  /* HeaterVoltage2 - WORD14 */
     *outC = (double)getWord(rawData, 4);   /* ReservoirVoltage - WORD2 */
@@ -93,20 +71,66 @@ long pptDecodeData(aSubRecord *prec) {
     *outI = (double)getWord(rawData, 68);  /* KlystronCurrent - WORD34 */
     *outJ = (double)getWord(rawData, 76);  /* MagnetCurrentCoil1 - WORD38 */
     *outK = (double)getWord(rawData, 84);  /* MagnetCurrentCoil2 - WORD42 */
-    *outL = (double)getWord(rawData, 36);  /* BodyWaterInTemp - WORD18 */
-    *outM = (double)getWord(rawData, 40);  /* BodyWaterOutTemp - WORD20 */
-    *outN = (double)getWord(rawData, 44);  /* BodyWaterFlow - WORD22 */
-    *outO = (double)getWord(rawData, 12);  /* TimerPreheatMin - WORD6 */
-    *outP = (double)getWord(rawData, 16);  /* TimerPreheatSec - WORD8 */
-    *outQ = (double)getWord(rawData, 48);  /* TimerPreheat100Min - WORD24 */
-    *outR = (double)getWord(rawData, 52);  /* TimerPreheat100Sec - WORD26 */
-    *outS = (double)getWord(rawData, 20);  /* InterlockMsg1 - WORD10 */
-    *outT = (double)getWord(rawData, 56);  /* InterlockMsg2 - WORD28 */
-    *outU = (double)getWord(rawData, 24);  /* StatusMsg1 - WORD12 */
-    *outV = (double)getWord(rawData, 60);  /* StatusMsg2 - WORD30 */
 
     return 0;  /* Success */
 }
 
-/* Register the function */
-epicsRegisterFunction(pptDecodeData);
+/*
+ * pptDecodeTempFlowStatus
+ * 
+ * Decodes temperatures, flow, timers and status (11 values) from 86-byte buffer
+ * 
+ * INPA: Raw data buffer (CHAR array, 86 bytes)
+ * 
+ * VALA-VALK: Output values (DOUBLE, one element each)
+ *   A = BodyWaterInTemp (bytes 36-37, WORD18)
+ *   B = BodyWaterOutTemp (bytes 40-41, WORD20)
+ *   C = BodyWaterFlow (bytes 44-45, WORD22)
+ *   D = TimerPreheatMin (bytes 12-13, WORD6)
+ *   E = TimerPreheatSec (bytes 16-17, WORD8)
+ *   F = TimerPreheat100Min (bytes 48-49, WORD24)
+ *   G = TimerPreheat100Sec (bytes 52-53, WORD26)
+ *   H = InterlockMsg1 (bytes 20-21, WORD10)
+ *   I = InterlockMsg2 (bytes 56-57, WORD28)
+ *   J = StatusMsg1 (bytes 24-25, WORD12)
+ *   K = StatusMsg2 (bytes 60-61, WORD30)
+ */
+long pptDecodeTempFlowStatus(aSubRecord *prec) {
+    unsigned char *rawData = (unsigned char *)prec->a;
+    double *outA = (double *)prec->vala;  /* BodyWaterInTemp */
+    double *outB = (double *)prec->valb;  /* BodyWaterOutTemp */
+    double *outC = (double *)prec->valc;  /* BodyWaterFlow */
+    double *outD = (double *)prec->vald;  /* TimerPreheatMin */
+    double *outE = (double *)prec->vale;  /* TimerPreheatSec */
+    double *outF = (double *)prec->valf;  /* TimerPreheat100Min */
+    double *outG = (double *)prec->valg;  /* TimerPreheat100Sec */
+    double *outH = (double *)prec->valh;  /* InterlockMsg1 */
+    double *outI = (double *)prec->vali;  /* InterlockMsg2 */
+    double *outJ = (double *)prec->valj;  /* StatusMsg1 */
+    double *outK = (double *)prec->valk;  /* StatusMsg2 */
+
+    /* Check input size */
+    if (prec->nea < 86) {
+        printf("pptDecodeTempFlowStatus: Error - input buffer too small (%ld bytes, need 86)\n", prec->nea);
+        return 1;
+    }
+
+    /* Extract temperature, flow, timer and status values */
+    *outA = (double)getWord(rawData, 36);  /* BodyWaterInTemp - WORD18 */
+    *outB = (double)getWord(rawData, 40);  /* BodyWaterOutTemp - WORD20 */
+    *outC = (double)getWord(rawData, 44);  /* BodyWaterFlow - WORD22 */
+    *outD = (double)getWord(rawData, 12);  /* TimerPreheatMin - WORD6 */
+    *outE = (double)getWord(rawData, 16);  /* TimerPreheatSec - WORD8 */
+    *outF = (double)getWord(rawData, 48);  /* TimerPreheat100Min - WORD24 */
+    *outG = (double)getWord(rawData, 52);  /* TimerPreheat100Sec - WORD26 */
+    *outH = (double)getWord(rawData, 20);  /* InterlockMsg1 - WORD10 */
+    *outI = (double)getWord(rawData, 56);  /* InterlockMsg2 - WORD28 */
+    *outJ = (double)getWord(rawData, 24);  /* StatusMsg1 - WORD12 */
+    *outK = (double)getWord(rawData, 60);  /* StatusMsg2 - WORD30 */
+
+    return 0;  /* Success */
+}
+
+/* Register the functions */
+epicsRegisterFunction(pptDecodeVoltagesCurrent);
+epicsRegisterFunction(pptDecodeTempFlowStatus);
