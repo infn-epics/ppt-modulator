@@ -6,6 +6,14 @@
  * Output: 22 values split across two aSub records (11 values each)
  * 
  * All 16-bit words are little-endian (LSB + MSB)
+ * 
+ * Scaling factors from documentation:
+ * - Voltages: raw_value / 10.0 (V)
+ * - Currents: raw_value / 100.0 (A)
+ * - Temperatures: raw_value / 10.0 (°C)
+ * - Flow: raw_value / 100.0 (L/min)
+ * - Timers: raw_value (no scaling, minutes/seconds as integers)
+ * - Status/Interlock: raw_value (bitfields, no scaling)
  */
 
 #include <stdio.h>
@@ -53,25 +61,55 @@ long pptDecodeVoltagesCurrent(aSubRecord *prec) {
     double *outJ = (double *)prec->valj;  /* MagnetCurrentCoil1 */
     double *outK = (double *)prec->valk;  /* MagnetCurrentCoil2 */
 
-    /* Check input size */
-    if (prec->nea < 86) {
-        printf("pptDecodeVoltagesCurrent: Error - input buffer too small (%ld bytes, need 86)\n", prec->nea);
-        return 1;
-    }
+    unsigned short rawVal;
 
-    /* Extract voltage and current values */
-    *outA = (double)getWord(rawData, 0);   /* HeaterVoltage1 - WORD0 */
-    *outB = (double)getWord(rawData, 28);  /* HeaterVoltage2 - WORD14 */
-    *outC = (double)getWord(rawData, 4);   /* ReservoirVoltage - WORD2 */
-    *outD = (double)getWord(rawData, 64);  /* KlystronVoltage - WORD32 */
-    *outE = (double)getWord(rawData, 72);  /* MagnetVoltageCoil1 - WORD36 */
-    *outF = (double)getWord(rawData, 80);  /* MagnetVoltageCoil2 - WORD40 */
-    *outG = (double)getWord(rawData, 8);   /* TotalCurrent - WORD4 */
-    *outH = (double)getWord(rawData, 32);  /* HeaterCurrent - WORD16 */
-    *outI = (double)getWord(rawData, 68);  /* KlystronCurrent - WORD34 */
-    *outJ = (double)getWord(rawData, 76);  /* MagnetCurrentCoil1 - WORD38 */
-    *outK = (double)getWord(rawData, 84);  /* MagnetCurrentCoil2 - WORD42 */
+    /* Extract and scale voltage values (divide by 10 for Volts) */
+    rawVal = getWord(rawData, 0);
+    *outA = rawVal / 10.0;  /* HeaterVoltage1 - WORD0 */
+    printf("HeaterVoltage1: raw=%u scaled=%.1f V\n", rawVal, *outA);
 
+    rawVal = getWord(rawData, 28);
+    *outB = rawVal / 10.0;  /* HeaterVoltage2 - WORD14 */
+    printf("HeaterVoltage2: raw=%u scaled=%.1f V\n", rawVal, *outB);
+
+    rawVal = getWord(rawData, 4);
+    *outC = rawVal / 10.0;  /* ReservoirVoltage - WORD2 */
+    printf("ReservoirVoltage: raw=%u scaled=%.1f V\n", rawVal, *outC);
+
+    rawVal = getWord(rawData, 64);
+    *outD = rawVal / 10.0;  /* KlystronVoltage - WORD32 */
+    printf("KlystronVoltage: raw=%u scaled=%.1f V\n", rawVal, *outD);
+
+    rawVal = getWord(rawData, 72);
+    *outE = rawVal / 10.0;  /* MagnetVoltageCoil1 - WORD36 */
+    printf("MagnetVoltageCoil1: raw=%u scaled=%.1f V\n", rawVal, *outE);
+
+    rawVal = getWord(rawData, 80);
+    *outF = rawVal / 10.0;  /* MagnetVoltageCoil2 - WORD40 */
+    printf("MagnetVoltageCoil2: raw=%u scaled=%.1f V\n", rawVal, *outF);
+
+    /* Extract and scale current values (divide by 100 for Amperes) */
+    rawVal = getWord(rawData, 8);
+    *outG = rawVal / 100.0;  /* TotalCurrent - WORD4 */
+    printf("TotalCurrent: raw=%u scaled=%.2f A\n", rawVal, *outG);
+
+    rawVal = getWord(rawData, 32);
+    *outH = rawVal / 100.0;  /* HeaterCurrent - WORD16 */
+    printf("HeaterCurrent: raw=%u scaled=%.2f A\n", rawVal, *outH);
+
+    rawVal = getWord(rawData, 68);
+    *outI = rawVal / 100.0;  /* KlystronCurrent - WORD34 */
+    printf("KlystronCurrent: raw=%u scaled=%.2f A\n", rawVal, *outI);
+
+    rawVal = getWord(rawData, 76);
+    *outJ = rawVal / 100.0;  /* MagnetCurrentCoil1 - WORD38 */
+    printf("MagnetCurrentCoil1: raw=%u scaled=%.2f A\n", rawVal, *outJ);
+
+    rawVal = getWord(rawData, 84);
+    *outK = rawVal / 100.0;  /* MagnetCurrentCoil2 - WORD42 */
+    printf("MagnetCurrentCoil2: raw=%u scaled=%.2f A\n", rawVal, *outK);
+
+    printf("--- End VoltagesCurrent decode ---\n");
     return 0;  /* Success */
 }
 
@@ -109,25 +147,57 @@ long pptDecodeTempFlowStatus(aSubRecord *prec) {
     double *outJ = (double *)prec->valj;  /* StatusMsg1 */
     double *outK = (double *)prec->valk;  /* StatusMsg2 */
 
-    /* Check input size */
-    if (prec->nea < 86) {
-        printf("pptDecodeTempFlowStatus: Error - input buffer too small (%ld bytes, need 86)\n", prec->nea);
-        return 1;
-    }
+    unsigned short rawVal;
 
-    /* Extract temperature, flow, timer and status values */
-    *outA = (double)getWord(rawData, 36);  /* BodyWaterInTemp - WORD18 */
-    *outB = (double)getWord(rawData, 40);  /* BodyWaterOutTemp - WORD20 */
-    *outC = (double)getWord(rawData, 44);  /* BodyWaterFlow - WORD22 */
-    *outD = (double)getWord(rawData, 12);  /* TimerPreheatMin - WORD6 */
-    *outE = (double)getWord(rawData, 16);  /* TimerPreheatSec - WORD8 */
-    *outF = (double)getWord(rawData, 48);  /* TimerPreheat100Min - WORD24 */
-    *outG = (double)getWord(rawData, 52);  /* TimerPreheat100Sec - WORD26 */
-    *outH = (double)getWord(rawData, 20);  /* InterlockMsg1 - WORD10 */
-    *outI = (double)getWord(rawData, 56);  /* InterlockMsg2 - WORD28 */
-    *outJ = (double)getWord(rawData, 24);  /* StatusMsg1 - WORD12 */
-    *outK = (double)getWord(rawData, 60);  /* StatusMsg2 - WORD30 */
+    /* Extract and scale temperature values (divide by 10 for °C) */
+    rawVal = getWord(rawData, 36);
+    *outA = rawVal / 10.0;  /* BodyWaterInTemp - WORD18 */
+    printf("BodyWaterInTemp: raw=%u scaled=%.1f C\n", rawVal, *outA);
 
+    rawVal = getWord(rawData, 40);
+    *outB = rawVal / 10.0;  /* BodyWaterOutTemp - WORD20 */
+    printf("BodyWaterOutTemp: raw=%u scaled=%.1f C\n", rawVal, *outB);
+
+    /* Extract and scale flow value (divide by 100 for L/min) */
+    rawVal = getWord(rawData, 44);
+    *outC = rawVal / 100.0;  /* BodyWaterFlow - WORD22 */
+    printf("BodyWaterFlow: raw=%u scaled=%.2f L/min\n", rawVal, *outC);
+
+    /* Extract timer values (no scaling, already in minutes/seconds) */
+    rawVal = getWord(rawData, 12);
+    *outD = (double)rawVal;  /* TimerPreheatMin - WORD6 */
+    printf("TimerPreheatMin: raw=%u value=%d min\n", rawVal, (int)*outD);
+
+    rawVal = getWord(rawData, 16);
+    *outE = (double)rawVal;  /* TimerPreheatSec - WORD8 */
+    printf("TimerPreheatSec: raw=%u value=%d sec\n", rawVal, (int)*outE);
+
+    rawVal = getWord(rawData, 48);
+    *outF = (double)rawVal;  /* TimerPreheat100Min - WORD24 */
+    printf("TimerPreheat100Min: raw=%u value=%d min\n", rawVal, (int)*outF);
+
+    rawVal = getWord(rawData, 52);
+    *outG = (double)rawVal;  /* TimerPreheat100Sec - WORD26 */
+    printf("TimerPreheat100Sec: raw=%u value=%d sec\n", rawVal, (int)*outG);
+
+    /* Extract status/interlock bitfields (no scaling) */
+    rawVal = getWord(rawData, 20);
+    *outH = (double)rawVal;  /* InterlockMsg1 - WORD10 */
+    printf("InterlockMsg1: raw=0x%04X value=%u\n", rawVal, rawVal);
+
+    rawVal = getWord(rawData, 56);
+    *outI = (double)rawVal;  /* InterlockMsg2 - WORD28 */
+    printf("InterlockMsg2: raw=0x%04X value=%u\n", rawVal, rawVal);
+
+    rawVal = getWord(rawData, 24);
+    *outJ = (double)rawVal;  /* StatusMsg1 - WORD12 */
+    printf("StatusMsg1: raw=0x%04X value=%u\n", rawVal, rawVal);
+
+    rawVal = getWord(rawData, 60);
+    *outK = (double)rawVal;  /* StatusMsg2 - WORD30 */
+    printf("StatusMsg2: raw=0x%04X value=%u\n", rawVal, rawVal);
+
+    printf("--- End TempFlowStatus decode ---\n");
     return 0;  /* Success */
 }
 
