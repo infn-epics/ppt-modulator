@@ -3,7 +3,8 @@
 # Protocol file: ppt.proto
 # 
 # Strategy: Read all 86 bytes once into RawData waveform
-# Extract individual values using subArray records
+# Extract byte pairs using subArray records (DB links can't index arrays)
+# Convert to 16-bit words using calc records
 # This ensures all values come from the same data snapshot
 
 # ============================================================================
@@ -17,26 +18,37 @@ record(waveform, "$(P)RawData") {
     field(NELM, "86")
     field(FTVL, "UCHAR")
     field(PINI, "YES")
-    field(FLNK, "$(P)HeaterVoltage1:Raw")
+    field(FLNK, "$(P)HeaterVoltage1:Bytes")
 }
 
 # ============================================================================
-# WORD EXTRACTION - Convert bytes to 16-bit words (LSB+MSB)
+# WORD EXTRACTION - Extract bytes with subArray, combine with calc
 # ============================================================================
 
+
 # Heater Voltage 1 (bytes 0-1, WORD0)
+record(subArray, "$(P)HeaterVoltage1:Bytes") {
+    field(DESC, "Heater Voltage 1 Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "0")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)HeaterVoltage1:Raw")
+}
+
 record(calc, "$(P)HeaterVoltage1:Raw") {
     field(DESC, "Heater Voltage 1 Raw")
-    field(INPA, "$(P)RawData.VAL[0] CP MS")
-    field(INPB, "$(P)RawData.VAL[1] CP MS")
+    field(INPA, "$(P)HeaterVoltage1:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)HeaterVoltage1:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
     field(EGU,  "counts")
-    field(FLNK, "$(P)ReservoirVoltage:Raw")
+    field(FLNK, "$(P)ReservoirVoltage:Bytes")
 }
 
 record(ai, "$(P)HeaterVoltage1") {
     field(DESC, "Heater Voltage 1")
-    field(INP,  "$(P)HeaterVoltage1:Raw CP MS")
+    field(INP,  "$(P)HeaterVoltage1:Raw MS")
     field(EGU,  "V")
     field(PREC, "2")
     field(LINR, "LINEAR")
@@ -44,362 +56,603 @@ record(ai, "$(P)HeaterVoltage1") {
     field(EOFF, "0")
 }
 
-# Reservoir Voltage (bytes 4-5, WORD2)
+# Reservoir Voltage (bytes 4-5, WORD1)
+record(subArray, "$(P)ReservoirVoltage:Bytes") {
+    field(DESC, "Reservoir Voltage Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "4")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)ReservoirVoltage:Raw")
+}
+
 record(calc, "$(P)ReservoirVoltage:Raw") {
     field(DESC, "Reservoir Voltage Raw")
-    field(INPA, "$(P)RawData.VAL[4] CP MS")
-    field(INPB, "$(P)RawData.VAL[5] CP MS")
+    field(INPA, "$(P)ReservoirVoltage:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)ReservoirVoltage:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
     field(EGU,  "counts")
-    field(FLNK, "$(P)TotalCurrent:Raw")
+    field(FLNK, "$(P)TotalCurrent:Bytes")
 }
 
 record(ai, "$(P)ReservoirVoltage") {
     field(DESC, "Reservoir Voltage")
-    field(INP,  "$(P)ReservoirVoltage:Raw CP MS")
+    field(INP,  "$(P)ReservoirVoltage:Raw MS")
     field(EGU,  "V")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Total Current (bytes 8-9, WORD4)
+# Total Current (bytes 8-9, WORD2)
+record(subArray, "$(P)TotalCurrent:Bytes") {
+    field(DESC, "Total Current Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "8")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)TotalCurrent:Raw")
+}
+
 record(calc, "$(P)TotalCurrent:Raw") {
     field(DESC, "Total Current Raw")
-    field(INPA, "$(P)RawData.VAL[8] CP MS")
-    field(INPB, "$(P)RawData.VAL[9] CP MS")
+    field(INPA, "$(P)TotalCurrent:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)TotalCurrent:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
     field(EGU,  "counts")
-    field(FLNK, "$(P)TimerPreheatMin:Raw")
+    field(FLNK, "$(P)TimerPreheatMin:Bytes")
 }
 
 record(ai, "$(P)TotalCurrent") {
     field(DESC, "Total Current")
-    field(INP,  "$(P)TotalCurrent:Raw CP MS")
+    field(INP,  "$(P)TotalCurrent:Raw MS")
     field(EGU,  "A")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Timer Preheating Minutes (bytes 12-13, WORD6)
+# Timer Preheating Minutes (bytes 12-13, WORD3)
+record(subArray, "$(P)TimerPreheatMin:Bytes") {
+    field(DESC, "Timer Preheating Min Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "12")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)TimerPreheatMin:Raw")
+}
+
 record(calc, "$(P)TimerPreheatMin:Raw") {
-    field(DESC, "Timer Preheat Min Raw")
-    field(INPA, "$(P)RawData.VAL[12] CP MS")
-    field(INPB, "$(P)RawData.VAL[13] CP MS")
+    field(DESC, "Timer Preheating Minutes Raw")
+    field(INPA, "$(P)TimerPreheatMin:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)TimerPreheatMin:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)TimerPreheatSec:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)TimerPreheatSec:Bytes")
 }
 
 record(longin, "$(P)TimerPreheatMin") {
     field(DESC, "Timer Preheating Minutes")
-    field(INP,  "$(P)TimerPreheatMin:Raw CP MS")
+    field(INP,  "$(P)TimerPreheatMin:Raw MS")
     field(EGU,  "min")
 }
 
-# Timer Preheating Seconds (bytes 16-17, WORD8)
+# Timer Preheating Seconds (bytes 16-17, WORD4)
+record(subArray, "$(P)TimerPreheatSec:Bytes") {
+    field(DESC, "Timer Preheating Sec Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "16")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)TimerPreheatSec:Raw")
+}
+
 record(calc, "$(P)TimerPreheatSec:Raw") {
-    field(DESC, "Timer Preheat Sec Raw")
-    field(INPA, "$(P)RawData.VAL[16] CP MS")
-    field(INPB, "$(P)RawData.VAL[17] CP MS")
+    field(DESC, "Timer Preheating Seconds Raw")
+    field(INPA, "$(P)TimerPreheatSec:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)TimerPreheatSec:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)InterlockMsg1:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)InterlockMsg1:Bytes")
 }
 
 record(longin, "$(P)TimerPreheatSec") {
     field(DESC, "Timer Preheating Seconds")
-    field(INP,  "$(P)TimerPreheatSec:Raw CP MS")
+    field(INP,  "$(P)TimerPreheatSec:Raw MS")
     field(EGU,  "sec")
 }
 
-# Interlock Messages 1 (bytes 20-21, WORD10)
+# Interlock Messages 1 (bytes 20-21, WORD5)
+record(subArray, "$(P)InterlockMsg1:Bytes") {
+    field(DESC, "Interlock Messages 1 Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "20")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)InterlockMsg1:Raw")
+}
+
 record(calc, "$(P)InterlockMsg1:Raw") {
-    field(DESC, "Interlock Msg 1 Raw")
-    field(INPA, "$(P)RawData.VAL[20] CP MS")
-    field(INPB, "$(P)RawData.VAL[21] CP MS")
+    field(DESC, "Interlock Messages 1 Raw")
+    field(INPA, "$(P)InterlockMsg1:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)InterlockMsg1:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)StatusMsg1:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)StatusMsg1:Bytes")
 }
 
 record(mbbi, "$(P)InterlockMsg1") {
     field(DESC, "Interlock Messages 1")
-    field(INP,  "$(P)InterlockMsg1:Raw CP MS")
+    field(INP,  "$(P)InterlockMsg1:Raw MS")
     field(NOBT, "16")
     field(SHFT, "0")
 }
 
-# Status Messages 1 (bytes 24-25, WORD12)
+# Status Messages 1 (bytes 24-25, WORD6)
+record(subArray, "$(P)StatusMsg1:Bytes") {
+    field(DESC, "Status Messages 1 Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "24")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)StatusMsg1:Raw")
+}
+
 record(calc, "$(P)StatusMsg1:Raw") {
-    field(DESC, "Status Msg 1 Raw")
-    field(INPA, "$(P)RawData.VAL[24] CP MS")
-    field(INPB, "$(P)RawData.VAL[25] CP MS")
+    field(DESC, "Status Messages 1 Raw")
+    field(INPA, "$(P)StatusMsg1:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)StatusMsg1:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)HeaterVoltage2:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)HeaterVoltage2:Bytes")
 }
 
 record(mbbi, "$(P)StatusMsg1") {
     field(DESC, "Status Messages 1")
-    field(INP,  "$(P)StatusMsg1:Raw CP MS")
+    field(INP,  "$(P)StatusMsg1:Raw MS")
     field(NOBT, "16")
     field(SHFT, "0")
 }
 
-# Heater Voltage 2 (bytes 28-29, WORD14)
+# Heater Voltage 2 (bytes 28-29, WORD7)
+record(subArray, "$(P)HeaterVoltage2:Bytes") {
+    field(DESC, "Heater Voltage 2 Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "28")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)HeaterVoltage2:Raw")
+}
+
 record(calc, "$(P)HeaterVoltage2:Raw") {
     field(DESC, "Heater Voltage 2 Raw")
-    field(INPA, "$(P)RawData.VAL[28] CP MS")
-    field(INPB, "$(P)RawData.VAL[29] CP MS")
+    field(INPA, "$(P)HeaterVoltage2:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)HeaterVoltage2:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)HeaterCurrent:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)HeaterCurrent:Bytes")
 }
 
 record(ai, "$(P)HeaterVoltage2") {
     field(DESC, "Heater Voltage 2")
-    field(INP,  "$(P)HeaterVoltage2:Raw CP MS")
+    field(INP,  "$(P)HeaterVoltage2:Raw MS")
     field(EGU,  "V")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Heater Current (bytes 32-33, WORD16)
+# Heater Current (bytes 32-33, WORD8)
+record(subArray, "$(P)HeaterCurrent:Bytes") {
+    field(DESC, "Heater Current Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "32")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)HeaterCurrent:Raw")
+}
+
 record(calc, "$(P)HeaterCurrent:Raw") {
     field(DESC, "Heater Current Raw")
-    field(INPA, "$(P)RawData.VAL[32] CP MS")
-    field(INPB, "$(P)RawData.VAL[33] CP MS")
+    field(INPA, "$(P)HeaterCurrent:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)HeaterCurrent:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)BodyWaterInTemp:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)BodyWaterInTemp:Bytes")
 }
 
 record(ai, "$(P)HeaterCurrent") {
     field(DESC, "Heater Current")
-    field(INP,  "$(P)HeaterCurrent:Raw CP MS")
+    field(INP,  "$(P)HeaterCurrent:Raw MS")
     field(EGU,  "A")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Body Water Input Temperature (bytes 36-37, WORD18)
+# Body Water Input Temp (bytes 36-37, WORD9)
+record(subArray, "$(P)BodyWaterInTemp:Bytes") {
+    field(DESC, "Body Water Input Tem Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "36")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)BodyWaterInTemp:Raw")
+}
+
 record(calc, "$(P)BodyWaterInTemp:Raw") {
-    field(DESC, "Water In Temp Raw")
-    field(INPA, "$(P)RawData.VAL[36] CP MS")
-    field(INPB, "$(P)RawData.VAL[37] CP MS")
+    field(DESC, "Body Water Input Temp Raw")
+    field(INPA, "$(P)BodyWaterInTemp:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)BodyWaterInTemp:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)BodyWaterOutTemp:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)BodyWaterOutTemp:Bytes")
 }
 
 record(ai, "$(P)BodyWaterInTemp") {
     field(DESC, "Body Water Input Temp")
-    field(INP,  "$(P)BodyWaterInTemp:Raw CP MS")
+    field(INP,  "$(P)BodyWaterInTemp:Raw MS")
     field(EGU,  "C")
     field(PREC, "1")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Body Water Output Temperature (bytes 40-41, WORD20)
+# Body Water Output Temp (bytes 40-41, WORD10)
+record(subArray, "$(P)BodyWaterOutTemp:Bytes") {
+    field(DESC, "Body Water Output Te Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "40")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)BodyWaterOutTemp:Raw")
+}
+
 record(calc, "$(P)BodyWaterOutTemp:Raw") {
-    field(DESC, "Water Out Temp Raw")
-    field(INPA, "$(P)RawData.VAL[40] CP MS")
-    field(INPB, "$(P)RawData.VAL[41] CP MS")
+    field(DESC, "Body Water Output Temp Raw")
+    field(INPA, "$(P)BodyWaterOutTemp:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)BodyWaterOutTemp:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)BodyWaterFlow:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)BodyWaterFlow:Bytes")
 }
 
 record(ai, "$(P)BodyWaterOutTemp") {
     field(DESC, "Body Water Output Temp")
-    field(INP,  "$(P)BodyWaterOutTemp:Raw CP MS")
+    field(INP,  "$(P)BodyWaterOutTemp:Raw MS")
     field(EGU,  "C")
     field(PREC, "1")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Body Water Flow (bytes 44-45, WORD22)
+# Body Water Flow (bytes 44-45, WORD11)
+record(subArray, "$(P)BodyWaterFlow:Bytes") {
+    field(DESC, "Body Water Flow Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "44")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)BodyWaterFlow:Raw")
+}
+
 record(calc, "$(P)BodyWaterFlow:Raw") {
-    field(DESC, "Water Flow Raw")
-    field(INPA, "$(P)RawData.VAL[44] CP MS")
-    field(INPB, "$(P)RawData.VAL[45] CP MS")
+    field(DESC, "Body Water Flow Raw")
+    field(INPA, "$(P)BodyWaterFlow:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)BodyWaterFlow:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)TimerPreheat100Min:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)TimerPreheat100Min:Bytes")
 }
 
 record(ai, "$(P)BodyWaterFlow") {
     field(DESC, "Body Water Flow")
-    field(INP,  "$(P)BodyWaterFlow:Raw CP MS")
+    field(INP,  "$(P)BodyWaterFlow:Raw MS")
     field(EGU,  "L/min")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Timer Preheating 100% Minutes (bytes 48-49, WORD24)
+# Timer Preheat 100% Min (bytes 48-49, WORD12)
+record(subArray, "$(P)TimerPreheat100Min:Bytes") {
+    field(DESC, "Timer Preheat 100% M Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "48")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)TimerPreheat100Min:Raw")
+}
+
 record(calc, "$(P)TimerPreheat100Min:Raw") {
-    field(DESC, "Timer 100% Min Raw")
-    field(INPA, "$(P)RawData.VAL[48] CP MS")
-    field(INPB, "$(P)RawData.VAL[49] CP MS")
+    field(DESC, "Timer Preheat 100% Min Raw")
+    field(INPA, "$(P)TimerPreheat100Min:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)TimerPreheat100Min:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)TimerPreheat100Sec:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)TimerPreheat100Sec:Bytes")
 }
 
 record(longin, "$(P)TimerPreheat100Min") {
     field(DESC, "Timer Preheat 100% Min")
-    field(INP,  "$(P)TimerPreheat100Min:Raw CP MS")
+    field(INP,  "$(P)TimerPreheat100Min:Raw MS")
     field(EGU,  "min")
 }
 
-# Timer Preheating 100% Seconds (bytes 52-53, WORD26)
+# Timer Preheat 100% Sec (bytes 52-53, WORD13)
+record(subArray, "$(P)TimerPreheat100Sec:Bytes") {
+    field(DESC, "Timer Preheat 100% S Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "52")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)TimerPreheat100Sec:Raw")
+}
+
 record(calc, "$(P)TimerPreheat100Sec:Raw") {
-    field(DESC, "Timer 100% Sec Raw")
-    field(INPA, "$(P)RawData.VAL[52] CP MS")
-    field(INPB, "$(P)RawData.VAL[53] CP MS")
+    field(DESC, "Timer Preheat 100% Sec Raw")
+    field(INPA, "$(P)TimerPreheat100Sec:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)TimerPreheat100Sec:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)InterlockMsg2:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)InterlockMsg2:Bytes")
 }
 
 record(longin, "$(P)TimerPreheat100Sec") {
     field(DESC, "Timer Preheat 100% Sec")
-    field(INP,  "$(P)TimerPreheat100Sec:Raw CP MS")
+    field(INP,  "$(P)TimerPreheat100Sec:Raw MS")
     field(EGU,  "sec")
 }
 
-# Interlock Messages 2 (bytes 56-57, WORD28)
+# Interlock Messages 2 (bytes 56-57, WORD14)
+record(subArray, "$(P)InterlockMsg2:Bytes") {
+    field(DESC, "Interlock Messages 2 Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "56")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)InterlockMsg2:Raw")
+}
+
 record(calc, "$(P)InterlockMsg2:Raw") {
-    field(DESC, "Interlock Msg 2 Raw")
-    field(INPA, "$(P)RawData.VAL[56] CP MS")
-    field(INPB, "$(P)RawData.VAL[57] CP MS")
+    field(DESC, "Interlock Messages 2 Raw")
+    field(INPA, "$(P)InterlockMsg2:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)InterlockMsg2:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)StatusMsg2:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)StatusMsg2:Bytes")
 }
 
 record(mbbi, "$(P)InterlockMsg2") {
     field(DESC, "Interlock Messages 2")
-    field(INP,  "$(P)InterlockMsg2:Raw CP MS")
+    field(INP,  "$(P)InterlockMsg2:Raw MS")
     field(NOBT, "16")
     field(SHFT, "0")
 }
 
-# Status Messages 2 (bytes 60-61, WORD30)
+# Status Messages 2 (bytes 60-61, WORD15)
+record(subArray, "$(P)StatusMsg2:Bytes") {
+    field(DESC, "Status Messages 2 Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "60")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)StatusMsg2:Raw")
+}
+
 record(calc, "$(P)StatusMsg2:Raw") {
-    field(DESC, "Status Msg 2 Raw")
-    field(INPA, "$(P)RawData.VAL[60] CP MS")
-    field(INPB, "$(P)RawData.VAL[61] CP MS")
+    field(DESC, "Status Messages 2 Raw")
+    field(INPA, "$(P)StatusMsg2:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)StatusMsg2:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)KlystronVoltage:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)KlystronVoltage:Bytes")
 }
 
 record(mbbi, "$(P)StatusMsg2") {
     field(DESC, "Status Messages 2")
-    field(INP,  "$(P)StatusMsg2:Raw CP MS")
+    field(INP,  "$(P)StatusMsg2:Raw MS")
     field(NOBT, "16")
     field(SHFT, "0")
 }
 
-# Klystron Voltage (bytes 64-65, WORD32)
+# Klystron Voltage (bytes 64-65, WORD16)
+record(subArray, "$(P)KlystronVoltage:Bytes") {
+    field(DESC, "Klystron Voltage Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "64")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)KlystronVoltage:Raw")
+}
+
 record(calc, "$(P)KlystronVoltage:Raw") {
     field(DESC, "Klystron Voltage Raw")
-    field(INPA, "$(P)RawData.VAL[64] CP MS")
-    field(INPB, "$(P)RawData.VAL[65] CP MS")
+    field(INPA, "$(P)KlystronVoltage:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)KlystronVoltage:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)KlystronCurrent:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)KlystronCurrent:Bytes")
 }
 
 record(ai, "$(P)KlystronVoltage") {
     field(DESC, "Klystron Voltage")
-    field(INP,  "$(P)KlystronVoltage:Raw CP MS")
+    field(INP,  "$(P)KlystronVoltage:Raw MS")
     field(EGU,  "V")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Klystron Current (bytes 68-69, WORD34)
+# Klystron Current (bytes 68-69, WORD17)
+record(subArray, "$(P)KlystronCurrent:Bytes") {
+    field(DESC, "Klystron Current Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "68")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)KlystronCurrent:Raw")
+}
+
 record(calc, "$(P)KlystronCurrent:Raw") {
     field(DESC, "Klystron Current Raw")
-    field(INPA, "$(P)RawData.VAL[68] CP MS")
-    field(INPB, "$(P)RawData.VAL[69] CP MS")
+    field(INPA, "$(P)KlystronCurrent:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)KlystronCurrent:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)MagnetVoltageCoil1:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)MagnetVoltageCoil1:Bytes")
 }
 
 record(ai, "$(P)KlystronCurrent") {
     field(DESC, "Klystron Current")
-    field(INP,  "$(P)KlystronCurrent:Raw CP MS")
+    field(INP,  "$(P)KlystronCurrent:Raw MS")
     field(EGU,  "A")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Magnet Voltage Coil 1 (bytes 72-73, WORD36)
+# Magnet Voltage Coil 1 (bytes 72-73, WORD18)
+record(subArray, "$(P)MagnetVoltageCoil1:Bytes") {
+    field(DESC, "Magnet Voltage Coil  Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "72")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)MagnetVoltageCoil1:Raw")
+}
+
 record(calc, "$(P)MagnetVoltageCoil1:Raw") {
-    field(DESC, "Magnet V Coil1 Raw")
-    field(INPA, "$(P)RawData.VAL[72] CP MS")
-    field(INPB, "$(P)RawData.VAL[73] CP MS")
+    field(DESC, "Magnet Voltage Coil 1 Raw")
+    field(INPA, "$(P)MagnetVoltageCoil1:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)MagnetVoltageCoil1:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)MagnetCurrentCoil1:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)MagnetCurrentCoil1:Bytes")
 }
 
 record(ai, "$(P)MagnetVoltageCoil1") {
     field(DESC, "Magnet Voltage Coil 1")
-    field(INP,  "$(P)MagnetVoltageCoil1:Raw CP MS")
+    field(INP,  "$(P)MagnetVoltageCoil1:Raw MS")
     field(EGU,  "V")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Magnet Current Coil 1 (bytes 76-77, WORD38)
+# Magnet Current Coil 1 (bytes 76-77, WORD19)
+record(subArray, "$(P)MagnetCurrentCoil1:Bytes") {
+    field(DESC, "Magnet Current Coil  Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "76")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)MagnetCurrentCoil1:Raw")
+}
+
 record(calc, "$(P)MagnetCurrentCoil1:Raw") {
-    field(DESC, "Magnet I Coil1 Raw")
-    field(INPA, "$(P)RawData.VAL[76] CP MS")
-    field(INPB, "$(P)RawData.VAL[77] CP MS")
+    field(DESC, "Magnet Current Coil 1 Raw")
+    field(INPA, "$(P)MagnetCurrentCoil1:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)MagnetCurrentCoil1:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)MagnetVoltageCoil2:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)MagnetVoltageCoil2:Bytes")
 }
 
 record(ai, "$(P)MagnetCurrentCoil1") {
     field(DESC, "Magnet Current Coil 1")
-    field(INP,  "$(P)MagnetCurrentCoil1:Raw CP MS")
+    field(INP,  "$(P)MagnetCurrentCoil1:Raw MS")
     field(EGU,  "A")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Magnet Voltage Coil 2 (bytes 80-81, WORD40)
+# Magnet Voltage Coil 2 (bytes 80-81, WORD20)
+record(subArray, "$(P)MagnetVoltageCoil2:Bytes") {
+    field(DESC, "Magnet Voltage Coil  Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "80")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)MagnetVoltageCoil2:Raw")
+}
+
 record(calc, "$(P)MagnetVoltageCoil2:Raw") {
-    field(DESC, "Magnet V Coil2 Raw")
-    field(INPA, "$(P)RawData.VAL[80] CP MS")
-    field(INPB, "$(P)RawData.VAL[81] CP MS")
+    field(DESC, "Magnet Voltage Coil 2 Raw")
+    field(INPA, "$(P)MagnetVoltageCoil2:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)MagnetVoltageCoil2:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)MagnetCurrentCoil2:Raw")
+    field(EGU,  "counts")
+    field(FLNK, "$(P)MagnetCurrentCoil2:Bytes")
 }
 
 record(ai, "$(P)MagnetVoltageCoil2") {
     field(DESC, "Magnet Voltage Coil 2")
-    field(INP,  "$(P)MagnetVoltageCoil2:Raw CP MS")
+    field(INP,  "$(P)MagnetVoltageCoil2:Raw MS")
     field(EGU,  "V")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
 
-# Magnet Current Coil 2 (bytes 84-85, WORD42 - LAST 2 BYTES)
+# Magnet Current Coil 2 (bytes 84-85, WORD21)
+record(subArray, "$(P)MagnetCurrentCoil2:Bytes") {
+    field(DESC, "Magnet Current Coil  Bytes")
+    field(INP,  "$(P)RawData NPP NMS")
+    field(MALM, "86")
+    field(INDX, "84")
+    field(NELM, "2")
+    field(FTVL, "UCHAR")
+    field(FLNK, "$(P)MagnetCurrentCoil2:Raw")
+}
+
 record(calc, "$(P)MagnetCurrentCoil2:Raw") {
-    field(DESC, "Magnet I Coil2 Raw")
-    field(INPA, "$(P)RawData.VAL[84] CP MS")
-    field(INPB, "$(P)RawData.VAL[85] CP MS")
+    field(DESC, "Magnet Current Coil 2 Raw")
+    field(INPA, "$(P)MagnetCurrentCoil2:Bytes.VAL[0] NPP NMS")
+    field(INPB, "$(P)MagnetCurrentCoil2:Bytes.VAL[1] NPP NMS")
     field(CALC, "A+B*256")
-    field(FLNK, "$(P)RawData")
+    field(EGU,  "counts")
 }
 
 record(ai, "$(P)MagnetCurrentCoil2") {
     field(DESC, "Magnet Current Coil 2")
-    field(INP,  "$(P)MagnetCurrentCoil2:Raw CP MS")
+    field(INP,  "$(P)MagnetCurrentCoil2:Raw MS")
     field(EGU,  "A")
     field(PREC, "2")
+    field(LINR, "LINEAR")
     field(ESLO, "1")
     field(EOFF, "0")
 }
@@ -408,11 +661,13 @@ record(ai, "$(P)MagnetCurrentCoil2") {
 # NOTES:
 # ============================================================================
 # 1. Only RawData record communicates with the device (DTYP="stream")
-# 2. All other records extract data from RawData using CP (Change Process) links
-# 3. MS (Maximize Severity) ensures alarm states propagate
-# 4. Raw records convert two bytes (LSB+MSB) to 16-bit integer
-# 5. Final AI/longin/mbbi records apply engineering unit conversion (ESLO/EOFF)
-# 6. Adjust ESLO and EOFF values based on actual device scaling
-# 7. This approach ensures all values come from the same data snapshot
-# 8. Network traffic reduced from 43 reads to 1 read per scan cycle
+# 2. subArray records extract 2-byte pairs from RawData waveform
+# 3. calc :Raw records combine LSB+MSB bytes using A+B*256 formula
+# 4. Final records (ai/longin/mbbi) apply engineering unit conversion
+# 5. FLNK chain: RawData -> Bytes[0] -> Raw[0] -> Bytes[1] -> Raw[1] -> ...
+# 6. NPP NMS = No Process Passive, No Maximize Severity (avoids loops)
+# 7. MS on final records propagates alarms from Raw calc records
+# 8. Adjust ESLO and EOFF values based on actual device scaling
+# 9. Network traffic: 1 read per scan cycle (86 bytes)
 # ============================================================================
+
