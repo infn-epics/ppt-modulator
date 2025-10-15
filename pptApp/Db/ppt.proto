@@ -1,15 +1,16 @@
-# StreamDevice Protocol File for Binary Encoded TCP Stream
-# Total data size: 78 words (156 bytes)
+# StreamDevice Protocol File for PPT Modulator Binary TCP Stream
+# Total data size: 43 words (86 bytes)
 # Each word is 2 bytes (LSB + MSB)
+# Device responds on TCP port 2000
 
-# Terminator for binary protocols (if needed)
+# Terminator for binary protocols
 Terminator = "";
 ReplyTimeout = 1000;
 ReadTimeout = 100;
 
-# Read all data as one binary block (156 bytes)
+# Read all data as one binary block (86 bytes)
 readAllData {
-    in "%156r";
+    in "%86r";
 }
 
 # Individual parameter readers using offset positioning
@@ -100,83 +101,80 @@ readMagnetVoltageCoil2 {
 }
 
 readMagnetCurrentCoil2 {
-    in "%*84r %2r";  # WORD42-43: skip 84, read bytes 84-87
+    in "%*84r %2r";  # WORD42: skip 84, read bytes 84-85 (END OF 86 BYTE DATA)
 }
 
-readMagnetVoltageCoil3 {
-    in "%*88r %2r";  # WORD44-45: skip 88, read bytes 88-91
-}
+# Note: The following protocols are defined but expect data beyond 86 bytes
+# Comment them out if device only sends 86 bytes
 
-readMagnetCurrentCoil3 {
-    in "%*92r %2r";  # WORD46-47: skip 92, read bytes 92-95
-}
-
-readInterlockMessages3 {
-    in "%*96r %2r";  # WORD48-49: skip 96, read bytes 96-99
-}
-
-readStatusMessages3 {
-    in "%*100r %2r";  # WORD50-51: skip 100, read bytes 100-103
-}
-
-readMagnetVoltage {
-    in "%*104r %2r";  # WORD52-53: skip 104, read bytes 104-107
-}
-
-readMagnetCurrent {
-    in "%*108r %2r";  # WORD54-55: skip 108, read bytes 108-111
-}
-
-readInterlockMessages4 {
-    in "%*112r %2r";  # WORD56-57: skip 112, read bytes 112-115
-}
-
-readStatusMessages4 {
-    in "%*116r %2r";  # WORD58-59: skip 116, read bytes 116-119
-}
-
-readInterlockMessages5 {
-    in "%*120r %2r";  # WORD60-61: skip 120, read bytes 120-123
-}
-
-readInterlockMessages6 {
-    in "%*124r %2r";  # WORD62-63: skip 124, read bytes 124-127
-}
-
-readInterlockMessages7 {
-    in "%*128r %2r";  # WORD64-65: skip 128, read bytes 128-131
-}
-
-readCounter {
-    in "%*132r %2r";  # WORD66-67: skip 132, read bytes 132-135
-}
-
-readChargingVoltagePFN {
-    in "%*136r %2r";  # WORD68-69: skip 136, read bytes 136-139
-}
-
-readTempWaterHVPS {
-    in "%*140r %2r";  # WORD70-71: skip 140, read bytes 140-143
-}
-
-readInterlockMessages8 {
-    in "%*144r %2r";  # WORD72-73: skip 144, read bytes 144-147
-}
-
-readStatusMessages5 {
-    in "%*148r %2r";  # WORD74: skip 148, read bytes 148-151
-}
-
-readInterlockMessages9 {
-    in "%*150r %2r";  # WORD75: skip 150, read bytes 150-153
-}
-
-readStatusMessages6 {
-    in "%*152r %2r";  # WORD76: skip 152, read bytes 152-155
-}
-
-# Alternative: Read multiple values in sequence
-# This reads all values at once and parses them
-readFullDataSet {
-    in "%2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r %2r";
-}
+# readMagnetVoltageCoil3 {
+#     in "%*88r %2r";  # WORD44-45: skip 88, read bytes 88-91
+# }
+# 
+# readMagnetCurrentCoil3 {
+#     in "%*92r %2r";  # WORD46-47: skip 92, read bytes 92-95
+# }
+# 
+# readInterlockMessages3 {
+#     in "%*96r %2r";  # WORD48-49: skip 96, read bytes 96-99
+# }
+# 
+# readStatusMessages3 {
+#     in "%*100r %2r";  # WORD50-51: skip 100, read bytes 100-103
+# }
+# 
+# readMagnetVoltage {
+#     in "%*104r %2r";  # WORD52-53: skip 104, read bytes 104-107
+# }
+# 
+# readMagnetCurrent {
+#     in "%*108r %2r";  # WORD54-55: skip 108, read bytes 108-111
+# }
+# 
+# readInterlockMessages4 {
+#     in "%*112r %2r";  # WORD56-57: skip 112, read bytes 112-115
+# }
+# 
+# readStatusMessages4 {
+#     in "%*116r %2r";  # WORD58-59: skip 116, read bytes 116-119
+# }
+# 
+# readInterlockMessages5 {
+#     in "%*120r %2r";  # WORD60-61: skip 120, read bytes 120-123
+# }
+# 
+# readInterlockMessages6 {
+#     in "%*124r %2r";  # WORD62-63: skip 124, read bytes 124-127
+# }
+# 
+# readInterlockMessages7 {
+#     in "%*128r %2r";  # WORD64-65: skip 128, read bytes 128-131
+# }
+# 
+# readCounter {
+#     in "%*132r %2r";  # WORD66-67: skip 132, read bytes 132-135
+# }
+# 
+# readChargingVoltagePFN {
+#     in "%*136r %2r";  # WORD68-69: skip 136, read bytes 136-139
+# }
+# 
+# readTempWaterHVPS {
+#     in "%*140r %2r";  # WORD70-71: skip 140, read bytes 140-143
+# }
+# 
+# readInterlockMessages8 {
+#     in "%*144r %2r";  # WORD72-73: skip 144, read bytes 144-147
+# }
+# 
+# readStatusMessages5 {
+#     in "%*148r %2r";  # WORD74: skip 148, read bytes 148-151
+# }
+# 
+# readInterlockMessages9 {
+#     in "%*150r %2r";  # WORD75: skip 150, read bytes 150-153
+# }
+# 
+# readStatusMessages6 {
+#     in "%*152r %2r";  # WORD76: skip 152, read bytes 152-155
+# }

@@ -6,7 +6,7 @@
 record(ai, "$(P):HeaterVoltage1") {
     field(DESC, "Heater Voltage 1")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readHeaterVoltage1 $(PORT)")
+    field(INP,  "@ppt.proto readHeaterVoltage1 $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "V")
     field(PREC, "2")
@@ -18,7 +18,7 @@ record(ai, "$(P):HeaterVoltage1") {
 record(ai, "$(P):ReservoirVoltage") {
     field(DESC, "Reservoir Voltage")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readReservoirVoltage $(PORT)")
+    field(INP,  "@ppt.proto readReservoirVoltage $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "V")
     field(PREC, "2")
@@ -28,7 +28,7 @@ record(ai, "$(P):ReservoirVoltage") {
 record(ai, "$(P):TotalCurrent") {
     field(DESC, "Total Current")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readTotalCurrent $(PORT)")
+    field(INP,  "@ppt.proto readTotalCurrent $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "A")
     field(PREC, "2")
@@ -38,7 +38,7 @@ record(ai, "$(P):TotalCurrent") {
 record(longin, "$(P):TimerPreheatMin") {
     field(DESC, "Timer Preheating Minutes")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readTimerPreheatingMin $(PORT)")
+    field(INP,  "@ppt.proto readTimerPreheatingMin $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "min")
 }
@@ -47,7 +47,7 @@ record(longin, "$(P):TimerPreheatMin") {
 record(longin, "$(P):TimerPreheatSec") {
     field(DESC, "Timer Preheating Seconds")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readTimerPreheatingSec $(PORT)")
+    field(INP,  "@ppt.proto readTimerPreheatingSec $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "sec")
 }
@@ -56,7 +56,7 @@ record(longin, "$(P):TimerPreheatSec") {
 record(mbbi, "$(P):InterlockMsg1") {
     field(DESC, "Interlock Messages 1")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages1 $(PORT)")
+    field(INP,  "@ppt.proto readInterlockMessages1 $(PORT)")
     field(SCAN, "1 second")
     field(NOBT, "16")
     field(SHFT, "0")
@@ -66,7 +66,7 @@ record(mbbi, "$(P):InterlockMsg1") {
 record(mbbi, "$(P):StatusMsg1") {
     field(DESC, "Status Messages 1")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readStatusMessages1 $(PORT)")
+    field(INP,  "@ppt.proto readStatusMessages1 $(PORT)")
     field(SCAN, "1 second")
     field(NOBT, "16")
     field(SHFT, "0")
@@ -76,7 +76,7 @@ record(mbbi, "$(P):StatusMsg1") {
 record(ai, "$(P):HeaterVoltage2") {
     field(DESC, "Heater Voltage 2")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readHeaterVoltage2 $(PORT)")
+    field(INP,  "@ppt.proto readHeaterVoltage2 $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "V")
     field(PREC, "2")
@@ -86,7 +86,7 @@ record(ai, "$(P):HeaterVoltage2") {
 record(ai, "$(P):HeaterCurrent") {
     field(DESC, "Heater Current")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readHeaterCurrent $(PORT)")
+    field(INP,  "@ppt.proto readHeaterCurrent $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "A")
     field(PREC, "2")
@@ -96,7 +96,7 @@ record(ai, "$(P):HeaterCurrent") {
 record(ai, "$(P):BodyWaterInTemp") {
     field(DESC, "Body Water Input Temp")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readBodyWaterInputTemp $(PORT)")
+    field(INP,  "@ppt.proto readBodyWaterInputTemp $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "C")
     field(PREC, "1")
@@ -106,7 +106,7 @@ record(ai, "$(P):BodyWaterInTemp") {
 record(ai, "$(P):BodyWaterOutTemp") {
     field(DESC, "Body Water Output Temp")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readBodyWaterOutputTemp $(PORT)")
+    field(INP,  "@ppt.proto readBodyWaterOutputTemp $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "C")
     field(PREC, "1")
@@ -116,7 +116,7 @@ record(ai, "$(P):BodyWaterOutTemp") {
 record(ai, "$(P):BodyWaterFlow") {
     field(DESC, "Body Water Flow")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readBodyWaterFlow $(PORT)")
+    field(INP,  "@ppt.proto readBodyWaterFlow $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "L/min")
     field(PREC, "2")
@@ -126,7 +126,7 @@ record(ai, "$(P):BodyWaterFlow") {
 record(longin, "$(P):TimerPreheat100Min") {
     field(DESC, "Timer Preheat 100% Min")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readTimerPreheat100Min $(PORT)")
+    field(INP,  "@ppt.proto readTimerPreheat100Min $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "min")
 }
@@ -135,7 +135,7 @@ record(longin, "$(P):TimerPreheat100Min") {
 record(longin, "$(P):TimerPreheat100Sec") {
     field(DESC, "Timer Preheat 100% Sec")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readTimerPreheat100Sec $(PORT)")
+    field(INP,  "@ppt.proto readTimerPreheat100Sec $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "sec")
 }
@@ -144,7 +144,7 @@ record(longin, "$(P):TimerPreheat100Sec") {
 record(mbbi, "$(P):InterlockMsg2") {
     field(DESC, "Interlock Messages 2")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages2 $(PORT)")
+    field(INP,  "@ppt.proto readInterlockMessages2 $(PORT)")
     field(SCAN, "1 second")
     field(NOBT, "16")
     field(SHFT, "0")
@@ -154,7 +154,7 @@ record(mbbi, "$(P):InterlockMsg2") {
 record(mbbi, "$(P):StatusMsg2") {
     field(DESC, "Status Messages 2")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readStatusMessages2 $(PORT)")
+    field(INP,  "@ppt.proto readStatusMessages2 $(PORT)")
     field(SCAN, "1 second")
     field(NOBT, "16")
     field(SHFT, "0")
@@ -164,7 +164,7 @@ record(mbbi, "$(P):StatusMsg2") {
 record(ai, "$(P):KlystronVoltage") {
     field(DESC, "Klystron Voltage")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readKlystronVoltage $(PORT)")
+    field(INP,  "@ppt.proto readKlystronVoltage $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "V")
     field(PREC, "2")
@@ -174,7 +174,7 @@ record(ai, "$(P):KlystronVoltage") {
 record(ai, "$(P):KlystronCurrent") {
     field(DESC, "Klystron Current")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readKlystronCurrent $(PORT)")
+    field(INP,  "@ppt.proto readKlystronCurrent $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "A")
     field(PREC, "2")
@@ -184,7 +184,7 @@ record(ai, "$(P):KlystronCurrent") {
 record(ai, "$(P):MagnetVoltageCoil1") {
     field(DESC, "Magnet Voltage Coil 1")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readMagnetVoltageCoil1 $(PORT)")
+    field(INP,  "@ppt.proto readMagnetVoltageCoil1 $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "V")
     field(PREC, "2")
@@ -194,7 +194,7 @@ record(ai, "$(P):MagnetVoltageCoil1") {
 record(ai, "$(P):MagnetCurrentCoil1") {
     field(DESC, "Magnet Current Coil 1")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readMagnetCurrentCoil1 $(PORT)")
+    field(INP,  "@ppt.proto readMagnetCurrentCoil1 $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "A")
     field(PREC, "2")
@@ -204,206 +204,211 @@ record(ai, "$(P):MagnetCurrentCoil1") {
 record(ai, "$(P):MagnetVoltageCoil2") {
     field(DESC, "Magnet Voltage Coil 2")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readMagnetVoltageCoil2 $(PORT)")
+    field(INP,  "@ppt.proto readMagnetVoltageCoil2 $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "V")
     field(PREC, "2")
 }
 
-# Magnet Current Coil 2 (WORD42-43)
+# Magnet Current Coil 2 (WORD42 - bytes 84-85, END OF 86 BYTE DATA)
 record(ai, "$(P):MagnetCurrentCoil2") {
     field(DESC, "Magnet Current Coil 2")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readMagnetCurrentCoil2 $(PORT)")
+    field(INP,  "@ppt.proto readMagnetCurrentCoil2 $(PORT)")
     field(SCAN, "1 second")
     field(EGU,  "A")
     field(PREC, "2")
 }
 
-# Magnet Voltage Coil 3 (WORD44-45)
-record(ai, "$(P):MagnetVoltageCoil3") {
-    field(DESC, "Magnet Voltage Coil 3")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readMagnetVoltageCoil3 $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-}
+# ============================================================================
+# NOTE: The following records are commented out because the device only 
+# sends 86 bytes of data. Uncomment if your device sends more data.
+# ============================================================================
 
-# Magnet Current Coil 3 (WORD46-47)
-record(ai, "$(P):MagnetCurrentCoil3") {
-    field(DESC, "Magnet Current Coil 3")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readMagnetCurrentCoil3 $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "A")
-    field(PREC, "2")
-}
+# # Magnet Voltage Coil 3 (WORD44-45)
+# record(ai, "$(P):MagnetVoltageCoil3") {
+#     field(DESC, "Magnet Voltage Coil 3")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readMagnetVoltageCoil3 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(EGU,  "V")
+#     field(PREC, "2")
+# }
+# 
+# # Magnet Current Coil 3 (WORD46-47)
+# record(ai, "$(P):MagnetCurrentCoil3") {
+#     field(DESC, "Magnet Current Coil 3")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readMagnetCurrentCoil3 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(EGU,  "A")
+#     field(PREC, "2")
+# }
+# 
+# # Interlock Messages 3 (WORD48-49)
+# record(mbbi, "$(P):InterlockMsg3") {
+#     field(DESC, "Interlock Messages 3")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readInterlockMessages3 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Status Messages 3 (WORD50-51)
+# record(mbbi, "$(P):StatusMsg3") {
+#     field(DESC, "Status Messages 3")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readStatusMessages3 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Magnet Voltage (WORD52-53)
+# record(ai, "$(P):MagnetVoltage") {
+#     field(DESC, "Magnet Voltage")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readMagnetVoltage $(PORT)")
+#     field(SCAN, "1 second")
+#     field(EGU,  "V")
+#     field(PREC, "2")
+# }
+# 
+# # Magnet Current (WORD54-55)
+# record(ai, "$(P):MagnetCurrent") {
+#     field(DESC, "Magnet Current")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readMagnetCurrent $(PORT)")
+#     field(SCAN, "1 second")
+#     field(EGU,  "A")
+#     field(PREC, "2")
+# }
+# 
+# # Interlock Messages 4 (WORD56-57)
+# record(mbbi, "$(P):InterlockMsg4") {
+#     field(DESC, "Interlock Messages 4")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readInterlockMessages4 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Status Messages 4 (WORD58-59)
+# record(mbbi, "$(P):StatusMsg4") {
+#     field(DESC, "Status Messages 4")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readStatusMessages4 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Interlock Messages 5 (WORD60-61)
+# record(mbbi, "$(P):InterlockMsg5") {
+#     field(DESC, "Interlock Messages 5")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readInterlockMessages5 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Interlock Messages 6 (WORD62-63)
+# record(mbbi, "$(P):InterlockMsg6") {
+#     field(DESC, "Interlock Messages 6")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readInterlockMessages6 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Interlock Messages 7 (WORD64-65)
+# record(mbbi, "$(P):InterlockMsg7") {
+#     field(DESC, "Interlock Messages 7")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readInterlockMessages7 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Counter (WORD66-67)
+# record(longin, "$(P):Counter") {
+#     field(DESC, "Counter")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readCounter $(PORT)")
+#     field(SCAN, "1 second")
+# }
+# 
+# # Charging Voltage PFN (WORD68-69)
+# record(ai, "$(P):ChargingVoltagePFN") {
+#     field(DESC, "Charging Voltage PFN")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readChargingVoltagePFN $(PORT)")
+#     field(SCAN, "1 second")
+#     field(EGU,  "V")
+#     field(PREC, "2")
+# }
+# 
+# # Temperature Water HVPS (WORD70-71)
+# record(ai, "$(P):TempWaterHVPS") {
+#     field(DESC, "Temp Water HVPS")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readTempWaterHVPS $(PORT)")
+#     field(SCAN, "1 second")
+#     field(EGU,  "C")
+#     field(PREC, "1")
+# }
+# 
+# # Interlock Messages 8 (WORD72-73)
+# record(mbbi, "$(P):InterlockMsg8") {
+#     field(DESC, "Interlock Messages 8")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readInterlockMessages8 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Status Messages 5 (WORD74)
+# record(mbbi, "$(P):StatusMsg5") {
+#     field(DESC, "Status Messages 5")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readStatusMessages5 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Interlock Messages 9 (WORD75)
+# record(mbbi, "$(P):InterlockMsg9") {
+#     field(DESC, "Interlock Messages 9")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readInterlockMessages9 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
+# 
+# # Status Messages 6 (WORD76)
+# record(mbbi, "$(P):StatusMsg6") {
+#     field(DESC, "Status Messages 6")
+#     field(DTYP, "stream")
+#     field(INP,  "@ppt.proto readStatusMessages6 $(PORT)")
+#     field(SCAN, "1 second")
+#     field(NOBT, "16")
+#     field(SHFT, "0")
+# }
 
-# Interlock Messages 3 (WORD48-49)
-record(mbbi, "$(P):InterlockMsg3") {
-    field(DESC, "Interlock Messages 3")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages3 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Status Messages 3 (WORD50-51)
-record(mbbi, "$(P):StatusMsg3") {
-    field(DESC, "Status Messages 3")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readStatusMessages3 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Magnet Voltage (WORD52-53)
-record(ai, "$(P):MagnetVoltage") {
-    field(DESC, "Magnet Voltage")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readMagnetVoltage $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-}
-
-# Magnet Current (WORD54-55)
-record(ai, "$(P):MagnetCurrent") {
-    field(DESC, "Magnet Current")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readMagnetCurrent $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "A")
-    field(PREC, "2")
-}
-
-# Interlock Messages 4 (WORD56-57)
-record(mbbi, "$(P):InterlockMsg4") {
-    field(DESC, "Interlock Messages 4")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages4 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Status Messages 4 (WORD58-59)
-record(mbbi, "$(P):StatusMsg4") {
-    field(DESC, "Status Messages 4")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readStatusMessages4 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Interlock Messages 5 (WORD60-61)
-record(mbbi, "$(P):InterlockMsg5") {
-    field(DESC, "Interlock Messages 5")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages5 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Interlock Messages 6 (WORD62-63)
-record(mbbi, "$(P):InterlockMsg6") {
-    field(DESC, "Interlock Messages 6")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages6 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Interlock Messages 7 (WORD64-65)
-record(mbbi, "$(P):InterlockMsg7") {
-    field(DESC, "Interlock Messages 7")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages7 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Counter (WORD66-67)
-record(longin, "$(P):Counter") {
-    field(DESC, "Counter")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readCounter $(PORT)")
-    field(SCAN, "1 second")
-}
-
-# Charging Voltage PFN (WORD68-69)
-record(ai, "$(P):ChargingVoltagePFN") {
-    field(DESC, "Charging Voltage PFN")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readChargingVoltagePFN $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-}
-
-# Temperature Water HVPS (WORD70-71)
-record(ai, "$(P):TempWaterHVPS") {
-    field(DESC, "Temp Water HVPS")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readTempWaterHVPS $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "C")
-    field(PREC, "1")
-}
-
-# Interlock Messages 8 (WORD72-73)
-record(mbbi, "$(P):InterlockMsg8") {
-    field(DESC, "Interlock Messages 8")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages8 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Status Messages 5 (WORD74)
-record(mbbi, "$(P):StatusMsg5") {
-    field(DESC, "Status Messages 5")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readStatusMessages5 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Interlock Messages 9 (WORD75)
-record(mbbi, "$(P):InterlockMsg9") {
-    field(DESC, "Interlock Messages 9")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readInterlockMessages9 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Status Messages 6 (WORD76)
-record(mbbi, "$(P):StatusMsg6") {
-    field(DESC, "Status Messages 6")
-    field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readStatusMessages6 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Waveform record to read all data at once (optional)
+# Waveform record to read all data at once (86 bytes)
 record(waveform, "$(P):RawData") {
     field(DESC, "Raw Binary Data")
     field(DTYP, "stream")
-    field(INP,  "@binary_data.proto readAllData $(PORT)")
+    field(INP,  "@ppt.proto readAllData $(PORT)")
     field(SCAN, "1 second")
-    field(NELM, "156")
+    field(NELM, "86")
     field(FTVL, "UCHAR")
 }
