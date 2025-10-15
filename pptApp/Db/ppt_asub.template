@@ -1,0 +1,268 @@
+# ============================================================================
+# PPT Modulator Database Template - aSub Record Approach
+# ============================================================================
+# Architecture:
+# 1. Master waveform reads all 86 bytes via StreamDevice (SCAN="1 second")
+# 2. aSub record decodes all 22 values from byte array (SCAN="Passive", triggered by FLNK)
+# 3. Individual ai/longin/mbbi records get values from aSub outputs via PP links
+# ============================================================================
+
+# Master record - reads all 86 bytes from device
+record(waveform, "$(P)RawData") {
+    field(DESC, "Raw 86-byte data from device")
+    field(DTYP, "stream")
+    field(INP,  "@ppt.proto readAllData $(PORT)")
+    field(SCAN, "1 second")
+    field(FTVL, "CHAR")
+    field(NELM, "86")
+    field(FLNK, "$(P)Decode")
+}
+
+# Decoder record - extracts all 22 values
+record(aSub, "$(P)Decode") {
+    field(DESC, "Decode all PPT values")
+    field(SNAM, "pptDecodeData")
+    field(SCAN, "Passive")
+    
+    # Input: raw byte array
+    field(INPA, "$(P)RawData NPP NMS")
+    field(FTA,  "CHAR")
+    field(NOA,  "86")
+    
+    # Outputs: all 22 values
+    field(FTVA, "DOUBLE")  field(NOVA, "1")  # HeaterVoltage1
+    field(FTVB, "DOUBLE")  field(NOVB, "1")  # HeaterVoltage2
+    field(FTVC, "DOUBLE")  field(NOVC, "1")  # ReservoirVoltage
+    field(FTVD, "DOUBLE")  field(NOVD, "1")  # KlystronVoltage
+    field(FTVE, "DOUBLE")  field(NOVE, "1")  # MagnetVoltageCoil1
+    field(FTVF, "DOUBLE")  field(NOVF, "1")  # MagnetVoltageCoil2
+    field(FTVG, "DOUBLE")  field(NOVG, "1")  # TotalCurrent
+    field(FTVH, "DOUBLE")  field(NOVH, "1")  # HeaterCurrent
+    field(FTVI, "DOUBLE")  field(NOVI, "1")  # KlystronCurrent
+    field(FTVJ, "DOUBLE")  field(NOVJ, "1")  # MagnetCurrentCoil1
+    field(FTVK, "DOUBLE")  field(NOVK, "1")  # MagnetCurrentCoil2
+    field(FTVL, "DOUBLE")  field(NOVL, "1")  # BodyWaterInTemp
+    field(FTVM, "DOUBLE")  field(NOVM, "1")  # BodyWaterOutTemp
+    field(FTVN, "DOUBLE")  field(NOVN, "1")  # BodyWaterFlow
+    field(FTVO, "DOUBLE")  field(NOVO, "1")  # TimerPreheatMin
+    field(FTVP, "DOUBLE")  field(NOVP, "1")  # TimerPreheatSec
+    field(FTVQ, "DOUBLE")  field(NOVQ, "1")  # TimerPreheat100Min
+    field(FTVR, "DOUBLE")  field(NOVR, "1")  # TimerPreheat100Sec
+    field(FTVS, "DOUBLE")  field(NOVS, "1")  # InterlockMsg1
+    field(FTVT, "DOUBLE")  field(NOVT, "1")  # InterlockMsg2
+    field(FTVU, "DOUBLE")  field(NOVU, "1")  # StatusMsg1
+    field(FTVV, "DOUBLE")  field(NOVV, "1")  # StatusMsg2
+}
+
+# ============================================================================
+# VOLTAGE READINGS (with scaling via ESLO/EOFF if needed)
+# ============================================================================
+
+record(ai, "$(P)HeaterVoltage1") {
+    field(DESC, "Heater Voltage 1")
+    field(INP,  "$(P)Decode.VALA CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)HeaterVoltage2") {
+    field(DESC, "Heater Voltage 2")
+    field(INP,  "$(P)Decode.VALB CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)ReservoirVoltage") {
+    field(DESC, "Reservoir Voltage")
+    field(INP,  "$(P)Decode.VALC CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)KlystronVoltage") {
+    field(DESC, "Klystron Voltage")
+    field(INP,  "$(P)Decode.VALD CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)MagnetVoltageCoil1") {
+    field(DESC, "Magnet Voltage Coil 1")
+    field(INP,  "$(P)Decode.VALE CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)MagnetVoltageCoil2") {
+    field(DESC, "Magnet Voltage Coil 2")
+    field(INP,  "$(P)Decode.VALF CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# ============================================================================
+# CURRENT READINGS
+# ============================================================================
+
+record(ai, "$(P)TotalCurrent") {
+    field(DESC, "Total Current")
+    field(INP,  "$(P)Decode.VALG CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)HeaterCurrent") {
+    field(DESC, "Heater Current")
+    field(INP,  "$(P)Decode.VALH CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)KlystronCurrent") {
+    field(DESC, "Klystron Current")
+    field(INP,  "$(P)Decode.VALI CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)MagnetCurrentCoil1") {
+    field(DESC, "Magnet Current Coil 1")
+    field(INP,  "$(P)Decode.VALJ CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)MagnetCurrentCoil2") {
+    field(DESC, "Magnet Current Coil 2")
+    field(INP,  "$(P)Decode.VALK CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# ============================================================================
+# TEMPERATURE READINGS
+# ============================================================================
+
+record(ai, "$(P)BodyWaterInTemp") {
+    field(DESC, "Body Water Input Temp")
+    field(INP,  "$(P)Decode.VALL CP MS")
+    field(EGU,  "C")
+    field(PREC, "1")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+record(ai, "$(P)BodyWaterOutTemp") {
+    field(DESC, "Body Water Output Temp")
+    field(INP,  "$(P)Decode.VALM CP MS")
+    field(EGU,  "C")
+    field(PREC, "1")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# ============================================================================
+# FLOW READINGS
+# ============================================================================
+
+record(ai, "$(P)BodyWaterFlow") {
+    field(DESC, "Body Water Flow")
+    field(INP,  "$(P)Decode.VALN CP MS")
+    field(EGU,  "L/min")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# ============================================================================
+# TIMER READINGS
+# ============================================================================
+
+record(longin, "$(P)TimerPreheatMin") {
+    field(DESC, "Timer Preheating Minutes")
+    field(INP,  "$(P)Decode.VALO CP MS")
+    field(EGU,  "min")
+}
+
+record(longin, "$(P)TimerPreheatSec") {
+    field(DESC, "Timer Preheating Seconds")
+    field(INP,  "$(P)Decode.VALP CP MS")
+    field(EGU,  "sec")
+}
+
+record(longin, "$(P)TimerPreheat100Min") {
+    field(DESC, "Timer Preheat 100% Min")
+    field(INP,  "$(P)Decode.VALQ CP MS")
+    field(EGU,  "min")
+}
+
+record(longin, "$(P)TimerPreheat100Sec") {
+    field(DESC, "Timer Preheat 100% Sec")
+    field(INP,  "$(P)Decode.VALR CP MS")
+    field(EGU,  "sec")
+}
+
+# ============================================================================
+# STATUS AND INTERLOCK MESSAGES
+# ============================================================================
+
+record(mbbi, "$(P)InterlockMsg1") {
+    field(DESC, "Interlock Messages 1")
+    field(INP,  "$(P)Decode.VALS CP MS")
+    field(NOBT, "16")
+    field(SHFT, "0")
+}
+
+record(mbbi, "$(P)InterlockMsg2") {
+    field(DESC, "Interlock Messages 2")
+    field(INP,  "$(P)Decode.VALT CP MS")
+    field(NOBT, "16")
+    field(SHFT, "0")
+}
+
+record(mbbi, "$(P)StatusMsg1") {
+    field(DESC, "Status Messages 1")
+    field(INP,  "$(P)Decode.VALU CP MS")
+    field(NOBT, "16")
+    field(SHFT, "0")
+}
+
+record(mbbi, "$(P)StatusMsg2") {
+    field(DESC, "Status Messages 2")
+    field(INP,  "$(P)Decode.VALV CP MS")
+    field(NOBT, "16")
+    field(SHFT, "0")
+}
+
+# ============================================================================
+# NOTES:
+# ============================================================================
+# - RawData waveform scans at 1 second and reads 86 bytes via StreamDevice
+# - Decode aSub record is triggered by FLNK and extracts all 22 values at once
+# - Individual records use CP MS links to get values from aSub outputs
+# - All records update atomically from the same 86-byte snapshot
+# - Scaling can be applied via ESLO/EOFF fields in individual records
+# - This approach is simpler, more maintainable, and easier to debug
+# ============================================================================

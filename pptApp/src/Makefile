@@ -32,6 +32,9 @@ ppt_LIBS += asyn
 # streamdevice_registerRecordDeviceDriver.cpp derives from streamdevice.dbd
 ppt_SRCS += ppt_registerRecordDeviceDriver.cpp
 
+# Add aSub record subroutine for decoding binary data
+ppt_SRCS += pptDecode.c
+
 # Build the main IOC entry point on workstation OSs.
 ppt_SRCS_DEFAULT += pptMain.cpp
 ppt_SRCS_vxWorks += -nil-

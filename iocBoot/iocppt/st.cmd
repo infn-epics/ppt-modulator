@@ -17,8 +17,8 @@ drvAsynIPPortConfigure("PPT1", "192.168.197.111:2000", 0, 0, 0)
 # asynSetTraceIOMask("PPT1", 0, 0x2)  # ASYN_TRACEIO_HEX
 epicsEnvSet("STREAM_PROTOCOL_PATH","../../db")
 
-## Load record instances
-dbLoadRecords("../../db/ppt.template", "P=PPT:MOD1:, PORT=PPT1")
+## Load record instances (using aSub approach)
+dbLoadRecords("../../db/ppt_asub.template", "P=PPT:MOD1:, PORT=PPT1")
 
 # cd "${TOP}/iocBoot/${IOC}"
 iocInit
