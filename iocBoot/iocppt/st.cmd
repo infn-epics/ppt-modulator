@@ -15,6 +15,7 @@ drvAsynIPPortConfigure("PPT1", "192.168.197.111:2000", 0, 0, 0)
 ## Optional: Enable asyn tracing for debugging
 # asynSetTraceMask("PPT1", 0, 0x9)    # ASYN_TRACE_ERROR | ASYN_TRACEIO_DEVICE
 # asynSetTraceIOMask("PPT1", 0, 0x2)  # ASYN_TRACEIO_HEX
+epicsEnvSet("STREAM_PROTOCOL_PATH","../../db")
 
 ## Load record instances
 dbLoadRecords("../../db/ppt.db", "P=PPT:MOD1:, PORT=PPT1")
