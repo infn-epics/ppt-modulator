@@ -17,6 +17,7 @@ record(waveform, "$(P)RawData") {
     field(NELM, "86")
     field(FTVL, "UCHAR")
     field(PINI, "YES")
+    field(FLNK, "$(P)HeaterVoltage1:Raw")
 }
 
 # ============================================================================
@@ -30,6 +31,7 @@ record(calc, "$(P)HeaterVoltage1:Raw") {
     field(INPB, "$(P)RawData.VAL[1] CP MS")
     field(CALC, "A+B*256")
     field(EGU,  "counts")
+    field(FLNK, "$(P)ReservoirVoltage:Raw")
 }
 
 record(ai, "$(P)HeaterVoltage1") {
@@ -49,6 +51,7 @@ record(calc, "$(P)ReservoirVoltage:Raw") {
     field(INPB, "$(P)RawData.VAL[5] CP MS")
     field(CALC, "A+B*256")
     field(EGU,  "counts")
+    field(FLNK, "$(P)TotalCurrent:Raw")
 }
 
 record(ai, "$(P)ReservoirVoltage") {
@@ -67,6 +70,7 @@ record(calc, "$(P)TotalCurrent:Raw") {
     field(INPB, "$(P)RawData.VAL[9] CP MS")
     field(CALC, "A+B*256")
     field(EGU,  "counts")
+    field(FLNK, "$(P)TimerPreheatMin:Raw")
 }
 
 record(ai, "$(P)TotalCurrent") {
@@ -84,6 +88,7 @@ record(calc, "$(P)TimerPreheatMin:Raw") {
     field(INPA, "$(P)RawData.VAL[12] CP MS")
     field(INPB, "$(P)RawData.VAL[13] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)TimerPreheatSec:Raw")
 }
 
 record(longin, "$(P)TimerPreheatMin") {
@@ -98,6 +103,7 @@ record(calc, "$(P)TimerPreheatSec:Raw") {
     field(INPA, "$(P)RawData.VAL[16] CP MS")
     field(INPB, "$(P)RawData.VAL[17] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)InterlockMsg1:Raw")
 }
 
 record(longin, "$(P)TimerPreheatSec") {
@@ -112,6 +118,7 @@ record(calc, "$(P)InterlockMsg1:Raw") {
     field(INPA, "$(P)RawData.VAL[20] CP MS")
     field(INPB, "$(P)RawData.VAL[21] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)StatusMsg1:Raw")
 }
 
 record(mbbi, "$(P)InterlockMsg1") {
@@ -127,6 +134,7 @@ record(calc, "$(P)StatusMsg1:Raw") {
     field(INPA, "$(P)RawData.VAL[24] CP MS")
     field(INPB, "$(P)RawData.VAL[25] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)HeaterVoltage2:Raw")
 }
 
 record(mbbi, "$(P)StatusMsg1") {
@@ -142,6 +150,7 @@ record(calc, "$(P)HeaterVoltage2:Raw") {
     field(INPA, "$(P)RawData.VAL[28] CP MS")
     field(INPB, "$(P)RawData.VAL[29] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)HeaterCurrent:Raw")
 }
 
 record(ai, "$(P)HeaterVoltage2") {
@@ -159,6 +168,7 @@ record(calc, "$(P)HeaterCurrent:Raw") {
     field(INPA, "$(P)RawData.VAL[32] CP MS")
     field(INPB, "$(P)RawData.VAL[33] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)BodyWaterInTemp:Raw")
 }
 
 record(ai, "$(P)HeaterCurrent") {
@@ -176,6 +186,7 @@ record(calc, "$(P)BodyWaterInTemp:Raw") {
     field(INPA, "$(P)RawData.VAL[36] CP MS")
     field(INPB, "$(P)RawData.VAL[37] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)BodyWaterOutTemp:Raw")
 }
 
 record(ai, "$(P)BodyWaterInTemp") {
@@ -193,6 +204,7 @@ record(calc, "$(P)BodyWaterOutTemp:Raw") {
     field(INPA, "$(P)RawData.VAL[40] CP MS")
     field(INPB, "$(P)RawData.VAL[41] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)BodyWaterFlow:Raw")
 }
 
 record(ai, "$(P)BodyWaterOutTemp") {
@@ -210,6 +222,7 @@ record(calc, "$(P)BodyWaterFlow:Raw") {
     field(INPA, "$(P)RawData.VAL[44] CP MS")
     field(INPB, "$(P)RawData.VAL[45] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)TimerPreheat100Min:Raw")
 }
 
 record(ai, "$(P)BodyWaterFlow") {
@@ -227,6 +240,7 @@ record(calc, "$(P)TimerPreheat100Min:Raw") {
     field(INPA, "$(P)RawData.VAL[48] CP MS")
     field(INPB, "$(P)RawData.VAL[49] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)TimerPreheat100Sec:Raw")
 }
 
 record(longin, "$(P)TimerPreheat100Min") {
@@ -241,6 +255,7 @@ record(calc, "$(P)TimerPreheat100Sec:Raw") {
     field(INPA, "$(P)RawData.VAL[52] CP MS")
     field(INPB, "$(P)RawData.VAL[53] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)InterlockMsg2:Raw")
 }
 
 record(longin, "$(P)TimerPreheat100Sec") {
@@ -255,6 +270,7 @@ record(calc, "$(P)InterlockMsg2:Raw") {
     field(INPA, "$(P)RawData.VAL[56] CP MS")
     field(INPB, "$(P)RawData.VAL[57] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)StatusMsg2:Raw")
 }
 
 record(mbbi, "$(P)InterlockMsg2") {
@@ -270,6 +286,7 @@ record(calc, "$(P)StatusMsg2:Raw") {
     field(INPA, "$(P)RawData.VAL[60] CP MS")
     field(INPB, "$(P)RawData.VAL[61] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)KlystronVoltage:Raw")
 }
 
 record(mbbi, "$(P)StatusMsg2") {
@@ -285,6 +302,7 @@ record(calc, "$(P)KlystronVoltage:Raw") {
     field(INPA, "$(P)RawData.VAL[64] CP MS")
     field(INPB, "$(P)RawData.VAL[65] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)KlystronCurrent:Raw")
 }
 
 record(ai, "$(P)KlystronVoltage") {
@@ -302,6 +320,7 @@ record(calc, "$(P)KlystronCurrent:Raw") {
     field(INPA, "$(P)RawData.VAL[68] CP MS")
     field(INPB, "$(P)RawData.VAL[69] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)MagnetVoltageCoil1:Raw")
 }
 
 record(ai, "$(P)KlystronCurrent") {
@@ -319,6 +338,7 @@ record(calc, "$(P)MagnetVoltageCoil1:Raw") {
     field(INPA, "$(P)RawData.VAL[72] CP MS")
     field(INPB, "$(P)RawData.VAL[73] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)MagnetCurrentCoil1:Raw")
 }
 
 record(ai, "$(P)MagnetVoltageCoil1") {
@@ -336,6 +356,7 @@ record(calc, "$(P)MagnetCurrentCoil1:Raw") {
     field(INPA, "$(P)RawData.VAL[76] CP MS")
     field(INPB, "$(P)RawData.VAL[77] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)MagnetVoltageCoil2:Raw")
 }
 
 record(ai, "$(P)MagnetCurrentCoil1") {
@@ -353,6 +374,7 @@ record(calc, "$(P)MagnetVoltageCoil2:Raw") {
     field(INPA, "$(P)RawData.VAL[80] CP MS")
     field(INPB, "$(P)RawData.VAL[81] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)MagnetCurrentCoil2:Raw")
 }
 
 record(ai, "$(P)MagnetVoltageCoil2") {
@@ -370,6 +392,7 @@ record(calc, "$(P)MagnetCurrentCoil2:Raw") {
     field(INPA, "$(P)RawData.VAL[84] CP MS")
     field(INPB, "$(P)RawData.VAL[85] CP MS")
     field(CALC, "A+B*256")
+    field(FLNK, "$(P)RawData")
 }
 
 record(ai, "$(P)MagnetCurrentCoil2") {
