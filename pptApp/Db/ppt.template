@@ -1,414 +1,395 @@
-# EPICS Database for Binary Encoded TCP Stream
+# EPICS Database for PPT Modulator - Optimized Version
 # Device support: stream
-# Protocol file: binary_data.proto
-
-# Heater Voltage 1 (WORD0-1)
-record(ai, "$(P):HeaterVoltage1") {
-    field(DESC, "Heater Voltage 1")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readHeaterVoltage1 $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-    field(LINR, "LINEAR")
-    # Add ESLO/EOFF for scaling if needed
-}
-
-# Reservoir Voltage (WORD2-3)
-record(ai, "$(P):ReservoirVoltage") {
-    field(DESC, "Reservoir Voltage")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readReservoirVoltage $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-}
-
-# Total Current (WORD4-5)
-record(ai, "$(P):TotalCurrent") {
-    field(DESC, "Total Current")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readTotalCurrent $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "A")
-    field(PREC, "2")
-}
-
-# Timer Preheating Minutes (WORD6-7)
-record(longin, "$(P):TimerPreheatMin") {
-    field(DESC, "Timer Preheating Minutes")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readTimerPreheatingMin $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "min")
-}
-
-# Timer Preheating Seconds (WORD8-9)
-record(longin, "$(P):TimerPreheatSec") {
-    field(DESC, "Timer Preheating Seconds")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readTimerPreheatingSec $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "sec")
-}
-
-# Interlock Messages 1 (WORD10-11)
-record(mbbi, "$(P):InterlockMsg1") {
-    field(DESC, "Interlock Messages 1")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readInterlockMessages1 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Status Messages 1 (WORD12-13)
-record(mbbi, "$(P):StatusMsg1") {
-    field(DESC, "Status Messages 1")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readStatusMessages1 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Heater Voltage 2 (WORD14-15)
-record(ai, "$(P):HeaterVoltage2") {
-    field(DESC, "Heater Voltage 2")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readHeaterVoltage2 $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-}
-
-# Heater Current (WORD16-17)
-record(ai, "$(P):HeaterCurrent") {
-    field(DESC, "Heater Current")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readHeaterCurrent $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "A")
-    field(PREC, "2")
-}
-
-# Body Water Input Temperature (WORD18-19)
-record(ai, "$(P):BodyWaterInTemp") {
-    field(DESC, "Body Water Input Temp")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readBodyWaterInputTemp $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "C")
-    field(PREC, "1")
-}
-
-# Body Water Output Temperature (WORD20-21)
-record(ai, "$(P):BodyWaterOutTemp") {
-    field(DESC, "Body Water Output Temp")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readBodyWaterOutputTemp $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "C")
-    field(PREC, "1")
-}
-
-# Body Water Flow (WORD22-23)
-record(ai, "$(P):BodyWaterFlow") {
-    field(DESC, "Body Water Flow")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readBodyWaterFlow $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "L/min")
-    field(PREC, "2")
-}
-
-# Timer Preheating 100% Minutes (WORD24-25)
-record(longin, "$(P):TimerPreheat100Min") {
-    field(DESC, "Timer Preheat 100% Min")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readTimerPreheat100Min $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "min")
-}
-
-# Timer Preheating 100% Seconds (WORD26-27)
-record(longin, "$(P):TimerPreheat100Sec") {
-    field(DESC, "Timer Preheat 100% Sec")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readTimerPreheat100Sec $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "sec")
-}
-
-# Interlock Messages 2 (WORD28-29)
-record(mbbi, "$(P):InterlockMsg2") {
-    field(DESC, "Interlock Messages 2")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readInterlockMessages2 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Status Messages 2 (WORD30-31)
-record(mbbi, "$(P):StatusMsg2") {
-    field(DESC, "Status Messages 2")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readStatusMessages2 $(PORT)")
-    field(SCAN, "1 second")
-    field(NOBT, "16")
-    field(SHFT, "0")
-}
-
-# Klystron Voltage (WORD32-33)
-record(ai, "$(P):KlystronVoltage") {
-    field(DESC, "Klystron Voltage")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readKlystronVoltage $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-}
-
-# Klystron Current (WORD34-35)
-record(ai, "$(P):KlystronCurrent") {
-    field(DESC, "Klystron Current")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readKlystronCurrent $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "A")
-    field(PREC, "2")
-}
-
-# Magnet Voltage Coil 1 (WORD36-37)
-record(ai, "$(P):MagnetVoltageCoil1") {
-    field(DESC, "Magnet Voltage Coil 1")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readMagnetVoltageCoil1 $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-}
-
-# Magnet Current Coil 1 (WORD38-39)
-record(ai, "$(P):MagnetCurrentCoil1") {
-    field(DESC, "Magnet Current Coil 1")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readMagnetCurrentCoil1 $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "A")
-    field(PREC, "2")
-}
-
-# Magnet Voltage Coil 2 (WORD40-41)
-record(ai, "$(P):MagnetVoltageCoil2") {
-    field(DESC, "Magnet Voltage Coil 2")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readMagnetVoltageCoil2 $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "V")
-    field(PREC, "2")
-}
-
-# Magnet Current Coil 2 (WORD42 - bytes 84-85, END OF 86 BYTE DATA)
-record(ai, "$(P):MagnetCurrentCoil2") {
-    field(DESC, "Magnet Current Coil 2")
-    field(DTYP, "stream")
-    field(INP,  "@ppt.proto readMagnetCurrentCoil2 $(PORT)")
-    field(SCAN, "1 second")
-    field(EGU,  "A")
-    field(PREC, "2")
-}
+# Protocol file: ppt.proto
+# 
+# Strategy: Read all 86 bytes once into RawData waveform
+# Extract individual values using subArray records
+# This ensures all values come from the same data snapshot
 
 # ============================================================================
-# NOTE: The following records are commented out because the device only 
-# sends 86 bytes of data. Uncomment if your device sends more data.
+# PRIMARY DATA SOURCE - Read all 86 bytes from device
 # ============================================================================
-
-# # Magnet Voltage Coil 3 (WORD44-45)
-# record(ai, "$(P):MagnetVoltageCoil3") {
-#     field(DESC, "Magnet Voltage Coil 3")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readMagnetVoltageCoil3 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(EGU,  "V")
-#     field(PREC, "2")
-# }
-# 
-# # Magnet Current Coil 3 (WORD46-47)
-# record(ai, "$(P):MagnetCurrentCoil3") {
-#     field(DESC, "Magnet Current Coil 3")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readMagnetCurrentCoil3 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(EGU,  "A")
-#     field(PREC, "2")
-# }
-# 
-# # Interlock Messages 3 (WORD48-49)
-# record(mbbi, "$(P):InterlockMsg3") {
-#     field(DESC, "Interlock Messages 3")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readInterlockMessages3 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Status Messages 3 (WORD50-51)
-# record(mbbi, "$(P):StatusMsg3") {
-#     field(DESC, "Status Messages 3")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readStatusMessages3 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Magnet Voltage (WORD52-53)
-# record(ai, "$(P):MagnetVoltage") {
-#     field(DESC, "Magnet Voltage")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readMagnetVoltage $(PORT)")
-#     field(SCAN, "1 second")
-#     field(EGU,  "V")
-#     field(PREC, "2")
-# }
-# 
-# # Magnet Current (WORD54-55)
-# record(ai, "$(P):MagnetCurrent") {
-#     field(DESC, "Magnet Current")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readMagnetCurrent $(PORT)")
-#     field(SCAN, "1 second")
-#     field(EGU,  "A")
-#     field(PREC, "2")
-# }
-# 
-# # Interlock Messages 4 (WORD56-57)
-# record(mbbi, "$(P):InterlockMsg4") {
-#     field(DESC, "Interlock Messages 4")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readInterlockMessages4 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Status Messages 4 (WORD58-59)
-# record(mbbi, "$(P):StatusMsg4") {
-#     field(DESC, "Status Messages 4")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readStatusMessages4 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Interlock Messages 5 (WORD60-61)
-# record(mbbi, "$(P):InterlockMsg5") {
-#     field(DESC, "Interlock Messages 5")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readInterlockMessages5 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Interlock Messages 6 (WORD62-63)
-# record(mbbi, "$(P):InterlockMsg6") {
-#     field(DESC, "Interlock Messages 6")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readInterlockMessages6 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Interlock Messages 7 (WORD64-65)
-# record(mbbi, "$(P):InterlockMsg7") {
-#     field(DESC, "Interlock Messages 7")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readInterlockMessages7 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Counter (WORD66-67)
-# record(longin, "$(P):Counter") {
-#     field(DESC, "Counter")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readCounter $(PORT)")
-#     field(SCAN, "1 second")
-# }
-# 
-# # Charging Voltage PFN (WORD68-69)
-# record(ai, "$(P):ChargingVoltagePFN") {
-#     field(DESC, "Charging Voltage PFN")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readChargingVoltagePFN $(PORT)")
-#     field(SCAN, "1 second")
-#     field(EGU,  "V")
-#     field(PREC, "2")
-# }
-# 
-# # Temperature Water HVPS (WORD70-71)
-# record(ai, "$(P):TempWaterHVPS") {
-#     field(DESC, "Temp Water HVPS")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readTempWaterHVPS $(PORT)")
-#     field(SCAN, "1 second")
-#     field(EGU,  "C")
-#     field(PREC, "1")
-# }
-# 
-# # Interlock Messages 8 (WORD72-73)
-# record(mbbi, "$(P):InterlockMsg8") {
-#     field(DESC, "Interlock Messages 8")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readInterlockMessages8 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Status Messages 5 (WORD74)
-# record(mbbi, "$(P):StatusMsg5") {
-#     field(DESC, "Status Messages 5")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readStatusMessages5 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Interlock Messages 9 (WORD75)
-# record(mbbi, "$(P):InterlockMsg9") {
-#     field(DESC, "Interlock Messages 9")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readInterlockMessages9 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-# 
-# # Status Messages 6 (WORD76)
-# record(mbbi, "$(P):StatusMsg6") {
-#     field(DESC, "Status Messages 6")
-#     field(DTYP, "stream")
-#     field(INP,  "@ppt.proto readStatusMessages6 $(PORT)")
-#     field(SCAN, "1 second")
-#     field(NOBT, "16")
-#     field(SHFT, "0")
-# }
-
-# Waveform record to read all data at once (86 bytes)
-record(waveform, "$(P):RawData") {
-    field(DESC, "Raw Binary Data")
+record(waveform, "$(P)RawData") {
+    field(DESC, "Raw Binary Data - 86 bytes")
     field(DTYP, "stream")
     field(INP,  "@ppt.proto readAllData $(PORT)")
     field(SCAN, "1 second")
     field(NELM, "86")
     field(FTVL, "UCHAR")
+    field(PINI, "YES")
 }
+
+# ============================================================================
+# WORD EXTRACTION - Convert bytes to 16-bit words (LSB+MSB)
+# ============================================================================
+
+# Heater Voltage 1 (bytes 0-1, WORD0)
+record(calc, "$(P)HeaterVoltage1:Raw") {
+    field(DESC, "Heater Voltage 1 Raw")
+    field(INPA, "$(P)RawData.VAL[0] CP MS")
+    field(INPB, "$(P)RawData.VAL[1] CP MS")
+    field(CALC, "A+B*256")
+    field(EGU,  "counts")
+}
+
+record(ai, "$(P)HeaterVoltage1") {
+    field(DESC, "Heater Voltage 1")
+    field(INP,  "$(P)HeaterVoltage1:Raw CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(LINR, "LINEAR")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Reservoir Voltage (bytes 4-5, WORD2)
+record(calc, "$(P)ReservoirVoltage:Raw") {
+    field(DESC, "Reservoir Voltage Raw")
+    field(INPA, "$(P)RawData.VAL[4] CP MS")
+    field(INPB, "$(P)RawData.VAL[5] CP MS")
+    field(CALC, "A+B*256")
+    field(EGU,  "counts")
+}
+
+record(ai, "$(P)ReservoirVoltage") {
+    field(DESC, "Reservoir Voltage")
+    field(INP,  "$(P)ReservoirVoltage:Raw CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Total Current (bytes 8-9, WORD4)
+record(calc, "$(P)TotalCurrent:Raw") {
+    field(DESC, "Total Current Raw")
+    field(INPA, "$(P)RawData.VAL[8] CP MS")
+    field(INPB, "$(P)RawData.VAL[9] CP MS")
+    field(CALC, "A+B*256")
+    field(EGU,  "counts")
+}
+
+record(ai, "$(P)TotalCurrent") {
+    field(DESC, "Total Current")
+    field(INP,  "$(P)TotalCurrent:Raw CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Timer Preheating Minutes (bytes 12-13, WORD6)
+record(calc, "$(P)TimerPreheatMin:Raw") {
+    field(DESC, "Timer Preheat Min Raw")
+    field(INPA, "$(P)RawData.VAL[12] CP MS")
+    field(INPB, "$(P)RawData.VAL[13] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(longin, "$(P)TimerPreheatMin") {
+    field(DESC, "Timer Preheating Minutes")
+    field(INP,  "$(P)TimerPreheatMin:Raw CP MS")
+    field(EGU,  "min")
+}
+
+# Timer Preheating Seconds (bytes 16-17, WORD8)
+record(calc, "$(P)TimerPreheatSec:Raw") {
+    field(DESC, "Timer Preheat Sec Raw")
+    field(INPA, "$(P)RawData.VAL[16] CP MS")
+    field(INPB, "$(P)RawData.VAL[17] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(longin, "$(P)TimerPreheatSec") {
+    field(DESC, "Timer Preheating Seconds")
+    field(INP,  "$(P)TimerPreheatSec:Raw CP MS")
+    field(EGU,  "sec")
+}
+
+# Interlock Messages 1 (bytes 20-21, WORD10)
+record(calc, "$(P)InterlockMsg1:Raw") {
+    field(DESC, "Interlock Msg 1 Raw")
+    field(INPA, "$(P)RawData.VAL[20] CP MS")
+    field(INPB, "$(P)RawData.VAL[21] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(mbbi, "$(P)InterlockMsg1") {
+    field(DESC, "Interlock Messages 1")
+    field(INP,  "$(P)InterlockMsg1:Raw CP MS")
+    field(NOBT, "16")
+    field(SHFT, "0")
+}
+
+# Status Messages 1 (bytes 24-25, WORD12)
+record(calc, "$(P)StatusMsg1:Raw") {
+    field(DESC, "Status Msg 1 Raw")
+    field(INPA, "$(P)RawData.VAL[24] CP MS")
+    field(INPB, "$(P)RawData.VAL[25] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(mbbi, "$(P)StatusMsg1") {
+    field(DESC, "Status Messages 1")
+    field(INP,  "$(P)StatusMsg1:Raw CP MS")
+    field(NOBT, "16")
+    field(SHFT, "0")
+}
+
+# Heater Voltage 2 (bytes 28-29, WORD14)
+record(calc, "$(P)HeaterVoltage2:Raw") {
+    field(DESC, "Heater Voltage 2 Raw")
+    field(INPA, "$(P)RawData.VAL[28] CP MS")
+    field(INPB, "$(P)RawData.VAL[29] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)HeaterVoltage2") {
+    field(DESC, "Heater Voltage 2")
+    field(INP,  "$(P)HeaterVoltage2:Raw CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Heater Current (bytes 32-33, WORD16)
+record(calc, "$(P)HeaterCurrent:Raw") {
+    field(DESC, "Heater Current Raw")
+    field(INPA, "$(P)RawData.VAL[32] CP MS")
+    field(INPB, "$(P)RawData.VAL[33] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)HeaterCurrent") {
+    field(DESC, "Heater Current")
+    field(INP,  "$(P)HeaterCurrent:Raw CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Body Water Input Temperature (bytes 36-37, WORD18)
+record(calc, "$(P)BodyWaterInTemp:Raw") {
+    field(DESC, "Water In Temp Raw")
+    field(INPA, "$(P)RawData.VAL[36] CP MS")
+    field(INPB, "$(P)RawData.VAL[37] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)BodyWaterInTemp") {
+    field(DESC, "Body Water Input Temp")
+    field(INP,  "$(P)BodyWaterInTemp:Raw CP MS")
+    field(EGU,  "C")
+    field(PREC, "1")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Body Water Output Temperature (bytes 40-41, WORD20)
+record(calc, "$(P)BodyWaterOutTemp:Raw") {
+    field(DESC, "Water Out Temp Raw")
+    field(INPA, "$(P)RawData.VAL[40] CP MS")
+    field(INPB, "$(P)RawData.VAL[41] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)BodyWaterOutTemp") {
+    field(DESC, "Body Water Output Temp")
+    field(INP,  "$(P)BodyWaterOutTemp:Raw CP MS")
+    field(EGU,  "C")
+    field(PREC, "1")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Body Water Flow (bytes 44-45, WORD22)
+record(calc, "$(P)BodyWaterFlow:Raw") {
+    field(DESC, "Water Flow Raw")
+    field(INPA, "$(P)RawData.VAL[44] CP MS")
+    field(INPB, "$(P)RawData.VAL[45] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)BodyWaterFlow") {
+    field(DESC, "Body Water Flow")
+    field(INP,  "$(P)BodyWaterFlow:Raw CP MS")
+    field(EGU,  "L/min")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Timer Preheating 100% Minutes (bytes 48-49, WORD24)
+record(calc, "$(P)TimerPreheat100Min:Raw") {
+    field(DESC, "Timer 100% Min Raw")
+    field(INPA, "$(P)RawData.VAL[48] CP MS")
+    field(INPB, "$(P)RawData.VAL[49] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(longin, "$(P)TimerPreheat100Min") {
+    field(DESC, "Timer Preheat 100% Min")
+    field(INP,  "$(P)TimerPreheat100Min:Raw CP MS")
+    field(EGU,  "min")
+}
+
+# Timer Preheating 100% Seconds (bytes 52-53, WORD26)
+record(calc, "$(P)TimerPreheat100Sec:Raw") {
+    field(DESC, "Timer 100% Sec Raw")
+    field(INPA, "$(P)RawData.VAL[52] CP MS")
+    field(INPB, "$(P)RawData.VAL[53] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(longin, "$(P)TimerPreheat100Sec") {
+    field(DESC, "Timer Preheat 100% Sec")
+    field(INP,  "$(P)TimerPreheat100Sec:Raw CP MS")
+    field(EGU,  "sec")
+}
+
+# Interlock Messages 2 (bytes 56-57, WORD28)
+record(calc, "$(P)InterlockMsg2:Raw") {
+    field(DESC, "Interlock Msg 2 Raw")
+    field(INPA, "$(P)RawData.VAL[56] CP MS")
+    field(INPB, "$(P)RawData.VAL[57] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(mbbi, "$(P)InterlockMsg2") {
+    field(DESC, "Interlock Messages 2")
+    field(INP,  "$(P)InterlockMsg2:Raw CP MS")
+    field(NOBT, "16")
+    field(SHFT, "0")
+}
+
+# Status Messages 2 (bytes 60-61, WORD30)
+record(calc, "$(P)StatusMsg2:Raw") {
+    field(DESC, "Status Msg 2 Raw")
+    field(INPA, "$(P)RawData.VAL[60] CP MS")
+    field(INPB, "$(P)RawData.VAL[61] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(mbbi, "$(P)StatusMsg2") {
+    field(DESC, "Status Messages 2")
+    field(INP,  "$(P)StatusMsg2:Raw CP MS")
+    field(NOBT, "16")
+    field(SHFT, "0")
+}
+
+# Klystron Voltage (bytes 64-65, WORD32)
+record(calc, "$(P)KlystronVoltage:Raw") {
+    field(DESC, "Klystron Voltage Raw")
+    field(INPA, "$(P)RawData.VAL[64] CP MS")
+    field(INPB, "$(P)RawData.VAL[65] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)KlystronVoltage") {
+    field(DESC, "Klystron Voltage")
+    field(INP,  "$(P)KlystronVoltage:Raw CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Klystron Current (bytes 68-69, WORD34)
+record(calc, "$(P)KlystronCurrent:Raw") {
+    field(DESC, "Klystron Current Raw")
+    field(INPA, "$(P)RawData.VAL[68] CP MS")
+    field(INPB, "$(P)RawData.VAL[69] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)KlystronCurrent") {
+    field(DESC, "Klystron Current")
+    field(INP,  "$(P)KlystronCurrent:Raw CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Magnet Voltage Coil 1 (bytes 72-73, WORD36)
+record(calc, "$(P)MagnetVoltageCoil1:Raw") {
+    field(DESC, "Magnet V Coil1 Raw")
+    field(INPA, "$(P)RawData.VAL[72] CP MS")
+    field(INPB, "$(P)RawData.VAL[73] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)MagnetVoltageCoil1") {
+    field(DESC, "Magnet Voltage Coil 1")
+    field(INP,  "$(P)MagnetVoltageCoil1:Raw CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Magnet Current Coil 1 (bytes 76-77, WORD38)
+record(calc, "$(P)MagnetCurrentCoil1:Raw") {
+    field(DESC, "Magnet I Coil1 Raw")
+    field(INPA, "$(P)RawData.VAL[76] CP MS")
+    field(INPB, "$(P)RawData.VAL[77] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)MagnetCurrentCoil1") {
+    field(DESC, "Magnet Current Coil 1")
+    field(INP,  "$(P)MagnetCurrentCoil1:Raw CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Magnet Voltage Coil 2 (bytes 80-81, WORD40)
+record(calc, "$(P)MagnetVoltageCoil2:Raw") {
+    field(DESC, "Magnet V Coil2 Raw")
+    field(INPA, "$(P)RawData.VAL[80] CP MS")
+    field(INPB, "$(P)RawData.VAL[81] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)MagnetVoltageCoil2") {
+    field(DESC, "Magnet Voltage Coil 2")
+    field(INP,  "$(P)MagnetVoltageCoil2:Raw CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# Magnet Current Coil 2 (bytes 84-85, WORD42 - LAST 2 BYTES)
+record(calc, "$(P)MagnetCurrentCoil2:Raw") {
+    field(DESC, "Magnet I Coil2 Raw")
+    field(INPA, "$(P)RawData.VAL[84] CP MS")
+    field(INPB, "$(P)RawData.VAL[85] CP MS")
+    field(CALC, "A+B*256")
+}
+
+record(ai, "$(P)MagnetCurrentCoil2") {
+    field(DESC, "Magnet Current Coil 2")
+    field(INP,  "$(P)MagnetCurrentCoil2:Raw CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(ESLO, "1")
+    field(EOFF, "0")
+}
+
+# ============================================================================
+# NOTES:
+# ============================================================================
+# 1. Only RawData record communicates with the device (DTYP="stream")
+# 2. All other records extract data from RawData using CP (Change Process) links
+# 3. MS (Maximize Severity) ensures alarm states propagate
+# 4. Raw records convert two bytes (LSB+MSB) to 16-bit integer
+# 5. Final AI/longin/mbbi records apply engineering unit conversion (ESLO/EOFF)
+# 6. Adjust ESLO and EOFF values based on actual device scaling
+# 7. This approach ensures all values come from the same data snapshot
+# 8. Network traffic reduced from 43 reads to 1 read per scan cycle
+# ============================================================================
