@@ -1,6 +1,6 @@
 # StreamDevice Protocol File for PPT Modulator Binary TCP Stream
 # Total data size: 43 words (86 bytes)
-# Each word is 2 bytes (LSB + MSB)
+# Each word is 2 bytes (LSB + MSB = little-endian 16-bit unsigned)
 # Device responds on TCP port 2000
 
 # Terminator for binary protocols
@@ -9,23 +9,128 @@ ReplyTimeout = 1000;
 ReadTimeout = 100;
 
 # ============================================================================
-# Read all data as one binary block (86 bytes)
-# This is the ONLY protocol needed - all data extraction happens in EPICS
+# Binary format specifiers used:
+# %<H = little-endian unsigned short (16-bit, 0-65535)
+# Position specifier %(offset) skips to that byte offset
 # ============================================================================
-readAllData {
-    in "%86r";
+
+# Heater Voltage 1 (bytes 0-1, WORD0)
+readHeaterVoltage1 {
+    in "%(0)<H";
+}
+
+# Reservoir Voltage (bytes 4-5, WORD2)
+readReservoirVoltage {
+    in "%(4)<H";
+}
+
+# Total Current (bytes 8-9, WORD4)
+readTotalCurrent {
+    in "%(8)<H";
+}
+
+# Timer Preheating Minutes (bytes 12-13, WORD6)
+readTimerPreheatMin {
+    in "%(12)<H";
+}
+
+# Timer Preheating Seconds (bytes 16-17, WORD8)
+readTimerPreheatSec {
+    in "%(16)<H";
+}
+
+# Interlock Messages 1 (bytes 20-21, WORD10)
+readInterlockMsg1 {
+    in "%(20)<H";
+}
+
+# Status Messages 1 (bytes 24-25, WORD12)
+readStatusMsg1 {
+    in "%(24)<H";
+}
+
+# Heater Voltage 2 (bytes 28-29, WORD14)
+readHeaterVoltage2 {
+    in "%(28)<H";
+}
+
+# Heater Current (bytes 32-33, WORD16)
+readHeaterCurrent {
+    in "%(32)<H";
+}
+
+# Body Water Input Temperature (bytes 36-37, WORD18)
+readBodyWaterInTemp {
+    in "%(36)<H";
+}
+
+# Body Water Output Temperature (bytes 40-41, WORD20)
+readBodyWaterOutTemp {
+    in "%(40)<H";
+}
+
+# Body Water Flow (bytes 44-45, WORD22)
+readBodyWaterFlow {
+    in "%(44)<H";
+}
+
+# Timer Preheating 100% Minutes (bytes 48-49, WORD24)
+readTimerPreheat100Min {
+    in "%(48)<H";
+}
+
+# Timer Preheating 100% Seconds (bytes 52-53, WORD26)
+readTimerPreheat100Sec {
+    in "%(52)<H";
+}
+
+# Interlock Messages 2 (bytes 56-57, WORD28)
+readInterlockMsg2 {
+    in "%(56)<H";
+}
+
+# Status Messages 2 (bytes 60-61, WORD30)
+readStatusMsg2 {
+    in "%(60)<H";
+}
+
+# Klystron Voltage (bytes 64-65, WORD32)
+readKlystronVoltage {
+    in "%(64)<H";
+}
+
+# Klystron Current (bytes 68-69, WORD34)
+readKlystronCurrent {
+    in "%(68)<H";
+}
+
+# Magnet Voltage Coil 1 (bytes 72-73, WORD36)
+readMagnetVoltageCoil1 {
+    in "%(72)<H";
+}
+
+# Magnet Current Coil 1 (bytes 76-77, WORD38)
+readMagnetCurrentCoil1 {
+    in "%(76)<H";
+}
+
+# Magnet Voltage Coil 2 (bytes 80-81, WORD40)
+readMagnetVoltageCoil2 {
+    in "%(80)<H";
+}
+
+# Magnet Current Coil 2 (bytes 84-85, WORD42 - LAST WORD)
+readMagnetCurrentCoil2 {
+    in "%(84)<H";
 }
 
 # ============================================================================
-# OPTIMIZATION NOTES:
+# NOTES:
 # ============================================================================
-# Previous version had 43 separate protocol definitions, one for each word.
-# This meant 43 separate TCP reads per scan cycle.
-# 
-# New approach:
-# - Single TCP read gets all 86 bytes
-# - EPICS calc records extract individual 16-bit words
-# - Data consistency: all values from same snapshot
-# - Network efficiency: 1 read instead of 43 reads
-# - Reduced latency and device load
+# - Each protocol reads the full 86-byte message but extracts one 16-bit word
+# - %(offset)<H seeks to byte position and reads little-endian unsigned short
+# - StreamDevice caches the last read, so multiple extractions are efficient
+# - All values come from the same device response (atomic snapshot)
+# - No need for calc records or byte manipulation in database
+# - Values are automatically converted to EPICS native format
 # ============================================================================
