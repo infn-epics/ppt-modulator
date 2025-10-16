@@ -18,10 +18,8 @@ drvAsynIPPortConfigure("PPT1", "192.168.197.111:2000", 0, 0, 0)
 epicsEnvSet("STREAM_PROTOCOL_PATH","../../db")
 
 ## Load record instances (using corrected aSub approach per documentation)
-dbLoadRecords("../../db/ppt_corrected.template", "P=PPT:MOD1:, PORT=PPT1")
+dbLoadRecords("../../db/ppt.template", "P=PPT,R=MOD1, PORT=PPT1")
 
-## Load individual bit decoding records for status/interlock words
-dbLoadRecords("../../db/ppt_bits.template", "P=PPT:MOD1:")
 
 # cd "${TOP}/iocBoot/${IOC}"
 iocInit
