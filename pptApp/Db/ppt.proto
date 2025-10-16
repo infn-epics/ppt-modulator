@@ -18,6 +18,39 @@ readAllData {
 }
 
 # ============================================================================
+# Write ON/OFF Command Word (bytes 0-1)
+# ============================================================================
+# Bit mapping (LSB first, little-endian 16-bit word):
+# Bit 0:  ON: Heater Thyratron
+# Bit 1:  ON: Heater Klystron 80% (Start of Timer 80%)
+# Bit 2:  ON: Heater Klystron 100% (Start of Timer 100%)
+# Bit 3:  ON: Focus power supply
+# Bit 4:  ON: Premagnetisation power supply
+# Bit 5:  ON: HVPS
+# Bit 6:  ON: Charge PFN
+# Bit 7:  ON: Reset
+# Bit 8:  OFF: Heater Thyratron
+# Bit 9:  OFF: Heater Klystron 80%
+# Bit 10: OFF: Heater Klystron 100%
+# Bit 11: OFF: Focus power supply
+# Bit 12: OFF: Premagnetisation power supply
+# Bit 13: OFF: HVPS
+# Bit 14: OFF: Charge PFN
+# Bit 15: OFF: Reset
+writeOnOffCmd {
+    out "%<w";           # write 16-bit little-endian word
+}
+
+# ============================================================================
+# Write HVPS Charging Voltage Setpoint (bytes 2-3)
+# ============================================================================
+# Value range: 0..500 (representing 0..50.0kV)
+# Example: 45.12kV => value = 451
+writeHVPSVoltage {
+    out "%<w";           # write 16-bit little-endian word
+}
+
+# ============================================================================
 # NOTES:
 # ============================================================================
 # - Protocol reads all available bytes with %c into a UCHAR waveform

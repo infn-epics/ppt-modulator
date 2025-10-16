@@ -6,7 +6,7 @@
     <R>MOD1</R>
   </macros>
   <width>1200</width>
-  <height>1400</height>
+  <height>1750</height>
   <background_color>
     <color red="240" green="240" blue="240">
     </color>
@@ -590,9 +590,1017 @@
     </widget>
   </widget>
   <widget type="group" version="3.0.0">
-    <name>Timers Group</name>
+    <name>Control Interface</name>
     <x>10</x>
     <y>480</y>
+    <width>1180</width>
+    <height>280</height>
+    <style>3</style>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </line_color>
+    <widget type="label" version="2.0.0">
+      <name>ControlTitle</name>
+      <text>Control Interface</text>
+      <width>1160</width>
+      <height>30</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="16.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    
+    <!-- Thyratron Heater Control -->
+    <widget type="label" version="2.0.0">
+      <name>ThyLabel</name>
+      <text>Heater Thyratron</text>
+      <x>15</x>
+      <y>40</y>
+      <width>140</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>ThyOnBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Thy:OnCmd</pv_name>
+          <value>1</value>
+          <description>Turn ON</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(R):Thy:HeaterOn</pv_name>
+      <text>ON</text>
+      <x>20</x>
+      <y>70</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="128" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>ThyOffBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Thy:OffCmd</pv_name>
+          <value>1</value>
+          <description>Turn OFF</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(R):Thy:HeaterOff</pv_name>
+      <text>OFF</text>
+      <x>90</x>
+      <y>70</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ThyStatusLED</name>
+      <pv_name>$(P):$(R):Thy:HeaterOn</pv_name>
+      <x>20</x>
+      <y>115</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ThyStatusOffLED</name>
+      <pv_name>$(P):$(R):Thy:HeaterOff</pv_name>
+      <x>90</x>
+      <y>115</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+
+    <!-- Klystron 80% Control -->
+    <widget type="label" version="2.0.0">
+      <name>Klys80Label</name>
+      <text>Heater Klystron 80%</text>
+      <x>175</x>
+      <y>40</y>
+      <width>160</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Klys80OnBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Klys:On80Cmd</pv_name>
+          <value>1</value>
+          <description>Turn ON</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(R):Klys:Heater80On</pv_name>
+      <text>ON</text>
+      <x>195</x>
+      <y>70</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="128" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Klys80OffBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Klys:Off80Cmd</pv_name>
+          <value>1</value>
+          <description>Turn OFF</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(R):Klys:Heater80Off</pv_name>
+      <text>OFF</text>
+      <x>265</x>
+      <y>70</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>Klys80StatusLED</name>
+      <pv_name>$(P):$(R):Klys:Heater80On</pv_name>
+      <x>195</x>
+      <y>115</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>Klys80StatusOffLED</name>
+      <pv_name>$(P):$(R):Klys:Heater80Off</pv_name>
+      <x>265</x>
+      <y>115</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+
+    <!-- Klystron 100% Control -->
+    <widget type="label" version="2.0.0">
+      <name>Klys100Label</name>
+      <text>Heater Klystron 100%</text>
+      <x>360</x>
+      <y>40</y>
+      <width>165</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Klys100OnBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Klys:On100Cmd</pv_name>
+          <value>1</value>
+          <description>Turn ON</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(R):Klys:Heater100On</pv_name>
+      <text>ON</text>
+      <x>385</x>
+      <y>70</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="128" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Klys100OffBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Klys:Off100Cmd</pv_name>
+          <value>1</value>
+          <description>Turn OFF</description>
+        </action>
+      </actions>
+      <pv_name>$(P):$(R):Klys:Heater100Off</pv_name>
+      <text>OFF</text>
+      <x>455</x>
+      <y>70</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>Klys100StatusLED</name>
+      <pv_name>$(P):$(R):Klys:Heater100On</pv_name>
+      <x>385</x>
+      <y>115</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>Klys100StatusOffLED</name>
+      <pv_name>$(P):$(R):Klys:Heater100Off</pv_name>
+      <x>455</x>
+      <y>115</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+
+    <!-- Focus Power Supply Control -->
+    <widget type="label" version="2.0.0">
+      <name>FocusLabel</name>
+      <text>Focus power supply</text>
+      <x>15</x>
+      <y>155</y>
+      <width>140</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>FocusOnBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Focus:OnCmd</pv_name>
+          <value>1</value>
+          <description>Turn ON</description>
+        </action>
+      </actions>
+      <text>ON</text>
+      <x>20</x>
+      <y>185</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="128" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>FocusOffBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Focus:OffCmd</pv_name>
+          <value>1</value>
+          <description>Turn OFF</description>
+        </action>
+      </actions>
+      <text>OFF</text>
+      <x>90</x>
+      <y>185</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusStatusLED</name>
+      <pv_name>$(P):$(R):Focus:PowerOn</pv_name>
+      <x>20</x>
+      <y>230</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusStatusOffLED</name>
+      <pv_name>$(P):$(R):Focus:PowerOff</pv_name>
+      <x>90</x>
+      <y>230</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+
+    <!-- Premagnetisation Control -->
+    <widget type="label" version="2.0.0">
+      <name>PremagLabel</name>
+      <text>Premagnetisation power</text>
+      <x>175</x>
+      <y>155</y>
+      <width>180</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>PremagOnBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Premag:OnCmd</pv_name>
+          <value>1</value>
+          <description>Turn ON</description>
+        </action>
+      </actions>
+      <text>ON</text>
+      <x>195</x>
+      <y>185</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="128" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>PremagOffBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Premag:OffCmd</pv_name>
+          <value>1</value>
+          <description>Turn OFF</description>
+        </action>
+      </actions>
+      <text>OFF</text>
+      <x>265</x>
+      <y>185</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>PremagStatusLED</name>
+      <pv_name>$(P):$(R):Premag:PowerOn</pv_name>
+      <x>195</x>
+      <y>230</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>PremagStatusOffLED</name>
+      <pv_name>$(P):$(R):Premag:PowerOff</pv_name>
+      <x>265</x>
+      <y>230</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+
+    <!-- HVPS Control -->
+    <widget type="label" version="2.0.0">
+      <name>HVPSLabel</name>
+      <text>HVPS</text>
+      <x>385</x>
+      <y>155</y>
+      <width>100</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>HVPSOnBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):HVPS:OnCmd</pv_name>
+          <value>1</value>
+          <description>Turn ON</description>
+        </action>
+      </actions>
+      <text>ON</text>
+      <x>385</x>
+      <y>185</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="128" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>HVPSOffBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):HVPS:OffCmd</pv_name>
+          <value>1</value>
+          <description>Turn OFF</description>
+        </action>
+      </actions>
+      <text>OFF</text>
+      <x>455</x>
+      <y>185</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSStatusLED</name>
+      <pv_name>$(P):$(R):HVPS:PowerOn</pv_name>
+      <x>385</x>
+      <y>230</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSStatusOffLED</name>
+      <pv_name>$(P):$(R):HVPS:PowerOff</pv_name>
+      <x>455</x>
+      <y>230</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+
+    <!-- Charge PFN Control -->
+    <widget type="label" version="2.0.0">
+      <name>ChargePFNLabel</name>
+      <text>Charge PFN</text>
+      <x>550</x>
+      <y>40</y>
+      <width>100</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>ChargePFNOnBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):ChargePFN:OnCmd</pv_name>
+          <value>1</value>
+          <description>Turn ON</description>
+        </action>
+      </actions>
+      <text>ON</text>
+      <x>550</x>
+      <y>70</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="128" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>ChargePFNOffBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):ChargePFN:OffCmd</pv_name>
+          <value>1</value>
+          <description>Turn OFF</description>
+        </action>
+      </actions>
+      <text>OFF</text>
+      <x>620</x>
+      <y>70</y>
+      <width>60</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ChargePFNStatusLED</name>
+      <pv_name>$(P):$(R):ChargePFN:On</pv_name>
+      <x>550</x>
+      <y>115</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ChargePFNStatusOffLED</name>
+      <pv_name>$(P):$(R):ChargePFN:Off</pv_name>
+      <x>620</x>
+      <y>115</y>
+      <width>60</width>
+      <height>30</height>
+      <off_label>ON</off_label>
+      <on_label>OFF</on_label>
+      <off_color>
+        <color red="60" green="100" blue="60">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+
+    <!-- RESET Button -->
+    <widget type="label" version="2.0.0">
+      <name>ResetLabel</name>
+      <text>RESET</text>
+      <x>720</x>
+      <y>155</y>
+      <width>100</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>ResetBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):Reset:Cmd</pv_name>
+          <value>1</value>
+          <description>Reset</description>
+        </action>
+      </actions>
+      <text>RESET</text>
+      <x>720</x>
+      <y>190</y>
+      <width>80</width>
+      <height>40</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="180" green="0" blue="0">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+
+    <!-- HVPS Voltage Control Section -->
+    <widget type="rectangle" version="2.0.0">
+      <name>HVPSBoxSeparator</name>
+      <x>840</x>
+      <y>40</y>
+      <width>2</width>
+      <height>220</height>
+      <line_width>2</line_width>
+      <line_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </line_color>
+      <background_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </background_color>
+    </widget>
+    
+    <widget type="label" version="2.0.0">
+      <name>HVPSRawLabel</name>
+      <text>HVPS raw</text>
+      <x>860</x>
+      <y>45</y>
+      <width>120</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>HVPSRawEntry</name>
+      <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>
+      <x>860</x>
+      <y>75</y>
+      <width>120</width>
+      <height>30</height>
+      <font>
+        <font family="Liberation Sans" style="REGULAR" size="14.0">
+        </font>
+      </font>
+      <background_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <format>1</format>
+      <precision>1</precision>
+      <show_units>true</show_units>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>HVPSRawReadback</name>
+      <pv_name>$(P):$(R):HVPS:VoltageSet:RBV</pv_name>
+      <x>860</x>
+      <y>115</y>
+      <width>120</width>
+      <height>30</height>
+      <font>
+        <font family="Liberation Sans" style="REGULAR" size="14.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+      <format>1</format>
+      <precision>1</precision>
+      <show_units>true</show_units>
+    </widget>
+
+    <widget type="label" version="2.0.0">
+      <name>HVPSDisplayLabel</name>
+      <text>HVPS</text>
+      <x>1000</x>
+      <y>45</y>
+      <width>120</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>HVPSActualVoltage</name>
+      <pv_name>$(P):$(R):HVPS:Voltage</pv_name>
+      <x>1000</x>
+      <y>75</y>
+      <width>120</width>
+      <height>30</height>
+      <font>
+        <font family="Liberation Sans" style="REGULAR" size="14.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+      <format>1</format>
+      <precision>1</precision>
+      <show_units>false</show_units>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>HVPSActualReadback</name>
+      <pv_name>$(P):$(R):HVPS:Voltage</pv_name>
+      <x>1000</x>
+      <y>115</y>
+      <width>120</width>
+      <height>30</height>
+      <font>
+        <font family="Liberation Sans" style="REGULAR" size="14.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="0" green="0" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+      <format>1</format>
+      <precision>1</precision>
+      <show_units>false</show_units>
+    </widget>
+
+    <widget type="action_button" version="3.0.0">
+      <name>ApplyBtn</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>
+          <value>$(P):$(R):HVPS:VoltageSet</value>
+          <description>Apply Voltage</description>
+        </action>
+      </actions>
+      <text>APPLY</text>
+      <x>920</x>
+      <y>200</y>
+      <width>100</width>
+      <height>35</height>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="100" blue="180">
+        </color>
+      </background_color>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+
+    <!-- Ready Indicator -->
+    <widget type="label" version="2.0.0">
+      <name>ReadyLabel</name>
+      <text>Ready</text>
+      <x>1070</x>
+      <y>185</y>
+      <width>80</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ReadyLED</name>
+      <pv_name>$(P):$(R):Ready</pv_name>
+      <x>1080</x>
+      <y>215</y>
+      <width>60</width>
+      <height>35</height>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+
+  </widget>
+  <widget type="group" version="3.0.0">
+    <name>Timers Group</name>
+    <x>10</x>
+    <y>770</y>
     <width>580</width>
     <height>180</height>
     <style>3</style>
@@ -739,7 +1747,7 @@
   <widget type="group" version="3.0.0">
     <name>ThyratronSection</name>
     <x>10</x>
-    <y>500</y>
+    <y>960</y>
     <width>680</width>
     <height>270</height>
     <style>3</style>
@@ -1007,7 +2015,7 @@
   <widget type="group" version="3.0.0">
     <name>KlystronSection</name>
     <x>700</x>
-    <y>500</y>
+    <y>960</y>
     <width>680</width>
     <height>480</height>
     <style>3</style>
@@ -1517,7 +2525,7 @@
   <widget type="group" version="3.0.0">
     <name>FocusSection</name>
     <x>10</x>
-    <y>780</y>
+    <y>1240</y>
     <width>680</width>
     <height>480</height>
     <style>3</style>
@@ -1955,7 +2963,7 @@
   <widget type="group" version="3.0.0">
     <name>PremagSection</name>
     <x>700</x>
-    <y>990</y>
+    <y>1450</y>
     <width>680</width>
     <height>270</height>
     <style>3</style>
@@ -2168,7 +3176,7 @@
     <name>Footer</name>
     <text>PPT Modulator Monitor - TCP Port 2000 - 86 bytes binary data</text>
     <x>10</x>
-    <y>1370</y>
+    <y>1720</y>
     <width>1180</width>
     <font>
       <font family="Liberation Sans" style="ITALIC" size="11.0">
