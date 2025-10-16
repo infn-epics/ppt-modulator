@@ -197,7 +197,6 @@ long pptDecodeMagnetsTimersStatus(aSubRecord *prec) {
     double *outM = (double *)prec->valm;  /* Focus Magnet Status Raw */
     double *outN = (double *)prec->valn;  /* Premagnetisation Interlock Raw */
     double *outO = (double *)prec->valo;  /* Premagnetisation Status Raw */
-    double *outK = (double *)prec->valk;  /* Klystron Timer Preheat100 Min */
     
     unsigned short rawVal;
     
