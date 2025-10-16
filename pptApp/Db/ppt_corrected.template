@@ -359,10 +359,11 @@ record(longin, "$(P)Premag:StatusRaw") {
 # DEBUG - Show connection status via first value
 # ==========================================================================
 
-record(calc, "$(P)Connected") {
+record(bi, "$(P)Connected") {
     field(DESC, "Device Connection Status")
-    field(INPA, "$(P)Thy:HeaterVoltage CP MS")
-    field(CALC, "A>=0?1:0")
+    field(INP,  "$(P)Thy:HeaterVoltage CP MS")
     field(ZNAM, "Disconnected")
     field(ONAM, "Connected")
+    field(ZSV,  "MAJOR")
+    field(OSV,  "NO_ALARM")
 }
