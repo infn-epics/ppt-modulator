@@ -1,1116 +1,468 @@
-# ============================================================================# ============================================================================
+# ============================================================================
+# PPT Modulator Bit Decoding Template
+# ============================================================================
+# Decodes individual bits from status/interlock words using calc records
+# Based on: tcpip-interface-description_IF-MOD2128C_Rev2-1
+#
+# Load AFTER ppt_corrected.template:
+#   dbLoadRecords("../../db/ppt_corrected.template", "P=PPT:MOD1:, PORT=PPT1")
+#   dbLoadRecords("../../db/ppt_bits.template", "P=PPT:MOD1:")
+#
+# All calc records use bitwise shift operations (A>>N)&1 to extract individual bits
+# Interlock bits use HIHI/HHSV for alarms (bit=1 triggers alarm)
+# Status bits return 0 or 1 without alarms
+# ============================================================================
 
-# PPT Modulator Bit Decoding Template# PPT Modulator Bit Decoding Template
-
-# ============================================================================# ============================================================================
-
-# Decodes individual bits from status/interlock words using calc records# Decodes individual bits from status/interlock words
-
-# Based on: tcpip-interface-description_IF-MOD2128C_Rev2-1# Based on: tcpip-interface-description_IF-MOD2128C_Rev2-1
-
-##
-
-# Load AFTER ppt_corrected.template:# Load AFTER ppt_corrected.template:
-
-#   dbLoadRecords("../../db/ppt_corrected.template", "P=PPT:MOD1:, PORT=PPT1")#   dbLoadRecords("../../db/ppt_corrected.template", "P=PPT:MOD1:, PORT=PPT1")
-
-#   dbLoadRecords("../../db/ppt_bits.template", "P=PPT:MOD1:")#   dbLoadRecords("../../db/ppt_bits.template", "P=PPT:MOD1:")
-
-##
-
-# All calc records use bitwise operations to extract individual bits# All bi records use SHFT (bit position) and MASK (1) to extract individual bits
-
-# HIHI/HHSV for alarm bits (bit=1 means alarm)# OSV = MAJOR means the bit set (1) indicates an alarm condition
-
-# ============================================================================# ============================================================================
-
-
-
-# ==========================================================================# ==========================================================================
-
-# THYRATRON INTERLOCK BITS (WORD5, bytes 10-11)# THYRATRON INTERLOCK BITS (WORD5, bytes 10-11)
-
-# ==========================================================================# ==========================================================================
-
-# 0 = OK, 1 = ALARM# 0 = OK, 1 = ALARM
-
+# ==========================================================================
+# THYRATRON INTERLOCK BITS (WORD5, bytes 10-11)
+# ==========================================================================
+# 0 = OK, 1 = ALARM
 # Using calc records to extract individual bits from raw interlock words
 
 record(calc, "$(P)Thy:Interlock:HeaterVoltageHigh") {
-
-    field(DESC, "Thy Heater V Too High")record(calc, "$(P)Thy:Interlock:HeaterVoltageHigh") {
-
-    field(INPA, "$(P)Thy:InterlockRaw CP MS")    field(DESC, "Thy Heater V Too High")
-
-    field(CALC, "(A>>0)&1")    field(INPA, "$(P)Thy:InterlockRaw CP MS")
-
-    field(HIHI, "0.5")    field(CALC, "(A>>0)&1")
-
-    field(HHSV, "MAJOR")    field(EGU,  "")
-
-}    field(HOPR, "1")
-
+    field(DESC, "Thy Heater V Too High")
+    field(INPA, "$(P)Thy:InterlockRaw CP MS")
+    field(CALC, "(A>>0)&1")
+    field(EGU,  "")
+    field(HOPR, "1")
     field(LOPR, "0")
-
-record(calc, "$(P)Thy:Interlock:HeaterVoltageLow") {    field(HIHI, "0.5")
-
-    field(DESC, "Thy Heater V Too Low")    field(HHSV, "MAJOR")
-
-    field(INPA, "$(P)Thy:InterlockRaw CP MS")}
-
-    field(CALC, "(A>>1)&1")
-
-    field(HIHI, "0.5")record(bi, "$(P)Thy:Interlock:HeaterVoltageLow") {
-
-    field(HHSV, "MAJOR")    field(DESC, "Thy Heater V Too Low")
-
-}    field(INP,  "$(P)Thy:InterlockRaw CP MS")
-
-    field(SHFT, "1")
-
-record(calc, "$(P)Thy:Interlock:ReservoirVoltageHigh") {    field(MASK, "1")
-
-    field(DESC, "Thy Reservoir V Too High")    field(ZNAM, "OK")
-
-    field(INPA, "$(P)Thy:InterlockRaw CP MS")    field(ONAM, "ALARM")
-
-    field(CALC, "(A>>2)&1")    field(ZSV,  "NO_ALARM")
-
-    field(HIHI, "0.5")    field(OSV,  "MAJOR")
-
-    field(HHSV, "MAJOR")}
-
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Thy:Interlock:ReservoirVoltageHigh") {
-
-record(calc, "$(P)Thy:Interlock:ReservoirVoltageLow") {    field(DESC, "Thy Reservoir V Too High")
-
-    field(DESC, "Thy Reservoir V Too Low")    field(INP,  "$(P)Thy:InterlockRaw CP MS")
-
-    field(INPA, "$(P)Thy:InterlockRaw CP MS")    field(SHFT, "2")
-
-    field(CALC, "(A>>3)&1")    field(MASK, "1")
-
-    field(HIHI, "0.5")    field(ZNAM, "OK")
-
-    field(HHSV, "MAJOR")    field(ONAM, "ALARM")
-
-}    field(ZSV,  "NO_ALARM")
-
-    field(OSV,  "MAJOR")
-
-record(calc, "$(P)Thy:Interlock:TotalCurrentHigh") {}
-
-    field(DESC, "Thy Total I Too High")
-
-    field(INPA, "$(P)Thy:InterlockRaw CP MS")record(bi, "$(P)Thy:Interlock:ReservoirVoltageLow") {
-
-    field(CALC, "(A>>4)&1")    field(DESC, "Thy Reservoir V Too Low")
-
-    field(HIHI, "0.5")    field(INP,  "$(P)Thy:InterlockRaw CP MS")
-
-    field(HHSV, "MAJOR")    field(SHFT, "3")
-
-}    field(MASK, "1")
-
-    field(ZNAM, "OK")
-
-record(calc, "$(P)Thy:Interlock:TotalCurrentLow") {    field(ONAM, "ALARM")
-
-    field(DESC, "Thy Total I Too Low")    field(ZSV,  "NO_ALARM")
-
-    field(INPA, "$(P)Thy:InterlockRaw CP MS")    field(OSV,  "MAJOR")
-
-    field(CALC, "(A>>5)&1")}
-
+record(calc, "$(P)Thy:Interlock:HeaterVoltageLow") {
+    field(DESC, "Thy Heater V Too Low")
+    field(INPA, "$(P)Thy:InterlockRaw CP MS")
+    field(CALC, "(A>>1)&1")
     field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(HHSV, "MAJOR")record(bi, "$(P)Thy:Interlock:TotalCurrentHigh") {
+record(calc, "$(P)Thy:Interlock:ReservoirVoltageHigh") {
+    field(DESC, "Thy Reservoir V Too High")
+    field(INPA, "$(P)Thy:InterlockRaw CP MS")
+    field(CALC, "(A>>2)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-}    field(DESC, "Thy Total I Too High")
+record(calc, "$(P)Thy:Interlock:ReservoirVoltageLow") {
+    field(DESC, "Thy Reservoir V Too Low")
+    field(INPA, "$(P)Thy:InterlockRaw CP MS")
+    field(CALC, "(A>>3)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(INP,  "$(P)Thy:InterlockRaw CP MS")
+record(calc, "$(P)Thy:Interlock:TotalCurrentHigh") {
+    field(DESC, "Thy Total I Too High")
+    field(INPA, "$(P)Thy:InterlockRaw CP MS")
+    field(CALC, "(A>>4)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-record(calc, "$(P)Thy:Interlock:TempSwitch") {    field(SHFT, "4")
+record(calc, "$(P)Thy:Interlock:TotalCurrentLow") {
+    field(DESC, "Thy Total I Too Low")
+    field(INPA, "$(P)Thy:InterlockRaw CP MS")
+    field(CALC, "(A>>5)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(DESC, "Thy Temperature Switch")    field(MASK, "1")
-
-    field(INPA, "$(P)Thy:InterlockRaw CP MS")    field(ZNAM, "OK")
-
-    field(CALC, "(A>>6)&1")    field(ONAM, "ALARM")
-
-    field(HIHI, "0.5")    field(ZSV,  "NO_ALARM")
-
-    field(HHSV, "MAJOR")    field(OSV,  "MAJOR")
-
-}}
-
-
-
-# ==========================================================================record(bi, "$(P)Thy:Interlock:TotalCurrentLow") {
-
-# THYRATRON STATUS BITS (WORD6, bytes 12-13)    field(DESC, "Thy Total I Too Low")
-
-# ==========================================================================    field(INP,  "$(P)Thy:InterlockRaw CP MS")
-
-# 0 = OFF/Not Ready, 1 = ON/Ready (normal operation bits)    field(SHFT, "5")
-
-    field(MASK, "1")
-
-record(calc, "$(P)Thy:Status:Ready") {    field(ZNAM, "OK")
-
-    field(DESC, "Thyratron Ready")    field(ONAM, "ALARM")
-
-    field(INPA, "$(P)Thy:StatusRaw CP MS")    field(ZSV,  "NO_ALARM")
-
-    field(CALC, "(A>>0)&1")    field(OSV,  "MAJOR")
-
-}}
-
-
-
-record(calc, "$(P)Thy:Status:ContactsOn") {record(bi, "$(P)Thy:Interlock:TempSwitch") {
-
-    field(DESC, "Thyratron Contacts On")    field(DESC, "Thy Temperature Switch")
-
-    field(INPA, "$(P)Thy:StatusRaw CP MS")    field(INP,  "$(P)Thy:InterlockRaw CP MS")
-
-    field(CALC, "(A>>1)&1")    field(SHFT, "6")
-
-}    field(MASK, "1")
-
-    field(ZNAM, "OK")
-
-record(calc, "$(P)Thy:Status:PreheatingRunning") {    field(ONAM, "ALARM")
-
-    field(DESC, "Thyratron Preheating")    field(ZSV,  "NO_ALARM")
-
-    field(INPA, "$(P)Thy:StatusRaw CP MS")    field(OSV,  "MAJOR")
-
-    field(CALC, "(A>>2)&1")}
-
+record(calc, "$(P)Thy:Interlock:TempSwitch") {
+    field(DESC, "Thy Temperature Switch")
+    field(INPA, "$(P)Thy:InterlockRaw CP MS")
+    field(CALC, "(A>>6)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
 # ==========================================================================
+# THYRATRON STATUS BITS (WORD6, bytes 12-13)
+# ==========================================================================
+# 0 = OFF/Not Ready, 1 = ON/Ready (normal operation bits)
 
-# ==========================================================================# THYRATRON STATUS BITS (WORD6, bytes 12-13)
+record(calc, "$(P)Thy:Status:Ready") {
+    field(DESC, "Thyratron Ready")
+    field(INPA, "$(P)Thy:StatusRaw CP MS")
+    field(CALC, "(A>>0)&1")
+}
 
-# KLYSTRON INTERLOCK BITS (WORD16, bytes 32-33)# ==========================================================================
+record(calc, "$(P)Thy:Status:ContactsOn") {
+    field(DESC, "Thyratron Contacts On")
+    field(INPA, "$(P)Thy:StatusRaw CP MS")
+    field(CALC, "(A>>1)&1")
+}
 
-# ==========================================================================# 0 = OFF/Not Ready, 1 = ON/Ready (normal operation bits)
-
-
-
-record(calc, "$(P)Klys:Interlock:HeaterVoltageHigh") {record(bi, "$(P)Thy:Status:Ready") {
-
-    field(DESC, "Klys Heater V Too High")    field(DESC, "Thyratron Ready")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(INP,  "$(P)Thy:StatusRaw CP MS")
-
-    field(CALC, "(A>>0)&1")    field(SHFT, "0")
-
-    field(HIHI, "0.5")    field(MASK, "1")
-
-    field(HHSV, "MAJOR")    field(ZNAM, "Not Ready")
-
-}    field(ONAM, "Ready")
-
-    field(ZSV,  "MINOR")
-
-record(calc, "$(P)Klys:Interlock:HeaterVoltageLow") {    field(OSV,  "NO_ALARM")
-
-    field(DESC, "Klys Heater V Too Low")}
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")
-
-    field(CALC, "(A>>1)&1")record(bi, "$(P)Thy:Status:ContactsOn") {
-
-    field(HIHI, "0.5")    field(DESC, "Thyratron Contacts On")
-
-    field(HHSV, "MAJOR")    field(INP,  "$(P)Thy:StatusRaw CP MS")
-
-}    field(SHFT, "1")
-
-    field(MASK, "1")
-
-record(calc, "$(P)Klys:Interlock:HeaterCurrentHigh") {    field(ZNAM, "OFF")
-
-    field(DESC, "Klys Heater I Too High")    field(ONAM, "ON")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(ZSV,  "NO_ALARM")
-
-    field(CALC, "(A>>2)&1")    field(OSV,  "NO_ALARM")
-
-    field(HIHI, "0.5")}
-
-    field(HHSV, "MAJOR")
-
-}record(bi, "$(P)Thy:Status:PreheatingRunning") {
-
+record(calc, "$(P)Thy:Status:PreheatingRunning") {
     field(DESC, "Thyratron Preheating")
+    field(INPA, "$(P)Thy:StatusRaw CP MS")
+    field(CALC, "(A>>2)&1")
+}
 
-record(calc, "$(P)Klys:Interlock:HeaterCurrentLow") {    field(INP,  "$(P)Thy:StatusRaw CP MS")
+# ==========================================================================
+# KLYSTRON INTERLOCK BITS (WORD16, bytes 32-33)
+# ==========================================================================
 
-    field(DESC, "Klys Heater I Too Low")    field(SHFT, "2")
+record(calc, "$(P)Klys:Interlock:HeaterVoltageHigh") {
+    field(DESC, "Klys Heater V Too High")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>0)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(MASK, "1")
+record(calc, "$(P)Klys:Interlock:HeaterVoltageLow") {
+    field(DESC, "Klys Heater V Too Low")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>1)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(CALC, "(A>>3)&1")    field(ZNAM, "Idle")
+record(calc, "$(P)Klys:Interlock:HeaterCurrentHigh") {
+    field(DESC, "Klys Heater I Too High")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>2)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(HIHI, "0.5")    field(ONAM, "Running")
-
-    field(HHSV, "MAJOR")    field(ZSV,  "NO_ALARM")
-
-}    field(OSV,  "NO_ALARM")
-
+record(calc, "$(P)Klys:Interlock:HeaterCurrentLow") {
+    field(DESC, "Klys Heater I Too Low")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>3)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P)Klys:Interlock:PreheatingError") {
-
-    field(DESC, "Klys Preheating Error")# ==========================================================================
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")# KLYSTRON INTERLOCK BITS (WORD16, bytes 32-33)
-
-    field(CALC, "(A>>4)&1")# ==========================================================================
-
-    field(HIHI, "0.5")
-
-    field(HHSV, "MAJOR")record(bi, "$(P)Klys:Interlock:HeaterVoltageHigh") {
-
-}    field(DESC, "Klys Heater V Too High")
-
-    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-record(calc, "$(P)Klys:Interlock:VacuumWarning") {    field(SHFT, "0")
-
-    field(DESC, "Klys Vacuum Warning")    field(MASK, "1")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(ZNAM, "OK")
-
-    field(CALC, "(A>>5)&1")    field(ONAM, "ALARM")
-
-    field(HIHI, "0.5")    field(ZSV,  "NO_ALARM")
-
-    field(HHSV, "MINOR")    field(OSV,  "MAJOR")
-
-}}
-
-
-
-record(calc, "$(P)Klys:Interlock:TankOilLevel") {record(bi, "$(P)Klys:Interlock:HeaterVoltageLow") {
-
-    field(DESC, "Klys Tank Oil Level")    field(DESC, "Klys Heater V Too Low")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(CALC, "(A>>6)&1")    field(SHFT, "1")
-
-    field(HIHI, "0.5")    field(MASK, "1")
-
-    field(HHSV, "MAJOR")    field(ZNAM, "OK")
-
-}    field(ONAM, "ALARM")
-
-    field(ZSV,  "NO_ALARM")
-
-record(calc, "$(P)Klys:Interlock:DissipatedPowerError") {    field(OSV,  "MAJOR")
-
-    field(DESC, "Klys Dissipated Power Err")}
-
+    field(DESC, "Klys Preheating Error")
     field(INPA, "$(P)Klys:InterlockRaw CP MS")
-
-    field(CALC, "(A>>7)&1")record(bi, "$(P)Klys:Interlock:HeaterCurrentHigh") {
-
-    field(HIHI, "0.5")    field(DESC, "Klys Heater I Too High")
-
-    field(HHSV, "MAJOR")    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-}    field(SHFT, "2")
-
-    field(MASK, "1")
-
-record(calc, "$(P)Klys:Interlock:TankTemperature") {    field(ZNAM, "OK")
-
-    field(DESC, "Klys Tank Temperature")    field(ONAM, "ALARM")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(ZSV,  "NO_ALARM")
-
-    field(CALC, "(A>>8)&1")    field(OSV,  "MAJOR")
-
-    field(HIHI, "0.5")}
-
+    field(CALC, "(A>>4)&1")
+    field(HIHI, "0.5")
     field(HHSV, "MAJOR")
+}
 
-}record(bi, "$(P)Klys:Interlock:HeaterCurrentLow") {
+record(calc, "$(P)Klys:Interlock:VacuumWarning") {
+    field(DESC, "Klys Vacuum Warning")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>5)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MINOR")
+}
 
-    field(DESC, "Klys Heater I Too Low")
+record(calc, "$(P)Klys:Interlock:TankOilLevel") {
+    field(DESC, "Klys Tank Oil Level")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>6)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-record(calc, "$(P)Klys:Interlock:BodyWaterFlow") {    field(INP,  "$(P)Klys:InterlockRaw CP MS")
+record(calc, "$(P)Klys:Interlock:DissipatedPowerError") {
+    field(DESC, "Klys Dissipated Power Err")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>7)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(DESC, "Klys Body Water Flow")    field(SHFT, "3")
+record(calc, "$(P)Klys:Interlock:TankTemperature") {
+    field(DESC, "Klys Tank Temperature")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>8)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(MASK, "1")
-
-    field(CALC, "(A>>9)&1")    field(ZNAM, "OK")
-
-    field(HIHI, "0.5")    field(ONAM, "ALARM")
-
-    field(HHSV, "MAJOR")    field(ZSV,  "NO_ALARM")
-
-}    field(OSV,  "MAJOR")
-
+record(calc, "$(P)Klys:Interlock:BodyWaterFlow") {
+    field(DESC, "Klys Body Water Flow")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>9)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P)Klys:Interlock:CollectorWater") {
-
-    field(DESC, "Klys Collector Water")record(bi, "$(P)Klys:Interlock:PreheatingError") {
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(DESC, "Klys Preheating Error")
-
-    field(CALC, "(A>>10)&1")    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(HIHI, "0.5")    field(SHFT, "4")
-
-    field(HHSV, "MAJOR")    field(MASK, "1")
-
-}    field(ZNAM, "OK")
-
-    field(ONAM, "ERROR")
-
-record(calc, "$(P)Klys:Interlock:MaxPulseVoltage") {    field(ZSV,  "NO_ALARM")
-
-    field(DESC, "Klys Max Pulse Voltage")    field(OSV,  "MAJOR")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")}
-
-    field(CALC, "(A>>11)&1")
-
-    field(HIHI, "0.5")record(bi, "$(P)Klys:Interlock:VacuumWarning") {
-
-    field(HHSV, "MAJOR")    field(DESC, "Klys Vacuum Warning")
-
-}    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(SHFT, "5")
-
-record(calc, "$(P)Klys:Interlock:MaxPulseCurrent") {    field(MASK, "1")
-
-    field(DESC, "Klys Max Pulse Current")    field(ZNAM, "OK")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(ONAM, "WARNING")
-
-    field(CALC, "(A>>12)&1")    field(ZSV,  "NO_ALARM")
-
-    field(HIHI, "0.5")    field(OSV,  "MINOR")
-
-    field(HHSV, "MAJOR")}
-
+    field(DESC, "Klys Collector Water")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>10)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Klys:Interlock:TankOilLevel") {
-
-record(calc, "$(P)Klys:Interlock:VacuumAlarm") {    field(DESC, "Klys Tank Oil Level")
-
-    field(DESC, "Klys Vacuum Alarm")    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(SHFT, "6")
-
-    field(CALC, "(A>>13)&1")    field(MASK, "1")
-
-    field(HIHI, "0.5")    field(ZNAM, "OK")
-
-    field(HHSV, "MAJOR")    field(ONAM, "LOW")
-
-}    field(ZSV,  "NO_ALARM")
-
-    field(OSV,  "MAJOR")
-
-record(calc, "$(P)Klys:Interlock:BodyWaterInTemp") {}
-
-    field(DESC, "Klys Body Water In Temp")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")record(bi, "$(P)Klys:Interlock:DissipatedPowerError") {
-
-    field(CALC, "(A>>14)&1")    field(DESC, "Klys Dissipated Power Err")
-
-    field(HIHI, "0.5")    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(HHSV, "MAJOR")    field(SHFT, "7")
-
-}    field(MASK, "1")
-
-    field(ZNAM, "OK")
-
-record(calc, "$(P)Klys:Interlock:BodyWaterOutTemp") {    field(ONAM, "ERROR")
-
-    field(DESC, "Klys Body Water Out Temp")    field(ZSV,  "NO_ALARM")
-
-    field(INPA, "$(P)Klys:InterlockRaw CP MS")    field(OSV,  "MAJOR")
-
-    field(CALC, "(A>>15)&1")}
-
+record(calc, "$(P)Klys:Interlock:MaxPulseVoltage") {
+    field(DESC, "Klys Max Pulse Voltage")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>11)&1")
     field(HIHI, "0.5")
-
-    field(HHSV, "MAJOR")record(bi, "$(P)Klys:Interlock:TankTemperature") {
-
-}    field(DESC, "Klys Tank Temperature")
-
-    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-# ==========================================================================    field(SHFT, "8")
-
-# KLYSTRON STATUS BITS (WORD17, bytes 34-35)    field(MASK, "1")
-
-# ==========================================================================    field(ZNAM, "OK")
-
-    field(ONAM, "HIGH")
-
-record(calc, "$(P)Klys:Status:Ready") {    field(ZSV,  "NO_ALARM")
-
-    field(DESC, "Klystron Ready")    field(OSV,  "MAJOR")
-
-    field(INPA, "$(P)Klys:StatusRaw CP MS")}
-
-    field(CALC, "(A>>0)&1")
-
-}record(bi, "$(P)Klys:Interlock:BodyWaterFlow") {
-
-    field(DESC, "Klys Body Water Flow")
-
-record(calc, "$(P)Klys:Status:OnOff") {    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(DESC, "Klystron On/Off")    field(SHFT, "9")
-
-    field(INPA, "$(P)Klys:StatusRaw CP MS")    field(MASK, "1")
-
-    field(CALC, "(A>>1)&1")    field(ZNAM, "OK")
-
-}    field(ONAM, "LOW")
-
-    field(ZSV,  "NO_ALARM")
-
-record(calc, "$(P)Klys:Status:Timer100Running") {    field(OSV,  "MAJOR")
-
-    field(DESC, "Klys Timer 100% Running")}
-
-    field(INPA, "$(P)Klys:StatusRaw CP MS")
-
-    field(CALC, "(A>>2)&1")record(bi, "$(P)Klys:Interlock:CollectorWater") {
-
-}    field(DESC, "Klys Collector Water")
-
-    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-record(calc, "$(P)Klys:Status:HeaterVoltage80Percent") {    field(SHFT, "10")
-
-    field(DESC, "Klys Heater V 80%")    field(MASK, "1")
-
-    field(INPA, "$(P)Klys:StatusRaw CP MS")    field(ZNAM, "OK")
-
-    field(CALC, "(A>>3)&1")    field(ONAM, "FAULT")
-
-}    field(ZSV,  "NO_ALARM")
-
-    field(OSV,  "MAJOR")
-
-record(calc, "$(P)Klys:Status:HeaterVoltage100Percent") {}
-
-    field(DESC, "Klys Heater V 100%")
-
-    field(INPA, "$(P)Klys:StatusRaw CP MS")record(bi, "$(P)Klys:Interlock:MaxPulseVoltage") {
-
-    field(CALC, "(A>>4)&1")    field(DESC, "Klys Max Pulse Voltage")
-
-}    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(SHFT, "11")
-
-# ==========================================================================    field(MASK, "1")
-
-# FOCUS MAGNET INTERLOCK BITS (WORD24, bytes 48-49)    field(ZNAM, "OK")
-
-# ==========================================================================    field(ONAM, "EXCEEDED")
-
-    field(ZSV,  "NO_ALARM")
-
-record(calc, "$(P)Focus:Interlock:Coil1VoltageHigh") {    field(OSV,  "MAJOR")
-
-    field(DESC, "Focus Coil1 V Too High")}
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")
-
-    field(CALC, "(A>>0)&1")record(bi, "$(P)Klys:Interlock:MaxPulseCurrent") {
-
-    field(HIHI, "0.5")    field(DESC, "Klys Max Pulse Current")
-
-    field(HHSV, "MAJOR")    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-}    field(SHFT, "12")
-
-    field(MASK, "1")
-
-record(calc, "$(P)Focus:Interlock:Coil1VoltageLow") {    field(ZNAM, "OK")
-
-    field(DESC, "Focus Coil1 V Too Low")    field(ONAM, "EXCEEDED")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(ZSV,  "NO_ALARM")
-
-    field(CALC, "(A>>1)&1")    field(OSV,  "MAJOR")
-
-    field(HIHI, "0.5")}
-
     field(HHSV, "MAJOR")
+}
 
-}record(bi, "$(P)Klys:Interlock:VacuumAlarm") {
+record(calc, "$(P)Klys:Interlock:MaxPulseCurrent") {
+    field(DESC, "Klys Max Pulse Current")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>12)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
+record(calc, "$(P)Klys:Interlock:VacuumAlarm") {
     field(DESC, "Klys Vacuum Alarm")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>13)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-record(calc, "$(P)Focus:Interlock:Coil1CurrentHigh") {    field(INP,  "$(P)Klys:InterlockRaw CP MS")
+record(calc, "$(P)Klys:Interlock:BodyWaterInTemp") {
+    field(DESC, "Klys Body Water In Temp")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>14)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(DESC, "Focus Coil1 I Too High")    field(SHFT, "13")
+record(calc, "$(P)Klys:Interlock:BodyWaterOutTemp") {
+    field(DESC, "Klys Body Water Out Temp")
+    field(INPA, "$(P)Klys:InterlockRaw CP MS")
+    field(CALC, "(A>>15)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(MASK, "1")
+# ==========================================================================
+# KLYSTRON STATUS BITS (WORD17, bytes 34-35)
+# ==========================================================================
 
-    field(CALC, "(A>>2)&1")    field(ZNAM, "OK")
+record(calc, "$(P)Klys:Status:Ready") {
+    field(DESC, "Klystron Ready")
+    field(INPA, "$(P)Klys:StatusRaw CP MS")
+    field(CALC, "(A>>0)&1")
+}
 
-    field(HIHI, "0.5")    field(ONAM, "ALARM")
+record(calc, "$(P)Klys:Status:OnOff") {
+    field(DESC, "Klystron On/Off")
+    field(INPA, "$(P)Klys:StatusRaw CP MS")
+    field(CALC, "(A>>1)&1")
+}
 
-    field(HHSV, "MAJOR")    field(ZSV,  "NO_ALARM")
+record(calc, "$(P)Klys:Status:Timer100Running") {
+    field(DESC, "Klys Timer 100% Running")
+    field(INPA, "$(P)Klys:StatusRaw CP MS")
+    field(CALC, "(A>>2)&1")
+}
 
-}    field(OSV,  "MAJOR")
+record(calc, "$(P)Klys:Status:HeaterVoltage80Percent") {
+    field(DESC, "Klys Heater V 80%")
+    field(INPA, "$(P)Klys:StatusRaw CP MS")
+    field(CALC, "(A>>3)&1")
+}
 
+record(calc, "$(P)Klys:Status:HeaterVoltage100Percent") {
+    field(DESC, "Klys Heater V 100%")
+    field(INPA, "$(P)Klys:StatusRaw CP MS")
+    field(CALC, "(A>>4)&1")
+}
+
+# ==========================================================================
+# FOCUS MAGNET INTERLOCK BITS (WORD24, bytes 48-49)
+# ==========================================================================
+
+record(calc, "$(P)Focus:Interlock:Coil1VoltageHigh") {
+    field(DESC, "Focus Coil1 V Too High")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>0)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P)Focus:Interlock:Coil1VoltageLow") {
+    field(DESC, "Focus Coil1 V Too Low")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>1)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P)Focus:Interlock:Coil1CurrentHigh") {
+    field(DESC, "Focus Coil1 I Too High")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>2)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P)Focus:Interlock:Coil1CurrentLow") {
-
-    field(DESC, "Focus Coil1 I Too Low")record(bi, "$(P)Klys:Interlock:BodyWaterInTemp") {
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(DESC, "Klys Body Water In Temp")
-
-    field(CALC, "(A>>3)&1")    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(HIHI, "0.5")    field(SHFT, "14")
-
-    field(HHSV, "MAJOR")    field(MASK, "1")
-
-}    field(ZNAM, "OK")
-
-    field(ONAM, "HIGH")
-
-record(calc, "$(P)Focus:Interlock:Coil2VoltageHigh") {    field(ZSV,  "NO_ALARM")
-
-    field(DESC, "Focus Coil2 V Too High")    field(OSV,  "MAJOR")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")}
-
-    field(CALC, "(A>>4)&1")
-
-    field(HIHI, "0.5")record(bi, "$(P)Klys:Interlock:BodyWaterOutTemp") {
-
-    field(HHSV, "MAJOR")    field(DESC, "Klys Body Water Out Temp")
-
-}    field(INP,  "$(P)Klys:InterlockRaw CP MS")
-
-    field(SHFT, "15")
-
-record(calc, "$(P)Focus:Interlock:Coil2VoltageLow") {    field(MASK, "1")
-
-    field(DESC, "Focus Coil2 V Too Low")    field(ZNAM, "OK")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(ONAM, "HIGH")
-
-    field(CALC, "(A>>5)&1")    field(ZSV,  "NO_ALARM")
-
-    field(HIHI, "0.5")    field(OSV,  "MAJOR")
-
-    field(HHSV, "MAJOR")}
-
+    field(DESC, "Focus Coil1 I Too Low")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>3)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-# ==========================================================================
-
-record(calc, "$(P)Focus:Interlock:Coil2CurrentHigh") {# KLYSTRON STATUS BITS (WORD17, bytes 34-35)
-
-    field(DESC, "Focus Coil2 I Too High")# ==========================================================================
-
+record(calc, "$(P)Focus:Interlock:Coil2VoltageHigh") {
+    field(DESC, "Focus Coil2 V Too High")
     field(INPA, "$(P)Focus:InterlockRaw CP MS")
-
-    field(CALC, "(A>>6)&1")record(bi, "$(P)Klys:Status:Ready") {
-
-    field(HIHI, "0.5")    field(DESC, "Klystron Ready")
-
-    field(HHSV, "MAJOR")    field(INP,  "$(P)Klys:StatusRaw CP MS")
-
-}    field(SHFT, "0")
-
-    field(MASK, "1")
-
-record(calc, "$(P)Focus:Interlock:Coil2CurrentLow") {    field(ZNAM, "Not Ready")
-
-    field(DESC, "Focus Coil2 I Too Low")    field(ONAM, "Ready")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(ZSV,  "MINOR")
-
-    field(CALC, "(A>>7)&1")    field(OSV,  "NO_ALARM")
-
-    field(HIHI, "0.5")}
-
+    field(CALC, "(A>>4)&1")
+    field(HIHI, "0.5")
     field(HHSV, "MAJOR")
+}
 
-}record(bi, "$(P)Klys:Status:OnOff") {
+record(calc, "$(P)Focus:Interlock:Coil2VoltageLow") {
+    field(DESC, "Focus Coil2 V Too Low")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>5)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(DESC, "Klystron On/Off")
+record(calc, "$(P)Focus:Interlock:Coil2CurrentHigh") {
+    field(DESC, "Focus Coil2 I Too High")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>6)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-record(calc, "$(P)Focus:Interlock:Coil3VoltageHigh") {    field(INP,  "$(P)Klys:StatusRaw CP MS")
+record(calc, "$(P)Focus:Interlock:Coil2CurrentLow") {
+    field(DESC, "Focus Coil2 I Too Low")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>7)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
 
-    field(DESC, "Focus Coil3 V Too High")    field(SHFT, "1")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(MASK, "1")
-
-    field(CALC, "(A>>8)&1")    field(ZNAM, "OFF")
-
-    field(HIHI, "0.5")    field(ONAM, "ON")
-
-    field(HHSV, "MAJOR")    field(ZSV,  "NO_ALARM")
-
-}    field(OSV,  "NO_ALARM")
-
+record(calc, "$(P)Focus:Interlock:Coil3VoltageHigh") {
+    field(DESC, "Focus Coil3 V Too High")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>8)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P)Focus:Interlock:Coil3VoltageLow") {
-
-    field(DESC, "Focus Coil3 V Too Low")record(bi, "$(P)Klys:Status:Timer100Running") {
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(DESC, "Klys Timer 100% Running")
-
-    field(CALC, "(A>>9)&1")    field(INP,  "$(P)Klys:StatusRaw CP MS")
-
-    field(HIHI, "0.5")    field(SHFT, "2")
-
-    field(HHSV, "MAJOR")    field(MASK, "1")
-
-}    field(ZNAM, "Idle")
-
-    field(ONAM, "Running")
-
-record(calc, "$(P)Focus:Interlock:Coil3CurrentHigh") {    field(ZSV,  "NO_ALARM")
-
-    field(DESC, "Focus Coil3 I Too High")    field(OSV,  "NO_ALARM")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")}
-
-    field(CALC, "(A>>10)&1")
-
-    field(HIHI, "0.5")record(bi, "$(P)Klys:Status:HeaterVoltage80Percent") {
-
-    field(HHSV, "MAJOR")    field(DESC, "Klys Heater V 80%")
-
-}    field(INP,  "$(P)Klys:StatusRaw CP MS")
-
-    field(SHFT, "3")
-
-record(calc, "$(P)Focus:Interlock:Coil3CurrentLow") {    field(MASK, "1")
-
-    field(DESC, "Focus Coil3 I Too Low")    field(ZNAM, "< 80%")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(ONAM, ">= 80%")
-
-    field(CALC, "(A>>11)&1")    field(ZSV,  "NO_ALARM")
-
-    field(HIHI, "0.5")    field(OSV,  "NO_ALARM")
-
-    field(HHSV, "MAJOR")}
-
-}
-
-record(bi, "$(P)Klys:Status:HeaterVoltage100Percent") {
-
-record(calc, "$(P)Focus:Interlock:WaterFlowAlarm") {    field(DESC, "Klys Heater V 100%")
-
-    field(DESC, "Focus Water Flow Alarm")    field(INP,  "$(P)Klys:StatusRaw CP MS")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(SHFT, "4")
-
-    field(CALC, "(A>>12)&1")    field(MASK, "1")
-
-    field(HIHI, "0.5")    field(ZNAM, "< 100%")
-
-    field(HHSV, "MAJOR")    field(ONAM, "100%")
-
-}    field(ZSV,  "NO_ALARM")
-
-    field(OSV,  "NO_ALARM")
-
-record(calc, "$(P)Focus:Interlock:TemperatureAlarm") {}
-
-    field(DESC, "Focus Temperature Alarm")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")# ==========================================================================
-
-    field(CALC, "(A>>13)&1")# FOCUS MAGNET INTERLOCK BITS (WORD24, bytes 48-49)
-
-    field(HIHI, "0.5")# ==========================================================================
-
-    field(HHSV, "MAJOR")
-
-}record(bi, "$(P)Focus:Interlock:Coil1VoltageHigh") {
-
-    field(DESC, "Focus Coil1 V Too High")
-
-record(calc, "$(P)Focus:Interlock:ShortCircuitGround") {    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-
-    field(DESC, "Focus Short Circuit Ground")    field(SHFT, "0")
-
-    field(INPA, "$(P)Focus:InterlockRaw CP MS")    field(MASK, "1")
-
-    field(CALC, "(A>>14)&1")    field(ZNAM, "OK")
-
-    field(HIHI, "0.5")    field(ONAM, "ALARM")
-
-    field(HHSV, "MAJOR")    field(ZSV,  "NO_ALARM")
-
-}    field(OSV,  "MAJOR")
-
-}
-
-# ==========================================================================
-
-# FOCUS MAGNET STATUS BITS (WORD25, bytes 50-51)record(bi, "$(P)Focus:Interlock:Coil1VoltageLow") {
-
-# ==========================================================================    field(DESC, "Focus Coil1 V Too Low")
-
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-
-record(calc, "$(P)Focus:Status:Ready") {    field(SHFT, "1")
-
-    field(DESC, "Focus Magnet Ready")    field(MASK, "1")
-
-    field(INPA, "$(P)Focus:StatusRaw CP MS")    field(ZNAM, "OK")
-
-    field(CALC, "(A>>0)&1")    field(ONAM, "ALARM")
-
-}    field(ZSV,  "NO_ALARM")
-
-    field(OSV,  "MAJOR")
-
-record(calc, "$(P)Focus:Status:OnOff") {}
-
-    field(DESC, "Focus Magnet On/Off")
-
-    field(INPA, "$(P)Focus:StatusRaw CP MS")record(bi, "$(P)Focus:Interlock:Coil1CurrentHigh") {
-
-    field(CALC, "(A>>1)&1")    field(DESC, "Focus Coil1 I Too High")
-
-}    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-
-    field(SHFT, "2")
-
-# ==========================================================================    field(MASK, "1")
-
-# PREMAGNETISATION INTERLOCK BITS (WORD28, bytes 56-57)    field(ZNAM, "OK")
-
-# ==========================================================================    field(ONAM, "ALARM")
-
-    field(ZSV,  "NO_ALARM")
-
-record(calc, "$(P)Premag:Interlock:VoltageHigh") {    field(OSV,  "MAJOR")
-
-    field(DESC, "Premag V Too High")}
-
-    field(INPA, "$(P)Premag:InterlockRaw CP MS")
-
-    field(CALC, "(A>>0)&1")record(bi, "$(P)Focus:Interlock:Coil1CurrentLow") {
-
-    field(HIHI, "0.5")    field(DESC, "Focus Coil1 I Too Low")
-
-    field(HHSV, "MAJOR")    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-
-}    field(SHFT, "3")
-
-    field(MASK, "1")
-
-record(calc, "$(P)Premag:Interlock:VoltageLow") {    field(ZNAM, "OK")
-
-    field(DESC, "Premag V Too Low")    field(ONAM, "ALARM")
-
-    field(INPA, "$(P)Premag:InterlockRaw CP MS")    field(ZSV,  "NO_ALARM")
-
-    field(CALC, "(A>>1)&1")    field(OSV,  "MAJOR")
-
-    field(HIHI, "0.5")}
-
-    field(HHSV, "MAJOR")
-
-}record(bi, "$(P)Focus:Interlock:Coil2VoltageHigh") {
-
-    field(DESC, "Focus Coil2 V Too High")
-
-record(calc, "$(P)Premag:Interlock:CurrentHigh") {    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-
-    field(DESC, "Premag I Too High")    field(SHFT, "4")
-
-    field(INPA, "$(P)Premag:InterlockRaw CP MS")    field(MASK, "1")
-
-    field(CALC, "(A>>2)&1")    field(ZNAM, "OK")
-
-    field(HIHI, "0.5")    field(ONAM, "ALARM")
-
-    field(HHSV, "MAJOR")    field(ZSV,  "NO_ALARM")
-
-}    field(OSV,  "MAJOR")
-
-}
-
-record(calc, "$(P)Premag:Interlock:CurrentLow") {
-
-    field(DESC, "Premag I Too Low")record(bi, "$(P)Focus:Interlock:Coil2VoltageLow") {
-
-    field(INPA, "$(P)Premag:InterlockRaw CP MS")    field(DESC, "Focus Coil2 V Too Low")
-
-    field(CALC, "(A>>3)&1")    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-
-    field(HIHI, "0.5")    field(SHFT, "5")
-
-    field(HHSV, "MAJOR")    field(MASK, "1")
-
-}    field(ZNAM, "OK")
-
-    field(ONAM, "ALARM")
-
-record(calc, "$(P)Premag:Interlock:HVCableNotConnected") {    field(ZSV,  "NO_ALARM")
-
-    field(DESC, "Premag HV Cable Not Conn")    field(OSV,  "MAJOR")
-
-    field(INPA, "$(P)Premag:InterlockRaw CP MS")}
-
-    field(CALC, "(A>>7)&1")
-
-    field(HIHI, "0.5")record(bi, "$(P)Focus:Interlock:Coil2CurrentHigh") {
-
-    field(HHSV, "MAJOR")    field(DESC, "Focus Coil2 I Too High")
-
-}    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-
-    field(SHFT, "6")
-
-# ==========================================================================    field(MASK, "1")
-
-# PREMAGNETISATION STATUS BITS (WORD29, bytes 58-59)    field(ZNAM, "OK")
-
-# ==========================================================================    field(ONAM, "ALARM")
-
-    field(ZSV,  "NO_ALARM")
-
-record(calc, "$(P)Premag:Status:Ready") {    field(OSV,  "MAJOR")
-
-    field(DESC, "Premagnetisation Ready")}
-
-    field(INPA, "$(P)Premag:StatusRaw CP MS")
-
-    field(CALC, "(A>>0)&1")record(bi, "$(P)Focus:Interlock:Coil2CurrentLow") {
-
-}    field(DESC, "Focus Coil2 I Too Low")
-
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-
-record(calc, "$(P)Premag:Status:OnOff") {    field(SHFT, "7")
-
-    field(DESC, "Premagnetisation On/Off")    field(MASK, "1")
-
-    field(INPA, "$(P)Premag:StatusRaw CP MS")    field(ZNAM, "OK")
-
-    field(CALC, "(A>>1)&1")    field(ONAM, "ALARM")
-
-}    field(ZSV,  "NO_ALARM")
-
-    field(OSV,  "MAJOR")
-}
-
-record(bi, "$(P)Focus:Interlock:Coil3VoltageHigh") {
-    field(DESC, "Focus Coil3 V Too High")
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-    field(SHFT, "8")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
-}
-
-record(bi, "$(P)Focus:Interlock:Coil3VoltageLow") {
     field(DESC, "Focus Coil3 V Too Low")
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-    field(SHFT, "9")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>9)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Focus:Interlock:Coil3CurrentHigh") {
+record(calc, "$(P)Focus:Interlock:Coil3CurrentHigh") {
     field(DESC, "Focus Coil3 I Too High")
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-    field(SHFT, "10")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>10)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Focus:Interlock:Coil3CurrentLow") {
+record(calc, "$(P)Focus:Interlock:Coil3CurrentLow") {
     field(DESC, "Focus Coil3 I Too Low")
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-    field(SHFT, "11")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>11)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Focus:Interlock:WaterFlowAlarm") {
+record(calc, "$(P)Focus:Interlock:WaterFlowAlarm") {
     field(DESC, "Focus Water Flow Alarm")
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-    field(SHFT, "12")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>12)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Focus:Interlock:TemperatureAlarm") {
+record(calc, "$(P)Focus:Interlock:TemperatureAlarm") {
     field(DESC, "Focus Temperature Alarm")
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-    field(SHFT, "13")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>13)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Focus:Interlock:ShortCircuitGround") {
+record(calc, "$(P)Focus:Interlock:ShortCircuitGround") {
     field(DESC, "Focus Short Circuit Ground")
-    field(INP,  "$(P)Focus:InterlockRaw CP MS")
-    field(SHFT, "14")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "FAULT")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Focus:InterlockRaw CP MS")
+    field(CALC, "(A>>14)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
 # ==========================================================================
 # FOCUS MAGNET STATUS BITS (WORD25, bytes 50-51)
 # ==========================================================================
 
-record(bi, "$(P)Focus:Status:Ready") {
+record(calc, "$(P)Focus:Status:Ready") {
     field(DESC, "Focus Magnet Ready")
-    field(INP,  "$(P)Focus:StatusRaw CP MS")
-    field(SHFT, "0")
-    field(MASK, "1")
-    field(ZNAM, "Not Ready")
-    field(ONAM, "Ready")
-    field(ZSV,  "MINOR")
-    field(OSV,  "NO_ALARM")
+    field(INPA, "$(P)Focus:StatusRaw CP MS")
+    field(CALC, "(A>>0)&1")
 }
 
-record(bi, "$(P)Focus:Status:OnOff") {
+record(calc, "$(P)Focus:Status:OnOff") {
     field(DESC, "Focus Magnet On/Off")
-    field(INP,  "$(P)Focus:StatusRaw CP MS")
-    field(SHFT, "1")
-    field(MASK, "1")
-    field(ZNAM, "OFF")
-    field(ONAM, "ON")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "NO_ALARM")
+    field(INPA, "$(P)Focus:StatusRaw CP MS")
+    field(CALC, "(A>>1)&1")
 }
 
 # ==========================================================================
 # PREMAGNETISATION INTERLOCK BITS (WORD28, bytes 56-57)
 # ==========================================================================
 
-record(bi, "$(P)Premag:Interlock:VoltageHigh") {
+record(calc, "$(P)Premag:Interlock:VoltageHigh") {
     field(DESC, "Premag V Too High")
-    field(INP,  "$(P)Premag:InterlockRaw CP MS")
-    field(SHFT, "0")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Premag:InterlockRaw CP MS")
+    field(CALC, "(A>>0)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Premag:Interlock:VoltageLow") {
+record(calc, "$(P)Premag:Interlock:VoltageLow") {
     field(DESC, "Premag V Too Low")
-    field(INP,  "$(P)Premag:InterlockRaw CP MS")
-    field(SHFT, "1")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Premag:InterlockRaw CP MS")
+    field(CALC, "(A>>1)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Premag:Interlock:CurrentHigh") {
+record(calc, "$(P)Premag:Interlock:CurrentHigh") {
     field(DESC, "Premag I Too High")
-    field(INP,  "$(P)Premag:InterlockRaw CP MS")
-    field(SHFT, "2")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Premag:InterlockRaw CP MS")
+    field(CALC, "(A>>2)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Premag:Interlock:CurrentLow") {
+record(calc, "$(P)Premag:Interlock:CurrentLow") {
     field(DESC, "Premag I Too Low")
-    field(INP,  "$(P)Premag:InterlockRaw CP MS")
-    field(SHFT, "3")
-    field(MASK, "1")
-    field(ZNAM, "OK")
-    field(ONAM, "ALARM")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Premag:InterlockRaw CP MS")
+    field(CALC, "(A>>3)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
-record(bi, "$(P)Premag:Interlock:HVCableNotConnected") {
+record(calc, "$(P)Premag:Interlock:HVCableNotConnected") {
     field(DESC, "Premag HV Cable Not Conn")
-    field(INP,  "$(P)Premag:InterlockRaw CP MS")
-    field(SHFT, "7")
-    field(MASK, "1")
-    field(ZNAM, "Connected")
-    field(ONAM, "Disconnected")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "MAJOR")
+    field(INPA, "$(P)Premag:InterlockRaw CP MS")
+    field(CALC, "(A>>7)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
 }
 
 # ==========================================================================
 # PREMAGNETISATION STATUS BITS (WORD29, bytes 58-59)
 # ==========================================================================
 
-record(bi, "$(P)Premag:Status:Ready") {
+record(calc, "$(P)Premag:Status:Ready") {
     field(DESC, "Premagnetisation Ready")
-    field(INP,  "$(P)Premag:StatusRaw CP MS")
-    field(SHFT, "0")
-    field(MASK, "1")
-    field(ZNAM, "Not Ready")
-    field(ONAM, "Ready")
-    field(ZSV,  "MINOR")
-    field(OSV,  "NO_ALARM")
+    field(INPA, "$(P)Premag:StatusRaw CP MS")
+    field(CALC, "(A>>0)&1")
 }
 
-record(bi, "$(P)Premag:Status:OnOff") {
+record(calc, "$(P)Premag:Status:OnOff") {
     field(DESC, "Premagnetisation On/Off")
-    field(INP,  "$(P)Premag:StatusRaw CP MS")
-    field(SHFT, "1")
-    field(MASK, "1")
-    field(ZNAM, "OFF")
-    field(ONAM, "ON")
-    field(ZSV,  "NO_ALARM")
-    field(OSV,  "NO_ALARM")
+    field(INPA, "$(P)Premag:StatusRaw CP MS")
+    field(CALC, "(A>>1)&1")
 }
