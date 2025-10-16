@@ -15,7 +15,7 @@ record(waveform, "$(P)RawData") {
     field(DTYP, "stream")
     field(INP,  "@ppt.proto readAllData $(PORT)")
     field(SCAN, "1 second")
-    field(FTVL, "CHAR")
+    field(FTVL, "UCHAR")
     field(NELM, "86")
     field(FLNK, "$(P)DecodeVC")
 }
@@ -28,7 +28,7 @@ record(aSub, "$(P)DecodeVC") {
     
     # Input: raw byte array
     field(INPA, "$(P)RawData NPP NMS")
-    field(FTA,  "CHAR")
+    field(FTA,  "UCHAR")
     field(NOA,  "86")
     
     # Outputs: 11 voltage and current values
@@ -55,7 +55,7 @@ record(aSub, "$(P)DecodeTFS") {
     
     # Input: raw byte array
     field(INPA, "$(P)RawData NPP NMS")
-    field(FTA,  "CHAR")
+    field(FTA,  "UCHAR")
     field(NOA,  "86")
     
     # Outputs: 11 temp, flow, timer, status values

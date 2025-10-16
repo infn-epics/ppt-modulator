@@ -1,0 +1,368 @@
+# ============================================================================
+# PPT Modulator Database Template - Corrected per Documentation
+# ============================================================================
+# Based on: tcpip-interface-description_IF-MOD2128C_Rev2-1
+# Message: 86 bytes (43 words × 2 bytes little-endian)
+#
+# Architecture:
+# 1. Master waveform reads all 86 bytes via StreamDevice (SCAN="1 second")
+# 2. Two aSub records decode 22 values:
+#    - DecodeThyKlys: Thyratron + Klystron measurements (11 values)
+#    - DecodeMagTimers: Focus Magnets + Premagn + Timers (11 values)
+# 3. Individual records get values from aSub outputs via CP MS links
+# 4. Status/Interlock bitfield records read raw words
+#
+# See COMPLETE_86BYTE_MAPPING.md for full documentation
+# ============================================================================
+
+# Master record - reads all 86 bytes from device
+record(waveform, "$(P)RawData") {
+    field(DESC, "Raw 86-byte data")
+    field(DTYP, "stream")
+    field(INP,  "@ppt.proto readAllData $(PORT)")
+    field(SCAN, "1 second")
+    field(FTVL, "UCHAR")
+    field(NELM, "86")
+    field(FLNK, "$(P)DecodeThyKlys")
+}
+
+# ==========================================================================
+# aSub Decoder 1 - Thyratron and Klystron (15 values)
+# ==========================================================================
+record(aSub, "$(P)DecodeThyKlys") {
+    field(DESC, "Decode Thyratron/Klystron")
+    field(SNAM, "pptDecodeThyratronKlystron")
+    field(SCAN, "Passive")
+    
+    # Input: raw byte array
+    field(INPA, "$(P)RawData NPP NMS")
+    field(FTA,  "UCHAR")
+    field(NOA,  "86")
+    
+    # Outputs: Thyratron + Klystron measurements + status/interlock
+    field(FTVA, "DOUBLE")  field(NOVA, "1")  # Thyratron Heater Voltage
+    field(FTVB, "DOUBLE")  field(NOVB, "1")  # Thyratron Reservoir Voltage
+    field(FTVC, "DOUBLE")  field(NOVC, "1")  # Thyratron Total Current
+    field(FTVD, "DOUBLE")  field(NOVD, "1")  # Klystron Heater Voltage
+    field(FTVE, "DOUBLE")  field(NOVE, "1")  # Klystron Heater Current
+    field(FTVF, "DOUBLE")  field(NOVF, "1")  # Klystron Body Water In Temp
+    field(FTVG, "DOUBLE")  field(NOVG, "1")  # Klystron Body Water Out Temp
+    field(FTVH, "DOUBLE")  field(NOVH, "1")  # Klystron Body Water Flow
+    field(FTVI, "DOUBLE")  field(NOVI, "1")  # Klystron Dissipated Power
+    field(FTVJ, "DOUBLE")  field(NOVJ, "1")  # Klystron Oil Temperature
+    field(FTVK, "DOUBLE")  field(NOVK, "1")  # Thyratron Interlock Raw
+    field(FTVL, "DOUBLE")  field(NOVL, "1")  # Thyratron Status Raw
+    field(FTVM, "DOUBLE")  field(NOVM, "1")  # Klystron Interlock Raw
+    field(FTVN, "DOUBLE")  field(NOVN, "1")  # Klystron Status Raw
+    field(FTVO, "DOUBLE")  field(NOVO, "1")  # Reserved
+    
+    field(FLNK, "$(P)DecodeMagTimers")
+}
+
+# ==========================================================================
+# aSub Decoder 2 - Focus Magnets, Premagnetisation, Timers, Status (15 values)
+# ==========================================================================
+record(aSub, "$(P)DecodeMagTimers") {
+    field(DESC, "Decode Magnets/Timers")
+    field(SNAM, "pptDecodeMagnetsTimersStatus")
+    field(SCAN, "Passive")
+    
+    # Input: raw byte array
+    field(INPA, "$(P)RawData NPP NMS")
+    field(FTA,  "UCHAR")
+    field(NOA,  "86")
+    
+    # Outputs: Focus Magnets + Premagnetisation + Timers + status/interlock
+    field(FTVA, "DOUBLE")  field(NOVA, "1")  # Focus Magnet Voltage Coil 1
+    field(FTVB, "DOUBLE")  field(NOVB, "1")  # Focus Magnet Current Coil 1
+    field(FTVC, "DOUBLE")  field(NOVC, "1")  # Focus Magnet Voltage Coil 2
+    field(FTVD, "DOUBLE")  field(NOVD, "1")  # Focus Magnet Current Coil 2
+    field(FTVE, "DOUBLE")  field(NOVE, "1")  # Focus Magnet Voltage Coil 3
+    field(FTVF, "DOUBLE")  field(NOVF, "1")  # Focus Magnet Current Coil 3
+    field(FTVG, "DOUBLE")  field(NOVG, "1")  # Premagnetisation Voltage
+    field(FTVH, "DOUBLE")  field(NOVH, "1")  # Premagnetisation Current
+    field(FTVI, "DOUBLE")  field(NOVI, "1")  # Thyratron Timer Preheat Min
+    field(FTVJ, "DOUBLE")  field(NOVJ, "1")  # Thyratron Timer Preheat Sec
+    field(FTVK, "DOUBLE")  field(NOVK, "1")  # Klystron Timer Preheat100 Min
+    field(FTVL, "DOUBLE")  field(NOVL, "1")  # Focus Magnet Interlock Raw
+    field(FTVM, "DOUBLE")  field(NOVM, "1")  # Focus Magnet Status Raw
+    field(FTVN, "DOUBLE")  field(NOVN, "1")  # Premagnetisation Interlock Raw
+    field(FTVO, "DOUBLE")  field(NOVO, "1")  # Premagnetisation Status Raw
+}
+
+# ==========================================================================
+# THYRATRON SECTION
+# ==========================================================================
+
+record(ai, "$(P)Thy:HeaterVoltage") {
+    field(DESC, "Thyratron Heater Voltage")
+    field(INP,  "$(P)DecodeThyKlys.VALA CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(HOPR, "10")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Thy:ReservoirVoltage") {
+    field(DESC, "Thyratron Reservoir Voltage")
+    field(INP,  "$(P)DecodeThyKlys.VALB CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(HOPR, "10")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Thy:TotalCurrent") {
+    field(DESC, "Thyratron Total Current")
+    field(INP,  "$(P)DecodeThyKlys.VALC CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(HOPR, "100")
+    field(LOPR, "0")
+}
+
+record(longin, "$(P)Thy:TimerPreheatMin") {
+    field(DESC, "Thyratron Preheat Timer Min")
+    field(INP,  "$(P)DecodeMagTimers.VALI CP MS")
+    field(EGU,  "min")
+    field(HOPR, "15")
+    field(LOPR, "0")
+}
+
+record(longin, "$(P)Thy:TimerPreheatSec") {
+    field(DESC, "Thyratron Preheat Timer Sec")
+    field(INP,  "$(P)DecodeMagTimers.VALJ CP MS")
+    field(EGU,  "s")
+    field(HOPR, "60")
+    field(LOPR, "0")
+}
+
+# ==========================================================================
+# KLYSTRON SECTION
+# ==========================================================================
+
+record(ai, "$(P)Klys:HeaterVoltage") {
+    field(DESC, "Klystron Heater Voltage")
+    field(INP,  "$(P)DecodeThyKlys.VALD CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(HOPR, "270")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Klys:HeaterCurrent") {
+    field(DESC, "Klystron Heater Current")
+    field(INP,  "$(P)DecodeThyKlys.VALE CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(HOPR, "6")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Klys:BodyWaterInTemp") {
+    field(DESC, "Klystron Body Water In Temp")
+    field(INP,  "$(P)DecodeThyKlys.VALF CP MS")
+    field(EGU,  "C")
+    field(PREC, "1")
+    field(HOPR, "100")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Klys:BodyWaterOutTemp") {
+    field(DESC, "Klystron Body Water Out Temp")
+    field(INP,  "$(P)DecodeThyKlys.VALG CP MS")
+    field(EGU,  "C")
+    field(PREC, "1")
+    field(HOPR, "100")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Klys:BodyWaterFlow") {
+    field(DESC, "Klystron Body Water Flow")
+    field(INP,  "$(P)DecodeThyKlys.VALH CP MS")
+    field(EGU,  "L/min")
+    field(PREC, "2")
+    field(HOPR, "10")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Klys:DissipatedPower") {
+    field(DESC, "Klystron Dissipated Power")
+    field(INP,  "$(P)DecodeThyKlys.VALI CP MS")
+    field(EGU,  "kW")
+    field(PREC, "1")
+    field(HOPR, "5000")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Klys:OilTemp") {
+    field(DESC, "Klystron Oil Temperature")
+    field(INP,  "$(P)DecodeThyKlys.VALJ CP MS")
+    field(EGU,  "C")
+    field(PREC, "1")
+    field(HOPR, "100")
+    field(LOPR, "0")
+}
+
+record(longin, "$(P)Klys:TimerPreheat100Min") {
+    field(DESC, "Klystron Preheat100 Timer Min")
+    field(INP,  "$(P)DecodeMagTimers.VALK CP MS")
+    field(EGU,  "min")
+    field(HOPR, "15")
+    field(LOPR, "0")
+}
+
+# ==========================================================================
+# FOCUS MAGNET SECTION
+# ==========================================================================
+
+record(ai, "$(P)Focus:Coil1Voltage") {
+    field(DESC, "Focus Coil 1 Voltage")
+    field(INP,  "$(P)DecodeMagTimers.VALA CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(HOPR, "132")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Focus:Coil1Current") {
+    field(DESC, "Focus Coil 1 Current")
+    field(INP,  "$(P)DecodeMagTimers.VALB CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(HOPR, "50")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Focus:Coil2Voltage") {
+    field(DESC, "Focus Coil 2 Voltage")
+    field(INP,  "$(P)DecodeMagTimers.VALC CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(HOPR, "132")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Focus:Coil2Current") {
+    field(DESC, "Focus Coil 2 Current")
+    field(INP,  "$(P)DecodeMagTimers.VALD CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(HOPR, "50")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Focus:Coil3Voltage") {
+    field(DESC, "Focus Coil 3 Voltage")
+    field(INP,  "$(P)DecodeMagTimers.VALE CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(HOPR, "132")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Focus:Coil3Current") {
+    field(DESC, "Focus Coil 3 Current")
+    field(INP,  "$(P)DecodeMagTimers.VALF CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(HOPR, "50")
+    field(LOPR, "0")
+}
+
+# ==========================================================================
+# PREMAGNETISATION SECTION
+# ==========================================================================
+
+record(ai, "$(P)Premag:Voltage") {
+    field(DESC, "Premagnetisation Voltage")
+    field(INP,  "$(P)DecodeMagTimers.VALG CP MS")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(HOPR, "70")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P)Premag:Current") {
+    field(DESC, "Premagnetisation Current")
+    field(INP,  "$(P)DecodeMagTimers.VALH CP MS")
+    field(EGU,  "A")
+    field(PREC, "2")
+    field(HOPR, "20")
+    field(LOPR, "0")
+}
+
+# ==========================================================================
+# STATUS AND INTERLOCK BITFIELD WORDS (Raw 16-bit values)
+# ==========================================================================
+# These are decoded directly in the aSub functions from raw bytes
+# For individual bit decoding, can create additional bi records with SHFT/MASK
+# ==========================================================================
+
+# Thyratron Interlock (bytes 10-11, WORD5)
+record(longin, "$(P)Thy:InterlockRaw") {
+    field(DESC, "Thyratron Interlock Word")
+    field(INP,  "$(P)DecodeThyKlys.VALK CP MS")
+    field(EGU,  "")
+}
+
+# Thyratron Status (bytes 12-13, WORD6)
+record(longin, "$(P)Thy:StatusRaw") {
+    field(DESC, "Thyratron Status Word")
+    field(INP,  "$(P)DecodeThyKlys.VALL CP MS")
+    field(EGU,  "")
+}
+
+# Klystron Interlock (bytes 32-33, WORD16)
+record(longin, "$(P)Klys:InterlockRaw") {
+    field(DESC, "Klystron Interlock Word")
+    field(INP,  "$(P)DecodeThyKlys.VALM CP MS")
+    field(EGU,  "")
+}
+
+# Klystron Status (bytes 34-35, WORD17)
+record(longin, "$(P)Klys:StatusRaw") {
+    field(DESC, "Klystron Status Word")
+    field(INP,  "$(P)DecodeThyKlys.VALN CP MS")
+    field(EGU,  "")
+}
+
+# Focus Magnet Interlock (bytes 48-49, WORD24)
+record(longin, "$(P)Focus:InterlockRaw") {
+    field(DESC, "Focus Magnet Interlock Word")
+    field(INP,  "$(P)DecodeMagTimers.VALL CP MS")
+    field(EGU,  "")
+}
+
+# Focus Magnet Status (bytes 50-51, WORD25)
+record(longin, "$(P)Focus:StatusRaw") {
+    field(DESC, "Focus Magnet Status Word")
+    field(INP,  "$(P)DecodeMagTimers.VALM CP MS")
+    field(EGU,  "")
+}
+
+# Premagnetisation Interlock (bytes 56-57, WORD28)
+record(longin, "$(P)Premag:InterlockRaw") {
+    field(DESC, "Premag Interlock Word")
+    field(INP,  "$(P)DecodeMagTimers.VALN CP MS")
+    field(EGU,  "")
+}
+
+# Premagnetisation Status (bytes 58-59, WORD29)
+record(longin, "$(P)Premag:StatusRaw") {
+    field(DESC, "Premag Status Word")
+    field(INP,  "$(P)DecodeMagTimers.VALO CP MS")
+    field(EGU,  "")
+}
+
+# ==========================================================================
+# DEBUG - Show connection status via first value
+# ==========================================================================
+
+record(calc, "$(P)Connected") {
+    field(DESC, "Device Connection Status")
+    field(INPA, "$(P)Thy:HeaterVoltage CP MS")
+    field(CALC, "A>=0?1:0")
+    field(ZNAM, "Disconnected")
+    field(ONAM, "Connected")
+}

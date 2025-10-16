@@ -17,8 +17,11 @@ drvAsynIPPortConfigure("PPT1", "192.168.197.111:2000", 0, 0, 0)
 # asynSetTraceIOMask("PPT1", 0, 0x2)  # ASYN_TRACEIO_HEX
 epicsEnvSet("STREAM_PROTOCOL_PATH","../../db")
 
-## Load record instances (using aSub approach)
-dbLoadRecords("../../db/ppt_asub.template", "P=PPT:MOD1:, PORT=PPT1")
+## Load record instances (using corrected aSub approach per documentation)
+dbLoadRecords("../../db/ppt_corrected.template", "P=PPT:MOD1:, PORT=PPT1")
+
+## Load individual bit decoding records for status/interlock words
+dbLoadRecords("../../db/ppt_bits.template", "P=PPT:MOD1:")
 
 # cd "${TOP}/iocBoot/${IOC}"
 iocInit
