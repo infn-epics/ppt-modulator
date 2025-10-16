@@ -14,7 +14,7 @@ record(waveform, "$(P)RawData") {
     field(DESC, "Raw 86-byte data from device")
     field(DTYP, "stream")
     field(INP,  "@ppt.proto readAllData $(PORT)")
-    field(SCAN, "1 second")
+    field(SCAN, "0.5 second")
     field(FTVL, "UCHAR")
     field(NELM, "86")
     field(FLNK, "$(P)DecodeVC")

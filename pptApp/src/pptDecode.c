@@ -37,7 +37,7 @@
 
 /* Helper function to extract 16-bit little-endian unsigned word */
 static unsigned short getWord(const unsigned char *data, int offset) {
-    return (unsigned short)(data[offset] | (data[offset+1] << 8));
+    return (unsigned short)(data[offset+1] | (data[offset] << 8));
 }
 
 /*
@@ -89,70 +89,70 @@ long pptDecodeThyratronKlystron(aSubRecord *prec) {
         return 1;
     }
     
-    printf("=== Thyratron/Klystron Decode ===\n");
+    //printf("=== Thyratron/Klystron Decode === %d\n", prec->nea);
     
     /* Thyratron Section (bytes 0-13) */
     rawVal = getWord(rawData, 0);
     *outA = rawVal / 10.0;  /* Thyratron Heater Voltage (0..10V) */
-    printf("Thyratron HeaterVoltage: raw=%u scaled=%.1f V\n", rawVal, *outA);
+    //printf("Thyratron HeaterVoltage: raw=%u scaled=%.1f V\n", rawVal, *outA);
 
     rawVal = getWord(rawData, 2);
     *outB = rawVal / 10.0;  /* Thyratron Reservoir Voltage (0..10V) */
-    printf("Thyratron ReservoirVoltage: raw=%u scaled=%.1f V\n", rawVal, *outB);
+    //printf("Thyratron ReservoirVoltage: raw=%u scaled=%.1f V\n", rawVal, *outB);
 
     rawVal = getWord(rawData, 4);
     *outC = rawVal / 100.0;  /* Thyratron Total Current (0..100A) */
-    printf("Thyratron TotalCurrent: raw=%u scaled=%.2f A\n", rawVal, *outC);
+    //printf("Thyratron TotalCurrent: raw=%u scaled=%.2f A\n", rawVal, *outC);
 
     /* Klystron Section (bytes 14-35) */
     rawVal = getWord(rawData, 14);
     *outD = rawVal / 10.0;  /* Klystron Heater Voltage (0..270V) */
-    printf("Klystron HeaterVoltage: raw=%u scaled=%.1f V\n", rawVal, *outD);
+    //printf("Klystron HeaterVoltage: raw=%u scaled=%.1f V\n", rawVal, *outD);
 
     rawVal = getWord(rawData, 16);
-    *outE = rawVal / 100.0;  /* Klystron Heater Current (0..6A) */
-    printf("Klystron HeaterCurrent: raw=%u scaled=%.2f A\n", rawVal, *outE);
+    *outE = rawVal / 10.0;  /* Klystron Heater Current (0..6A) */
+    //printf("Klystron HeaterCurrent: raw=%u scaled=%.2f A\n", rawVal, *outE);
 
     rawVal = getWord(rawData, 18);
     *outF = rawVal / 10.0;  /* Klystron Body Water In Temp (0..100°C) */
-    printf("Klystron BodyWaterInTemp: raw=%u scaled=%.1f C\n", rawVal, *outF);
+    //printf("Klystron BodyWaterInTemp: raw=%u scaled=%.1f C\n", rawVal, *outF);
 
     rawVal = getWord(rawData, 20);
     *outG = rawVal / 10.0;  /* Klystron Body Water Out Temp (0..100°C) */
-    printf("Klystron BodyWaterOutTemp: raw=%u scaled=%.1f C\n", rawVal, *outG);
+    //printf("Klystron BodyWaterOutTemp: raw=%u scaled=%.1f C\n", rawVal, *outG);
 
     rawVal = getWord(rawData, 22);
-    *outH = rawVal / 100.0;  /* Klystron Body Water Flow (0..10 L/min) */
-    printf("Klystron BodyWaterFlow: raw=%u scaled=%.2f L/min\n", rawVal, *outH);
+    *outH = rawVal / 10.0;  /* Klystron Body Water Flow (0..10 L/min) */
+    //printf("Klystron BodyWaterFlow: raw=%u scaled=%.2f L/min\n", rawVal, *outH);
 
     rawVal = getWord(rawData, 24);
     *outI = rawVal / 10.0;  /* Klystron Dissipated Power (0..5000kW) */
-    printf("Klystron DissipatedPower: raw=%u scaled=%.1f kW\n", rawVal, *outI);
+    //printf("Klystron DissipatedPower: raw=%u scaled=%.1f kW\n", rawVal, *outI);
 
     rawVal = getWord(rawData, 26);
     *outJ = rawVal / 10.0;  /* Klystron Oil Temperature (0..100°C) */
-    printf("Klystron OilTemp: raw=%u scaled=%.1f C\n", rawVal, *outJ);
+    //printf("Klystron OilTemp: raw=%u scaled=%.1f C\n", rawVal, *outJ);
 
     /* Status/Interlock Words (no scaling, raw bitfields) */
     rawVal = getWord(rawData, 10);
     *outK = (double)rawVal;  /* Thyratron Interlock (WORD5) */
-    printf("Thyratron InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+    //printf("Thyratron InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
     rawVal = getWord(rawData, 12);
     *outL = (double)rawVal;  /* Thyratron Status (WORD6) */
-    printf("Thyratron StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
+    //printf("Thyratron StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
     rawVal = getWord(rawData, 32);
     *outM = (double)rawVal;  /* Klystron Interlock (WORD16) */
-    printf("Klystron InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+    //printf("Klystron InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
     rawVal = getWord(rawData, 34);
     *outN = (double)rawVal;  /* Klystron Status (WORD17) */
-    printf("Klystron StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
+    //printf("Klystron StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
     *outO = 0.0;  /* Reserved */
 
-    printf("--- End Thyratron/Klystron decode ---\n");
+    //printf("--- End Thyratron/Klystron decode ---\n");
     return 0;  /* Success */
 }
 
@@ -205,73 +205,73 @@ long pptDecodeMagnetsTimersStatus(aSubRecord *prec) {
         return 1;
     }
     
-    printf("=== Magnets/Timers/Status Decode ===\n");
+    //printf("=== Magnets/Timers/Status Decode === %d\n", prec->nea);
     
     /* Focus Magnet Section (bytes 36-47) */
     rawVal = getWord(rawData, 36);
     *outA = rawVal / 10.0;  /* Focus Magnet Voltage Coil 1 (0..132V) */
-    printf("FocusMagnet Coil1Voltage: raw=%u scaled=%.1f V\n", rawVal, *outA);
+    //printf("FocusMagnet Coil1Voltage: raw=%u scaled=%.1f V\n", rawVal, *outA);
 
     rawVal = getWord(rawData, 38);
-    *outB = rawVal / 100.0;  /* Focus Magnet Current Coil 1 (0..50A) */
-    printf("FocusMagnet Coil1Current: raw=%u scaled=%.2f A\n", rawVal, *outB);
+    *outB = rawVal / 10.0;  /* Focus Magnet Current Coil 1 (0..50A) */
+    //printf("FocusMagnet Coil1Current: raw=%u scaled=%.2f A\n", rawVal, *outB);
 
     rawVal = getWord(rawData, 40);
     *outC = rawVal / 10.0;  /* Focus Magnet Voltage Coil 2 (0..132V) */
-    printf("FocusMagnet Coil2Voltage: raw=%u scaled=%.1f V\n", rawVal, *outC);
+    //printf("FocusMagnet Coil2Voltage: raw=%u scaled=%.1f V\n", rawVal, *outC);
 
     rawVal = getWord(rawData, 42);
-    *outD = rawVal / 100.0;  /* Focus Magnet Current Coil 2 (0..50A) */
-    printf("FocusMagnet Coil2Current: raw=%u scaled=%.2f A\n", rawVal, *outD);
+    *outD = rawVal / 10.0;  /* Focus Magnet Current Coil 2 (0..50A) */
+    //printf("FocusMagnet Coil2Current: raw=%u scaled=%.2f A\n", rawVal, *outD);
 
     rawVal = getWord(rawData, 44);
     *outE = rawVal / 10.0;  /* Focus Magnet Voltage Coil 3 (0..132V) */
-    printf("FocusMagnet Coil3Voltage: raw=%u scaled=%.1f V\n", rawVal, *outE);
+    //printf("FocusMagnet Coil3Voltage: raw=%u scaled=%.1f V\n", rawVal, *outE);
 
     rawVal = getWord(rawData, 46);
-    *outF = rawVal / 100.0;  /* Focus Magnet Current Coil 3 (0..50A) */
-    printf("FocusMagnet Coil3Current: raw=%u scaled=%.2f A\n", rawVal, *outF);
+    *outF = rawVal / 10.0;  /* Focus Magnet Current Coil 3 (0..50A) */
+    //printf("FocusMagnet Coil3Current: raw=%u scaled=%.2f A\n", rawVal, *outF);
 
     /* Premagnetisation Section (bytes 52-55) */
     rawVal = getWord(rawData, 52);
     *outG = rawVal / 10.0;  /* Premagnetisation Voltage (0..70V) */
-    printf("Premagnetisation Voltage: raw=%u scaled=%.1f V\n", rawVal, *outG);
+    //printf("Premagnetisation Voltage: raw=%u scaled=%.1f V\n", rawVal, *outG);
 
     rawVal = getWord(rawData, 54);
-    *outH = rawVal / 100.0;  /* Premagnetisation Current (0..20A) */
-    printf("Premagnetisation Current: raw=%u scaled=%.2f A\n", rawVal, *outH);
+    *outH = rawVal / 10.0;  /* Premagnetisation Current (0..20A) */
+    //printf("Premagnetisation Current: raw=%u scaled=%.2f A\n", rawVal, *outH);
 
     /* Timer Section (no scaling) */
     rawVal = getWord(rawData, 6);
     *outI = (double)rawVal;  /* Thyratron Timer Preheat Minutes (0..15) */
-    printf("Thyratron TimerPreheatMin: raw=%u value=%d min\n", rawVal, (int)*outI);
+    //printf("Thyratron TimerPreheatMin: raw=%u value=%d min\n", rawVal, (int)*outI);
 
     rawVal = getWord(rawData, 8);
     *outJ = (double)rawVal;  /* Thyratron Timer Preheat Seconds (0..60) */
-    printf("Thyratron TimerPreheatSec: raw=%u value=%d sec\n", rawVal, (int)*outJ);
+    //printf("Thyratron TimerPreheatSec: raw=%u value=%d sec\n", rawVal, (int)*outJ);
 
     rawVal = getWord(rawData, 28);
     *outK = (double)rawVal;  /* Klystron Timer Preheat100 Minutes (0..15) */
-    printf("Klystron TimerPreheat100Min: raw=%u value=%d min\n", rawVal, (int)*outK);
+    //printf("Klystron TimerPreheat100Min: raw=%u value=%d min\n", rawVal, (int)*outK);
 
     /* Status/Interlock Words (no scaling, raw bitfields) */
     rawVal = getWord(rawData, 48);
     *outL = (double)rawVal;  /* Focus Magnet Interlock (WORD24) */
-    printf("FocusMagnet InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+    //printf("FocusMagnet InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
     rawVal = getWord(rawData, 50);
     *outM = (double)rawVal;  /* Focus Magnet Status (WORD25) */
-    printf("FocusMagnet StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
+    //printf("FocusMagnet StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
     rawVal = getWord(rawData, 56);
     *outN = (double)rawVal;  /* Premagnetisation Interlock (WORD28) */
-    printf("Premagnetisation InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+    //printf("Premagnetisation InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
     rawVal = getWord(rawData, 58);
     *outO = (double)rawVal;  /* Premagnetisation Status (WORD29) */
-    printf("Premagnetisation StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
+    //printf("Premagnetisation StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
-    printf("--- End Magnets/Timers/Status decode ---\n");
+    //printf("--- End Magnets/Timers/Status decode ---\n");
     return 0;  /* Success */
 }
 

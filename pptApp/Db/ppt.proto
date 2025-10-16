@@ -6,8 +6,9 @@
 # Terminator for binary protocols
 Terminator = "";
 ReplyTimeout = 1000;
-ReadTimeout = 1000;
-MaxInput = 156;            # maximum message length
+ReadTimeout = 500;
+InTerminator="";
+MaxInput = 0;            # maximum message length
 
 # ============================================================================
 # Read all available bytes into a waveform (variable length up to NELM)
