@@ -1,30 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Phoebus Display for PPT Modulator
-  Auto-generated display for monitoring modulator parameters
--->
 <display version="2.0.0">
   <name>PPT Modulator</name>
+  <macros>
+    <P>PPT</P>
+    <R>MOD1</R>
+  </macros>
   <width>1200</width>
   <height>1400</height>
   <background_color>
     <color red="240" green="240" blue="240">
     </color>
   </background_color>
-  
-  <!-- Macros -->
-  <macros>
-    <P>PPT:MOD1:</P>
-  </macros>
-  
-  <!-- Title -->
   <widget type="label" version="2.0.0">
     <name>Title</name>
+    <text>PPT Modulator Monitor - $(R)</text>
     <x>10</x>
     <y>10</y>
     <width>1180</width>
     <height>40</height>
-    <text>PPT Modulator Monitor - $(P)</text>
     <font>
       <font family="Liberation Sans" style="BOLD" size="24.0">
       </font>
@@ -36,155 +29,133 @@
     <horizontal_alignment>1</horizontal_alignment>
     <vertical_alignment>1</vertical_alignment>
   </widget>
-  
-  <!-- ==================================================================== -->
-  <!-- HEATER SECTION -->
-  <!-- ==================================================================== -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>Heater Group</name>
     <x>10</x>
     <y>60</y>
     <width>580</width>
     <height>180</height>
     <style>3</style>
-    <foreground_color>
-      <color red="0" green="0" blue="128">
-      </color>
-    </foreground_color>
     <font>
       <font family="Liberation Sans" style="BOLD" size="14.0">
       </font>
     </font>
-    
+    <foreground_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </line_color>
     <widget type="label" version="2.0.0">
       <name>HeaterLabel</name>
+      <text>Heater Parameters</text>
       <x>10</x>
-      <y>0</y>
       <width>560</width>
       <height>25</height>
-      <text>Heater Parameters</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="16.0">
         </font>
       </font>
     </widget>
-    
-    <!-- Heater Voltage 1 -->
     <widget type="label" version="2.0.0">
       <name>HeaterVoltage1_Label</name>
+      <text>Heater Voltage 1:</text>
       <x>10</x>
       <y>35</y>
       <width>200</width>
       <height>25</height>
-      <text>Heater Voltage 1:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>HeaterVoltage1_Value</name>
-      <pv_name>$(P)HeaterVoltage1</pv_name>
+      <pv_name>$(P):$(R):Thy:HeaterVoltage</pv_name>
       <x>220</x>
       <y>35</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>HeaterVoltage1_Unit</name>
+      <text>V</text>
       <x>345</x>
       <y>35</y>
       <width>30</width>
       <height>25</height>
-      <text>V</text>
     </widget>
-    
-    <!-- Heater Voltage 2 -->
     <widget type="label" version="2.0.0">
       <name>HeaterVoltage2_Label</name>
+      <text>Heater Voltage 2:</text>
       <x>10</x>
       <y>70</y>
       <width>200</width>
       <height>25</height>
-      <text>Heater Voltage 2:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>HeaterVoltage2_Value</name>
-      <pv_name>$(P)HeaterVoltage2</pv_name>
+      <pv_name>$(P):$(R):Klys:HeaterVoltage</pv_name>
       <x>220</x>
       <y>70</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>HeaterVoltage2_Unit</name>
+      <text>V</text>
       <x>345</x>
       <y>70</y>
       <width>30</width>
       <height>25</height>
-      <text>V</text>
     </widget>
-    
-    <!-- Heater Current -->
     <widget type="label" version="2.0.0">
       <name>HeaterCurrent_Label</name>
+      <text>Heater Current:</text>
       <x>10</x>
       <y>105</y>
       <width>200</width>
       <height>25</height>
-      <text>Heater Current:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>HeaterCurrent_Value</name>
-      <pv_name>$(P)HeaterCurrent</pv_name>
+      <pv_name>$(P):$(R):Klys:HeaterCurrent</pv_name>
       <x>220</x>
       <y>105</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>HeaterCurrent_Unit</name>
+      <text>A</text>
       <x>345</x>
       <y>105</y>
       <width>30</width>
       <height>25</height>
-      <text>A</text>
     </widget>
-    
-    <!-- Total Current -->
     <widget type="label" version="2.0.0">
       <name>TotalCurrent_Label</name>
+      <text>Total Current:</text>
       <x>10</x>
       <y>140</y>
       <width>200</width>
       <height>25</height>
-      <text>Total Current:</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -192,13 +163,15 @@
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>TotalCurrent_Value</name>
-      <pv_name>$(P)TotalCurrent</pv_name>
+      <pv_name>$(P):$(R):Thy:TotalCurrent</pv_name>
       <x>220</x>
       <y>140</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
       <foreground_color>
         <color red="255" green="255" blue="255">
         </color>
@@ -207,676 +180,576 @@
         <color red="0" green="100" blue="0">
         </color>
       </background_color>
-      <font>
-        <font family="Liberation Sans" style="BOLD" size="14.0">
-        </font>
-      </font>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>TotalCurrent_Unit</name>
+      <text>A</text>
       <x>345</x>
       <y>140</y>
       <width>30</width>
       <height>25</height>
-      <text>A</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
       </font>
     </widget>
   </widget>
-  
-  <!-- ==================================================================== -->
-  <!-- KLYSTRON SECTION -->
-  <!-- ==================================================================== -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>Klystron Group</name>
     <x>610</x>
     <y>60</y>
     <width>580</width>
     <height>180</height>
     <style>3</style>
-    <foreground_color>
-      <color red="0" green="0" blue="128">
-      </color>
-    </foreground_color>
     <font>
       <font family="Liberation Sans" style="BOLD" size="14.0">
       </font>
     </font>
-    
+    <foreground_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </line_color>
     <widget type="label" version="2.0.0">
       <name>KlystronLabel</name>
+      <text>Klystron Parameters</text>
       <x>10</x>
-      <y>0</y>
       <width>560</width>
       <height>25</height>
-      <text>Klystron Parameters</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="16.0">
         </font>
       </font>
     </widget>
-    
-    <!-- Klystron Voltage -->
     <widget type="label" version="2.0.0">
       <name>KlystronVoltage_Label</name>
+      <text>Klystron Voltage:</text>
       <x>10</x>
       <y>35</y>
       <width>200</width>
       <height>25</height>
-      <text>Klystron Voltage:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>KlystronVoltage_Value</name>
-      <pv_name>$(P)KlystronVoltage</pv_name>
+      <pv_name>$(P):$(R):Klys:DissipatedPower</pv_name>
       <x>220</x>
       <y>35</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>KlystronVoltage_Unit</name>
+      <text>V</text>
       <x>345</x>
       <y>35</y>
       <width>30</width>
       <height>25</height>
-      <text>V</text>
     </widget>
-    
-    <!-- Klystron Current -->
     <widget type="label" version="2.0.0">
       <name>KlystronCurrent_Label</name>
+      <text>Klystron Current:</text>
       <x>10</x>
       <y>70</y>
       <width>200</width>
       <height>25</height>
-      <text>Klystron Current:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>KlystronCurrent_Value</name>
-      <pv_name>$(P)KlystronCurrent</pv_name>
+      <pv_name>$(P):$(R):Klys:OilTemp</pv_name>
       <x>220</x>
       <y>70</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>KlystronCurrent_Unit</name>
+      <text>A</text>
       <x>345</x>
       <y>70</y>
       <width>30</width>
       <height>25</height>
-      <text>A</text>
     </widget>
-    
-    <!-- Reservoir Voltage -->
     <widget type="label" version="2.0.0">
       <name>ReservoirVoltage_Label</name>
+      <text>Reservoir Voltage:</text>
       <x>10</x>
       <y>105</y>
       <width>200</width>
       <height>25</height>
-      <text>Reservoir Voltage:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>ReservoirVoltage_Value</name>
-      <pv_name>$(P)ReservoirVoltage</pv_name>
+      <pv_name>$(P):$(R):Thy:ReservoirVoltage</pv_name>
       <x>220</x>
       <y>105</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>ReservoirVoltage_Unit</name>
+      <text>V</text>
       <x>345</x>
       <y>105</y>
       <width>30</width>
       <height>25</height>
-      <text>V</text>
     </widget>
   </widget>
-  
-  <!-- ==================================================================== -->
-  <!-- MAGNET COILS SECTION -->
-  <!-- ==================================================================== -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>Magnet Group</name>
     <x>10</x>
     <y>250</y>
     <width>580</width>
     <height>220</height>
     <style>3</style>
-    <foreground_color>
-      <color red="0" green="0" blue="128">
-      </color>
-    </foreground_color>
     <font>
       <font family="Liberation Sans" style="BOLD" size="14.0">
       </font>
     </font>
-    
+    <foreground_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </line_color>
     <widget type="label" version="2.0.0">
       <name>MagnetLabel</name>
+      <text>Magnet Coils</text>
       <x>10</x>
-      <y>0</y>
       <width>560</width>
       <height>25</height>
-      <text>Magnet Coils</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="16.0">
         </font>
       </font>
     </widget>
-    
-    <!-- Magnet Coil 1 Voltage -->
     <widget type="label" version="2.0.0">
       <name>MagnetCoil1V_Label</name>
+      <text>Coil 1 Voltage:</text>
       <x>10</x>
       <y>35</y>
       <width>200</width>
       <height>25</height>
-      <text>Coil 1 Voltage:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>MagnetCoil1V_Value</name>
-      <pv_name>$(P)MagnetVoltageCoil1</pv_name>
+      <pv_name>$(P):$(R):Focus:Coil1Voltage</pv_name>
       <x>220</x>
       <y>35</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>MagnetCoil1V_Unit</name>
+      <text>V</text>
       <x>345</x>
       <y>35</y>
       <width>30</width>
       <height>25</height>
-      <text>V</text>
     </widget>
-    
-    <!-- Magnet Coil 1 Current -->
     <widget type="label" version="2.0.0">
       <name>MagnetCoil1I_Label</name>
+      <text>Coil 1 Current:</text>
       <x>10</x>
       <y>70</y>
       <width>200</width>
       <height>25</height>
-      <text>Coil 1 Current:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>MagnetCoil1I_Value</name>
-      <pv_name>$(P)MagnetCurrentCoil1</pv_name>
+      <pv_name>$(P):$(R):Focus:Coil1Current</pv_name>
       <x>220</x>
       <y>70</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>MagnetCoil1I_Unit</name>
+      <text>A</text>
       <x>345</x>
       <y>70</y>
       <width>30</width>
       <height>25</height>
-      <text>A</text>
     </widget>
-    
-    <!-- Magnet Coil 2 Voltage -->
     <widget type="label" version="2.0.0">
       <name>MagnetCoil2V_Label</name>
+      <text>Coil 2 Voltage:</text>
       <x>10</x>
       <y>105</y>
       <width>200</width>
       <height>25</height>
-      <text>Coil 2 Voltage:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>MagnetCoil2V_Value</name>
-      <pv_name>$(P)MagnetVoltageCoil2</pv_name>
+      <pv_name>$(P):$(R):Focus:Coil2Voltage</pv_name>
       <x>220</x>
       <y>105</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>MagnetCoil2V_Unit</name>
+      <text>V</text>
       <x>345</x>
       <y>105</y>
       <width>30</width>
       <height>25</height>
-      <text>V</text>
     </widget>
-    
-    <!-- Magnet Coil 2 Current -->
     <widget type="label" version="2.0.0">
       <name>MagnetCoil2I_Label</name>
+      <text>Coil 2 Current:</text>
       <x>10</x>
       <y>140</y>
       <width>200</width>
       <height>25</height>
-      <text>Coil 2 Current:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>MagnetCoil2I_Value</name>
-      <pv_name>$(P)MagnetCurrentCoil2</pv_name>
+      <pv_name>$(P):$(R):Focus:Coil2Current</pv_name>
       <x>220</x>
       <y>140</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>MagnetCoil2I_Unit</name>
+      <text>A</text>
       <x>345</x>
       <y>140</y>
       <width>30</width>
       <height>25</height>
-      <text>A</text>
     </widget>
   </widget>
-  
-  <!-- ==================================================================== -->
-  <!-- COOLING WATER SECTION -->
-  <!-- ==================================================================== -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>Water Group</name>
     <x>610</x>
     <y>250</y>
     <width>580</width>
     <height>220</height>
     <style>3</style>
-    <foreground_color>
-      <color red="0" green="0" blue="128">
-      </color>
-    </foreground_color>
     <font>
       <font family="Liberation Sans" style="BOLD" size="14.0">
       </font>
     </font>
-    
+    <foreground_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </line_color>
     <widget type="label" version="2.0.0">
       <name>WaterLabel</name>
+      <text>Body Water Cooling</text>
       <x>10</x>
-      <y>0</y>
       <width>560</width>
       <height>25</height>
-      <text>Body Water Cooling</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="16.0">
         </font>
       </font>
     </widget>
-    
-    <!-- Water Input Temperature -->
     <widget type="label" version="2.0.0">
       <name>WaterInTemp_Label</name>
+      <text>Input Temperature:</text>
       <x>10</x>
       <y>35</y>
       <width>200</width>
       <height>25</height>
-      <text>Input Temperature:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>WaterInTemp_Value</name>
-      <pv_name>$(P)BodyWaterInTemp</pv_name>
+      <pv_name>$(P):$(R):Klys:BodyWaterInTemp</pv_name>
       <x>220</x>
       <y>35</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>1</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>1</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>WaterInTemp_Unit</name>
+      <text>°C</text>
       <x>345</x>
       <y>35</y>
       <width>30</width>
       <height>25</height>
-      <text>°C</text>
     </widget>
-    
-    <!-- Water Output Temperature -->
     <widget type="label" version="2.0.0">
       <name>WaterOutTemp_Label</name>
+      <text>Output Temperature:</text>
       <x>10</x>
       <y>70</y>
       <width>200</width>
       <height>25</height>
-      <text>Output Temperature:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>WaterOutTemp_Value</name>
-      <pv_name>$(P)BodyWaterOutTemp</pv_name>
+      <pv_name>$(P):$(R):Klys:BodyWaterOutTemp</pv_name>
       <x>220</x>
       <y>70</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>1</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>1</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>WaterOutTemp_Unit</name>
+      <text>°C</text>
       <x>345</x>
       <y>70</y>
       <width>30</width>
       <height>25</height>
-      <text>°C</text>
     </widget>
-    
-    <!-- Water Flow -->
     <widget type="label" version="2.0.0">
       <name>WaterFlow_Label</name>
+      <text>Flow Rate:</text>
       <x>10</x>
       <y>105</y>
       <width>200</width>
       <height>25</height>
-      <text>Flow Rate:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>WaterFlow_Value</name>
-      <pv_name>$(P)BodyWaterFlow</pv_name>
+      <pv_name>$(P):$(R):Klys:BodyWaterFlow</pv_name>
       <x>220</x>
       <y>105</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <precision>2</precision>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
+      <precision>2</precision>
     </widget>
     <widget type="label" version="2.0.0">
       <name>WaterFlow_Unit</name>
+      <text>L/min</text>
       <x>345</x>
       <y>105</y>
       <width>60</width>
       <height>25</height>
-      <text>L/min</text>
     </widget>
   </widget>
-  
-  <!-- ==================================================================== -->
-  <!-- TIMERS SECTION -->
-  <!-- ==================================================================== -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>Timers Group</name>
     <x>10</x>
     <y>480</y>
     <width>580</width>
     <height>180</height>
     <style>3</style>
-    <foreground_color>
-      <color red="0" green="0" blue="128">
-      </color>
-    </foreground_color>
     <font>
       <font family="Liberation Sans" style="BOLD" size="14.0">
       </font>
     </font>
-    
+    <foreground_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </line_color>
     <widget type="label" version="2.0.0">
       <name>TimersLabel</name>
+      <text>Preheating Timers</text>
       <x>10</x>
-      <y>0</y>
       <width>560</width>
       <height>25</height>
-      <text>Preheating Timers</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="16.0">
         </font>
       </font>
     </widget>
-    
-    <!-- Timer Preheat Minutes -->
     <widget type="label" version="2.0.0">
       <name>TimerPreheatMin_Label</name>
+      <text>Preheat Minutes:</text>
       <x>10</x>
       <y>35</y>
       <width>200</width>
       <height>25</height>
-      <text>Preheat Minutes:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>TimerPreheatMin_Value</name>
-      <pv_name>$(P)TimerPreheatMin</pv_name>
+      <pv_name>$(P):$(R):Thy:TimerPreheatMin</pv_name>
       <x>220</x>
       <y>35</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
     </widget>
     <widget type="label" version="2.0.0">
       <name>TimerPreheatMin_Unit</name>
+      <text>min</text>
       <x>345</x>
       <y>35</y>
       <width>40</width>
       <height>25</height>
-      <text>min</text>
     </widget>
-    
-    <!-- Timer Preheat Seconds -->
     <widget type="label" version="2.0.0">
       <name>TimerPreheatSec_Label</name>
+      <text>Preheat Seconds:</text>
       <x>10</x>
       <y>70</y>
       <width>200</width>
       <height>25</height>
-      <text>Preheat Seconds:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>TimerPreheatSec_Value</name>
-      <pv_name>$(P)TimerPreheatSec</pv_name>
+      <pv_name>$(P):$(R):Thy:TimerPreheatSec</pv_name>
       <x>220</x>
       <y>70</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
     </widget>
     <widget type="label" version="2.0.0">
       <name>TimerPreheatSec_Unit</name>
+      <text>sec</text>
       <x>345</x>
       <y>70</y>
       <width>40</width>
       <height>25</height>
-      <text>sec</text>
     </widget>
-    
-    <!-- Timer Preheat 100% Minutes -->
     <widget type="label" version="2.0.0">
       <name>TimerPreheat100Min_Label</name>
+      <text>Preheat 100% Minutes:</text>
       <x>10</x>
       <y>105</y>
       <width>200</width>
       <height>25</height>
-      <text>Preheat 100% Minutes:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>TimerPreheat100Min_Value</name>
-      <pv_name>$(P)TimerPreheat100Min</pv_name>
+      <pv_name>$(P):$(R):Klys:TimerPreheat100Min</pv_name>
       <x>220</x>
       <y>105</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
     </widget>
     <widget type="label" version="2.0.0">
       <name>TimerPreheat100Min_Unit</name>
+      <text>min</text>
       <x>345</x>
       <y>105</y>
       <width>40</width>
       <height>25</height>
-      <text>min</text>
     </widget>
-    
-    <!-- Timer Preheat 100% Seconds -->
     <widget type="label" version="2.0.0">
       <name>TimerPreheat100Sec_Label</name>
+      <text>Preheat 100% Seconds:</text>
       <x>10</x>
       <y>140</y>
       <width>200</width>
       <height>25</height>
-      <text>Preheat 100% Seconds:</text>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>TimerPreheat100Sec_Value</name>
-      <pv_name>$(P)TimerPreheat100Sec</pv_name>
+      <pv_name>$(P):$(R):Klys:TimerPreheat100Min</pv_name>
       <x>220</x>
       <y>140</y>
       <width>120</width>
       <height>25</height>
-      <format>1</format>
-      <foreground_color>
-        <color red="0" green="0" blue="0">
-        </color>
-      </foreground_color>
       <background_color>
         <color red="220" green="220" blue="220">
         </color>
       </background_color>
+      <format>1</format>
     </widget>
     <widget type="label" version="2.0.0">
       <name>TimerPreheat100Sec_Unit</name>
+      <text>sec</text>
       <x>345</x>
       <y>140</y>
       <width>40</width>
       <height>25</height>
-      <text>sec</text>
     </widget>
   </widget>
-  
-  <!-- ==================================================================== -->
-  <!-- STATUS & INTERLOCKS SECTION -->
-  <!-- ==================================================================== -->
-  
-  <!-- Thyratron Section -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>ThyratronSection</name>
     <x>10</x>
     <y>500</y>
     <width>680</width>
-    <height>220</height>
+    <height>270</height>
     <style>3</style>
     <widget type="label" version="2.0.0">
       <name>ThySectionLabel</name>
+      <text>THYRATRON - Status &amp; Interlocks</text>
       <x>10</x>
       <y>5</y>
       <width>660</width>
       <height>30</height>
-      <text>THYRATRON - Status &amp; Interlocks</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="18.0">
         </font>
@@ -886,15 +759,13 @@
         </color>
       </foreground_color>
     </widget>
-
-    <!-- Interlocks -->
     <widget type="label" version="2.0.0">
       <name>ThyInterlocksLabel</name>
+      <text>Interlocks (red = alarm)</text>
       <x>20</x>
       <y>40</y>
       <width>300</width>
       <height>25</height>
-      <text>Interlocks (red = alarm)</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -902,11 +773,9 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>ThyILHeaterVoltageHigh</name>
-      <pv_name>$(P)Thy:Interlock:HeaterVoltageHigh</pv_name>
+      <pv_name>$(P):$(R):Thy:Interlock:HeaterVoltageHigh</pv_name>
       <x>30</x>
       <y>70</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -918,19 +787,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>ThyILHeaterVoltageHighLabel</name>
+      <text>Heater Voltage High</text>
       <x>60</x>
       <y>67</y>
       <width>250</width>
       <height>25</height>
-      <text>Heater Voltage High</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>ThyILHeaterVoltageLow</name>
-      <pv_name>$(P)Thy:Interlock:HeaterVoltageLow</pv_name>
+      <pv_name>$(P):$(R):Thy:Interlock:HeaterVoltageLow</pv_name>
       <x>30</x>
       <y>95</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -942,19 +809,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>ThyILHeaterVoltageLowLabel</name>
+      <text>Heater Voltage Low</text>
       <x>60</x>
       <y>92</y>
       <width>250</width>
       <height>25</height>
-      <text>Heater Voltage Low</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>ThyILReservoirVoltageHigh</name>
-      <pv_name>$(P)Thy:Interlock:ReservoirVoltageHigh</pv_name>
+      <pv_name>$(P):$(R):Thy:Interlock:ReservoirVoltageHigh</pv_name>
       <x>30</x>
       <y>120</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -966,19 +831,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>ThyILReservoirVoltageHighLabel</name>
+      <text>Reservoir Voltage High</text>
       <x>60</x>
       <y>117</y>
       <width>250</width>
       <height>25</height>
-      <text>Reservoir Voltage High</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>ThyILReservoirVoltageLow</name>
-      <pv_name>$(P)Thy:Interlock:ReservoirVoltageLow</pv_name>
+      <pv_name>$(P):$(R):Thy:Interlock:ReservoirVoltageLow</pv_name>
       <x>30</x>
       <y>145</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -990,19 +853,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>ThyILReservoirVoltageLowLabel</name>
+      <text>Reservoir Voltage Low</text>
       <x>60</x>
       <y>142</y>
       <width>250</width>
       <height>25</height>
-      <text>Reservoir Voltage Low</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>ThyILTotalCurrentHigh</name>
-      <pv_name>$(P)Thy:Interlock:TotalCurrentHigh</pv_name>
+      <pv_name>$(P):$(R):Thy:Interlock:TotalCurrentHigh</pv_name>
       <x>30</x>
       <y>170</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1014,21 +875,63 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>ThyILTotalCurrentHighLabel</name>
+      <text>Total Current High</text>
       <x>60</x>
       <y>167</y>
       <width>250</width>
       <height>25</height>
-      <text>Total Current High</text>
     </widget>
-
-    <!-- Status -->
+    <widget type="led" version="2.0.0">
+      <name>ThyILTotalCurrentLow</name>
+      <pv_name>$(P):$(R):Thy:Interlock:TotalCurrentLow</pv_name>
+      <x>30</x>
+      <y>195</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>ThyILTotalCurrentLowLabel</name>
+      <text>Total Current Low</text>
+      <x>60</x>
+      <y>192</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ThyILTempSwitch</name>
+      <pv_name>$(P):$(R):Thy:Interlock:TempSwitch</pv_name>
+      <x>30</x>
+      <y>220</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>ThyILTempSwitchLabel</name>
+      <text>Temperature Switch</text>
+      <x>60</x>
+      <y>217</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
     <widget type="label" version="2.0.0">
       <name>ThyStatusLabel</name>
+      <text>Status (green = active)</text>
       <x>350</x>
       <y>40</y>
       <width>300</width>
       <height>25</height>
-      <text>Status (green = active)</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -1036,11 +939,9 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>ThyStatusReady</name>
-      <pv_name>$(P)Thy:Status:Ready</pv_name>
+      <pv_name>$(P):$(R):Thy:Status:Ready</pv_name>
       <x>360</x>
       <y>70</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1052,19 +953,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>ThyStatusReadyLabel</name>
+      <text>Ready</text>
       <x>390</x>
       <y>67</y>
       <width>250</width>
       <height>25</height>
-      <text>Ready</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>ThyStatusContactsOn</name>
-      <pv_name>$(P)Thy:Status:ContactsOn</pv_name>
+      <pv_name>$(P):$(R):Thy:Status:ContactsOn</pv_name>
       <x>360</x>
       <y>95</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1076,19 +975,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>ThyStatusContactsOnLabel</name>
+      <text>Contacts On</text>
       <x>390</x>
       <y>92</y>
       <width>250</width>
       <height>25</height>
-      <text>Contacts On</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>ThyStatusPreheat</name>
-      <pv_name>$(P)Thy:Status:PreheatingRunning</pv_name>
+      <pv_name>$(P):$(R):Thy:Status:PreheatingRunning</pv_name>
       <x>360</x>
       <y>120</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1100,29 +997,27 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>ThyStatusPreheatLabel</name>
+      <text>Preheating Running</text>
       <x>390</x>
       <y>117</y>
       <width>250</width>
       <height>25</height>
-      <text>Preheating Running</text>
     </widget>
   </widget>
-  
-  <!-- Klystron Section -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>KlystronSection</name>
     <x>700</x>
     <y>500</y>
     <width>680</width>
-    <height>220</height>
+    <height>480</height>
     <style>3</style>
     <widget type="label" version="2.0.0">
       <name>KlysSectionLabel</name>
+      <text>KLYSTRON - Status &amp; Interlocks</text>
       <x>10</x>
       <y>5</y>
       <width>660</width>
       <height>30</height>
-      <text>KLYSTRON - Status &amp; Interlocks</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="18.0">
         </font>
@@ -1132,15 +1027,13 @@
         </color>
       </foreground_color>
     </widget>
-
-    <!-- Interlocks -->
     <widget type="label" version="2.0.0">
       <name>KlysInterlocksLabel</name>
+      <text>Interlocks (red = alarm)</text>
       <x>20</x>
       <y>40</y>
       <width>300</width>
       <height>25</height>
-      <text>Interlocks (red = alarm)</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -1148,11 +1041,9 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>KlysILHeaterCurrentHigh</name>
-      <pv_name>$(P)Klys:Interlock:HeaterCurrentHigh</pv_name>
+      <pv_name>$(P):$(R):Klys:Interlock:HeaterCurrentHigh</pv_name>
       <x>30</x>
       <y>70</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1164,19 +1055,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>KlysILHeaterCurrentHighLabel</name>
+      <text>Heater Current High</text>
       <x>60</x>
       <y>67</y>
       <width>250</width>
       <height>25</height>
-      <text>Heater Current High</text>
     </widget>
     <widget type="led" version="2.0.0">
-      <name>KlysILBodyWaterFlow</name>
-      <pv_name>$(P)Klys:Interlock:BodyWaterFlow</pv_name>
+      <name>KlysILHeaterVoltageHigh</name>
+      <pv_name>$(P):$(R):Klys:Interlock:HeaterVoltageHigh</pv_name>
       <x>30</x>
       <y>95</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1187,20 +1076,172 @@
       </on_color>
     </widget>
     <widget type="label" version="2.0.0">
-      <name>KlysILBodyWaterFlowLabel</name>
+      <name>KlysILHeaterVoltageHighLabel</name>
+      <text>Heater Voltage High</text>
       <x>60</x>
       <y>92</y>
       <width>250</width>
       <height>25</height>
-      <text>Body Water Flow</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILHeaterVoltageLow</name>
+      <pv_name>$(P):$(R):Klys:Interlock:HeaterVoltageLow</pv_name>
+      <x>30</x>
+      <y>120</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILHeaterVoltageLowLabel</name>
+      <text>Heater Voltage Low</text>
+      <x>60</x>
+      <y>117</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILHeaterCurrentLow</name>
+      <pv_name>$(P):$(R):Klys:Interlock:HeaterCurrentLow</pv_name>
+      <x>30</x>
+      <y>145</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILHeaterCurrentLowLabel</name>
+      <text>Heater Current Low</text>
+      <x>60</x>
+      <y>142</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILPreheatingError</name>
+      <pv_name>$(P):$(R):Klys:Interlock:PreheatingError</pv_name>
+      <x>30</x>
+      <y>170</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILPreheatingErrorLabel</name>
+      <text>Preheating Error</text>
+      <x>60</x>
+      <y>167</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILVacuumWarning</name>
+      <pv_name>$(P):$(R):Klys:Interlock:VacuumWarning</pv_name>
+      <x>30</x>
+      <y>195</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="255" green="165" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILVacuumWarningLabel</name>
+      <text>Vacuum Warning</text>
+      <x>60</x>
+      <y>192</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILVacuumAlarm</name>
+      <pv_name>$(P):$(R):Klys:Interlock:VacuumAlarm</pv_name>
+      <x>30</x>
+      <y>220</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILVacuumAlarmLabel</name>
+      <text>Vacuum Alarm</text>
+      <x>60</x>
+      <y>217</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILTankOilLevel</name>
+      <pv_name>$(P):$(R):Klys:Interlock:TankOilLevel</pv_name>
+      <x>30</x>
+      <y>245</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILTankOilLevelLabel</name>
+      <text>Tank Oil Level</text>
+      <x>60</x>
+      <y>242</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILDissipatedPowerError</name>
+      <pv_name>$(P):$(R):Klys:Interlock:DissipatedPowerError</pv_name>
+      <x>30</x>
+      <y>270</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILDissipatedPowerErrorLabel</name>
+      <text>Dissipated Power Error</text>
+      <x>60</x>
+      <y>267</y>
+      <width>250</width>
+      <height>25</height>
     </widget>
     <widget type="led" version="2.0.0">
       <name>KlysILTankTemperature</name>
-      <pv_name>$(P)Klys:Interlock:TankTemperature</pv_name>
+      <pv_name>$(P):$(R):Klys:Interlock:TankTemperature</pv_name>
       <x>30</x>
-      <y>120</y>
-      <width>20</width>
-      <height>20</height>
+      <y>295</y>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1212,21 +1253,151 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>KlysILTankTemperatureLabel</name>
+      <text>Tank Temperature</text>
       <x>60</x>
-      <y>117</y>
+      <y>292</y>
       <width>250</width>
       <height>25</height>
-      <text>Tank Temperature</text>
     </widget>
-
-    <!-- Status -->
+    <widget type="led" version="2.0.0">
+      <name>KlysILBodyWaterFlow</name>
+      <pv_name>$(P):$(R):Klys:Interlock:BodyWaterFlow</pv_name>
+      <x>30</x>
+      <y>320</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILBodyWaterFlowLabel</name>
+      <text>Body Water Flow</text>
+      <x>60</x>
+      <y>317</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILBodyWaterInTemp</name>
+      <pv_name>$(P):$(R):Klys:Interlock:BodyWaterInTemp</pv_name>
+      <x>30</x>
+      <y>345</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILBodyWaterInTempLabel</name>
+      <text>Body Water In Temp</text>
+      <x>60</x>
+      <y>342</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILBodyWaterOutTemp</name>
+      <pv_name>$(P):$(R):Klys:Interlock:BodyWaterOutTemp</pv_name>
+      <x>30</x>
+      <y>370</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILBodyWaterOutTempLabel</name>
+      <text>Body Water Out Temp</text>
+      <x>60</x>
+      <y>367</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILCollectorWater</name>
+      <pv_name>$(P):$(R):Klys:Interlock:CollectorWater</pv_name>
+      <x>30</x>
+      <y>395</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILCollectorWaterLabel</name>
+      <text>Collector Water</text>
+      <x>60</x>
+      <y>392</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILMaxPulseVoltage</name>
+      <pv_name>$(P):$(R):Klys:Interlock:MaxPulseVoltage</pv_name>
+      <x>30</x>
+      <y>420</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILMaxPulseVoltageLabel</name>
+      <text>Max Pulse Voltage</text>
+      <x>60</x>
+      <y>417</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysILMaxPulseCurrent</name>
+      <pv_name>$(P):$(R):Klys:Interlock:MaxPulseCurrent</pv_name>
+      <x>30</x>
+      <y>445</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysILMaxPulseCurrentLabel</name>
+      <text>Max Pulse Current</text>
+      <x>60</x>
+      <y>442</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
     <widget type="label" version="2.0.0">
       <name>KlysStatusLabel</name>
+      <text>Status (green = active)</text>
       <x>350</x>
       <y>40</y>
       <width>300</width>
       <height>25</height>
-      <text>Status (green = active)</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -1234,11 +1405,9 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>KlysStatusReady</name>
-      <pv_name>$(P)Klys:Status:Ready</pv_name>
+      <pv_name>$(P):$(R):Klys:Status:Ready</pv_name>
       <x>360</x>
       <y>70</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1250,19 +1419,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>KlysStatusReadyLabel</name>
+      <text>Ready</text>
       <x>390</x>
       <y>67</y>
       <width>250</width>
       <height>25</height>
-      <text>Ready</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>KlysStatusOnOff</name>
-      <pv_name>$(P)Klys:Status:OnOff</pv_name>
+      <pv_name>$(P):$(R):Klys:Status:OnOff</pv_name>
       <x>360</x>
       <y>95</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1274,29 +1441,93 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>KlysStatusOnOffLabel</name>
+      <text>On/Off</text>
       <x>390</x>
       <y>92</y>
       <width>250</width>
       <height>25</height>
-      <text>On/Off</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysStatusTimer100Running</name>
+      <pv_name>$(P):$(R):Klys:Status:Timer100Running</pv_name>
+      <x>360</x>
+      <y>120</y>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysStatusTimer100RunningLabel</name>
+      <text>Timer 100% Running</text>
+      <x>390</x>
+      <y>117</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysStatusHeaterVoltage80</name>
+      <pv_name>$(P):$(R):Klys:Status:HeaterVoltage80Percent</pv_name>
+      <x>360</x>
+      <y>145</y>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysStatusHeaterVoltage80Label</name>
+      <text>Heater Voltage 80%</text>
+      <x>390</x>
+      <y>142</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>KlysStatusHeaterVoltage100</name>
+      <pv_name>$(P):$(R):Klys:Status:HeaterVoltage100Percent</pv_name>
+      <x>360</x>
+      <y>170</y>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>KlysStatusHeaterVoltage100Label</name>
+      <text>Heater Voltage 100%</text>
+      <x>390</x>
+      <y>167</y>
+      <width>250</width>
+      <height>25</height>
     </widget>
   </widget>
-  
-  <!-- Focus Magnets Section -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>FocusSection</name>
     <x>10</x>
-    <y>730</y>
+    <y>780</y>
     <width>680</width>
-    <height>220</height>
+    <height>480</height>
     <style>3</style>
     <widget type="label" version="2.0.0">
       <name>FocusSectionLabel</name>
+      <text>FOCUS MAGNETS - Status &amp; Interlocks</text>
       <x>10</x>
       <y>5</y>
       <width>660</width>
       <height>30</height>
-      <text>FOCUS MAGNETS - Status &amp; Interlocks</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="18.0">
         </font>
@@ -1306,15 +1537,13 @@
         </color>
       </foreground_color>
     </widget>
-
-    <!-- Interlocks -->
     <widget type="label" version="2.0.0">
       <name>FocusInterlocksLabel</name>
+      <text>Interlocks (red = alarm)</text>
       <x>20</x>
       <y>40</y>
       <width>300</width>
       <height>25</height>
-      <text>Interlocks (red = alarm)</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -1322,11 +1551,9 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>FocusILCoil1CurrentHigh</name>
-      <pv_name>$(P)Focus:Interlock:Coil1CurrentHigh</pv_name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil1CurrentHigh</pv_name>
       <x>30</x>
       <y>70</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1338,19 +1565,83 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>FocusILCoil1CurrentHighLabel</name>
+      <text>Coil 1 Current High</text>
       <x>60</x>
       <y>67</y>
       <width>250</width>
       <height>25</height>
-      <text>Coil 1 Current High</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil1CurrentLow</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil1CurrentLow</pv_name>
+      <x>30</x>
+      <y>95</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil1CurrentLowLabel</name>
+      <text>Coil 1 Current Low</text>
+      <x>60</x>
+      <y>92</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil1VoltageHigh</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil1VoltageHigh</pv_name>
+      <x>30</x>
+      <y>120</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil1VoltageHighLabel</name>
+      <text>Coil 1 Voltage High</text>
+      <x>60</x>
+      <y>117</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil1VoltageLow</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil1VoltageLow</pv_name>
+      <x>30</x>
+      <y>145</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil1VoltageLowLabel</name>
+      <text>Coil 1 Voltage Low</text>
+      <x>60</x>
+      <y>142</y>
+      <width>250</width>
+      <height>25</height>
     </widget>
     <widget type="led" version="2.0.0">
       <name>FocusILCoil2CurrentHigh</name>
-      <pv_name>$(P)Focus:Interlock:Coil2CurrentHigh</pv_name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil2CurrentHigh</pv_name>
       <x>30</x>
-      <y>95</y>
-      <width>20</width>
-      <height>20</height>
+      <y>170</y>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1362,19 +1653,83 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>FocusILCoil2CurrentHighLabel</name>
+      <text>Coil 2 Current High</text>
       <x>60</x>
-      <y>92</y>
+      <y>167</y>
       <width>250</width>
       <height>25</height>
-      <text>Coil 2 Current High</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil2CurrentLow</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil2CurrentLow</pv_name>
+      <x>30</x>
+      <y>195</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil2CurrentLowLabel</name>
+      <text>Coil 2 Current Low</text>
+      <x>60</x>
+      <y>192</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil2VoltageHigh</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil2VoltageHigh</pv_name>
+      <x>30</x>
+      <y>220</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil2VoltageHighLabel</name>
+      <text>Coil 2 Voltage High</text>
+      <x>60</x>
+      <y>217</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil2VoltageLow</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil2VoltageLow</pv_name>
+      <x>30</x>
+      <y>245</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil2VoltageLowLabel</name>
+      <text>Coil 2 Voltage Low</text>
+      <x>60</x>
+      <y>242</y>
+      <width>250</width>
+      <height>25</height>
     </widget>
     <widget type="led" version="2.0.0">
       <name>FocusILCoil3CurrentHigh</name>
-      <pv_name>$(P)Focus:Interlock:Coil3CurrentHigh</pv_name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil3CurrentHigh</pv_name>
       <x>30</x>
-      <y>120</y>
-      <width>20</width>
-      <height>20</height>
+      <y>270</y>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1386,19 +1741,83 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>FocusILCoil3CurrentHighLabel</name>
+      <text>Coil 3 Current High</text>
       <x>60</x>
-      <y>117</y>
+      <y>267</y>
       <width>250</width>
       <height>25</height>
-      <text>Coil 3 Current High</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil3CurrentLow</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil3CurrentLow</pv_name>
+      <x>30</x>
+      <y>295</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil3CurrentLowLabel</name>
+      <text>Coil 3 Current Low</text>
+      <x>60</x>
+      <y>292</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil3VoltageHigh</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil3VoltageHigh</pv_name>
+      <x>30</x>
+      <y>320</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil3VoltageHighLabel</name>
+      <text>Coil 3 Voltage High</text>
+      <x>60</x>
+      <y>317</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILCoil3VoltageLow</name>
+      <pv_name>$(P):$(R):Focus:Interlock:Coil3VoltageLow</pv_name>
+      <x>30</x>
+      <y>345</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILCoil3VoltageLowLabel</name>
+      <text>Coil 3 Voltage Low</text>
+      <x>60</x>
+      <y>342</y>
+      <width>250</width>
+      <height>25</height>
     </widget>
     <widget type="led" version="2.0.0">
       <name>FocusILWaterFlowAlarm</name>
-      <pv_name>$(P)Focus:Interlock:WaterFlowAlarm</pv_name>
+      <pv_name>$(P):$(R):Focus:Interlock:WaterFlowAlarm</pv_name>
       <x>30</x>
-      <y>145</y>
-      <width>20</width>
-      <height>20</height>
+      <y>370</y>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1410,21 +1829,63 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>FocusILWaterFlowAlarmLabel</name>
+      <text>Water Flow Alarm</text>
       <x>60</x>
-      <y>142</y>
+      <y>367</y>
       <width>250</width>
       <height>25</height>
-      <text>Water Flow Alarm</text>
     </widget>
-
-    <!-- Status -->
+    <widget type="led" version="2.0.0">
+      <name>FocusILTemperatureAlarm</name>
+      <pv_name>$(P):$(R):Focus:Interlock:TemperatureAlarm</pv_name>
+      <x>30</x>
+      <y>395</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILTemperatureAlarmLabel</name>
+      <text>Temperature Alarm</text>
+      <x>60</x>
+      <y>392</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>FocusILShortCircuitGround</name>
+      <pv_name>$(P):$(R):Focus:Interlock:ShortCircuitGround</pv_name>
+      <x>30</x>
+      <y>420</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FocusILShortCircuitGroundLabel</name>
+      <text>Short Circuit Ground</text>
+      <x>60</x>
+      <y>417</y>
+      <width>250</width>
+      <height>25</height>
+    </widget>
     <widget type="label" version="2.0.0">
       <name>FocusStatusLabel</name>
+      <text>Status (green = active)</text>
       <x>350</x>
       <y>40</y>
       <width>300</width>
       <height>25</height>
-      <text>Status (green = active)</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -1432,11 +1893,9 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>FocusStatusReady</name>
-      <pv_name>$(P)Focus:Status:Ready</pv_name>
+      <pv_name>$(P):$(R):Focus:Status:Ready</pv_name>
       <x>360</x>
       <y>70</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1448,19 +1907,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>FocusStatusReadyLabel</name>
+      <text>Ready</text>
       <x>390</x>
       <y>67</y>
       <width>250</width>
       <height>25</height>
-      <text>Ready</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>FocusStatusOnOff</name>
-      <pv_name>$(P)Focus:Status:OnOff</pv_name>
+      <pv_name>$(P):$(R):Focus:Status:OnOff</pv_name>
       <x>360</x>
       <y>95</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1472,16 +1929,16 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>FocusStatusOnOffLabel</name>
+      <text>On/Off</text>
       <x>390</x>
       <y>92</y>
       <width>250</width>
       <height>25</height>
-      <text>On/Off</text>
     </widget>
   </widget>
   <widget type="led" version="2.0.0">
     <name>ConnectionLED</name>
-    <pv_name>$(P)HeaterVoltage1</pv_name>
+    <pv_name>$(P):$(R):Connected</pv_name>
     <x>1140</x>
     <y>15</y>
     <width>40</width>
@@ -1495,22 +1952,20 @@
       </color>
     </on_color>
   </widget>
-  
-  <!-- Premagnetisation Section -->
-  <widget type="group" version="2.0.0">
+  <widget type="group" version="3.0.0">
     <name>PremagSection</name>
     <x>700</x>
-    <y>730</y>
+    <y>990</y>
     <width>680</width>
-    <height>220</height>
+    <height>270</height>
     <style>3</style>
     <widget type="label" version="2.0.0">
       <name>PremagSectionLabel</name>
+      <text>PREMAGNETISATION - Status &amp; Interlocks</text>
       <x>10</x>
       <y>5</y>
       <width>660</width>
       <height>30</height>
-      <text>PREMAGNETISATION - Status &amp; Interlocks</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="18.0">
         </font>
@@ -1520,15 +1975,13 @@
         </color>
       </foreground_color>
     </widget>
-
-    <!-- Interlocks -->
     <widget type="label" version="2.0.0">
       <name>PremagInterlocksLabel</name>
+      <text>Interlocks (red = alarm)</text>
       <x>20</x>
       <y>40</y>
       <width>300</width>
       <height>25</height>
-      <text>Interlocks (red = alarm)</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -1536,11 +1989,9 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>PremagILVoltageHigh</name>
-      <pv_name>$(P)Premag:Interlock:VoltageHigh</pv_name>
+      <pv_name>$(P):$(R):Premag:Interlock:VoltageHigh</pv_name>
       <x>30</x>
       <y>70</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1552,19 +2003,39 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>PremagILVoltageHighLabel</name>
+      <text>Voltage High</text>
       <x>60</x>
       <y>67</y>
       <width>250</width>
       <height>25</height>
-      <text>Voltage High</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>PremagILVoltageLow</name>
+      <pv_name>$(P):$(R):Premag:Interlock:VoltageLow</pv_name>
+      <x>30</x>
+      <y>95</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>PremagILVoltageLowLabel</name>
+      <text>Voltage Low</text>
+      <x>60</x>
+      <y>92</y>
+      <width>250</width>
+      <height>25</height>
     </widget>
     <widget type="led" version="2.0.0">
       <name>PremagILCurrentHigh</name>
-      <pv_name>$(P)Premag:Interlock:CurrentHigh</pv_name>
+      <pv_name>$(P):$(R):Premag:Interlock:CurrentHigh</pv_name>
       <x>30</x>
-      <y>95</y>
-      <width>20</width>
-      <height>20</height>
+      <y>120</y>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1576,19 +2047,39 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>PremagILCurrentHighLabel</name>
+      <text>Current High</text>
       <x>60</x>
-      <y>92</y>
+      <y>117</y>
       <width>250</width>
       <height>25</height>
-      <text>Current High</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>PremagILCurrentLow</name>
+      <pv_name>$(P):$(R):Premag:Interlock:CurrentLow</pv_name>
+      <x>30</x>
+      <y>145</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>PremagILCurrentLowLabel</name>
+      <text>Current Low</text>
+      <x>60</x>
+      <y>142</y>
+      <width>250</width>
+      <height>25</height>
     </widget>
     <widget type="led" version="2.0.0">
       <name>PremagILHVCableNotConnected</name>
-      <pv_name>$(P)Premag:Interlock:HVCableNotConnected</pv_name>
+      <pv_name>$(P):$(R):Premag:Interlock:HVCableNotConnected</pv_name>
       <x>30</x>
-      <y>120</y>
-      <width>20</width>
-      <height>20</height>
+      <y>170</y>
       <off_color>
         <color red="0" green="170" blue="0">
         </color>
@@ -1600,21 +2091,19 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>PremagILHVCableNotConnectedLabel</name>
+      <text>HV Cable Not Connected</text>
       <x>60</x>
-      <y>117</y>
+      <y>167</y>
       <width>250</width>
       <height>25</height>
-      <text>HV Cable Not Connected</text>
     </widget>
-
-    <!-- Status -->
     <widget type="label" version="2.0.0">
       <name>PremagStatusLabel</name>
+      <text>Status (green = active)</text>
       <x>350</x>
       <y>40</y>
       <width>300</width>
       <height>25</height>
-      <text>Status (green = active)</text>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -1622,11 +2111,9 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>PremagStatusReady</name>
-      <pv_name>$(P)Premag:Status:Ready</pv_name>
+      <pv_name>$(P):$(R):Premag:Status:Ready</pv_name>
       <x>360</x>
       <y>70</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1638,19 +2125,17 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>PremagStatusReadyLabel</name>
+      <text>Ready</text>
       <x>390</x>
       <y>67</y>
       <width>250</width>
       <height>25</height>
-      <text>Ready</text>
     </widget>
     <widget type="led" version="2.0.0">
       <name>PremagStatusOnOff</name>
-      <pv_name>$(P)Premag:Status:OnOff</pv_name>
+      <pv_name>$(P):$(R):Premag:Status:OnOff</pv_name>
       <x>360</x>
       <y>95</y>
-      <width>20</width>
-      <height>20</height>
       <off_color>
         <color red="140" green="140" blue="140">
         </color>
@@ -1662,33 +2147,29 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>PremagStatusOnOffLabel</name>
+      <text>On/Off</text>
       <x>390</x>
       <y>92</y>
       <width>250</width>
       <height>25</height>
-      <text>On/Off</text>
     </widget>
   </widget>
-  
   <widget type="label" version="2.0.0">
     <name>ConnectionLabel</name>
+    <text>IOC Connected:</text>
     <x>1000</x>
     <y>15</y>
     <width>130</width>
     <height>30</height>
-    <text>IOC Connected:</text>
     <horizontal_alignment>2</horizontal_alignment>
     <vertical_alignment>1</vertical_alignment>
   </widget>
-  
-  <!-- Footer -->
   <widget type="label" version="2.0.0">
     <name>Footer</name>
+    <text>PPT Modulator Monitor - TCP Port 2000 - 86 bytes binary data</text>
     <x>10</x>
     <y>1370</y>
     <width>1180</width>
-    <height>20</height>
-    <text>PPT Modulator Monitor - TCP Port 2000 - 86 bytes binary data</text>
     <font>
       <font family="Liberation Sans" style="ITALIC" size="11.0">
       </font>
@@ -1699,5 +2180,4 @@
     </foreground_color>
     <horizontal_alignment>1</horizontal_alignment>
   </widget>
-  
 </display>
