@@ -9,6 +9,8 @@ include $(TOP)/configure/CONFIG
 # Build the IOC application
 
 PROD_IOC = ppt
+LIBRARY_IOC += pptsup
+
 # ppt.dbd will be created and installed
 DBD += ppt.dbd
 
@@ -18,6 +20,7 @@ ppt_DBD += stream.dbd ## streamdevice.dbd
 ppt_DBD += asyn.dbd 
 ppt_DBD += drvAsynIPPort.dbd
 ppt_DBD += drvAsynSerialPort.dbd
+ppt_DBD += pptsup.dbd 
 
 
 # Include dbd files from all support applications:
@@ -33,7 +36,7 @@ ppt_LIBS += asyn
 ppt_SRCS += ppt_registerRecordDeviceDriver.cpp
 
 # Add aSub record subroutine for decoding binary data
-ppt_SRCS += pptDecode.c
+pptsup_SRCS += pptDecode.c
 
 # Build the main IOC entry point on workstation OSs.
 ppt_SRCS_DEFAULT += pptMain.cpp
@@ -43,7 +46,8 @@ ppt_SRCS_vxWorks += -nil-
 #ppt_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
 
 # Finally link to the EPICS Base libraries
-ppt_LIBS += $(EPICS_BASE_IOC_LIBS)
+ppt_LIBS += $(LIBRARY_IOC)
+ppt_LIBS += $(EPICS_BASE_IOC_LIBS) 
 
 #===========================
 

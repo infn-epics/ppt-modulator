@@ -1,5 +1,5 @@
 epicsEnvSet("IOC","iocppt")
-epicsEnvSet("TOP","/Users/andreamichelotti/progetti/ppt-modulator")
+epicsEnvSet("TOP","/app/ppt-modulator")
 epicsEnvSet("EPICS_BASE","/epics/epics-base")
 epicsEnvSet("SUPPORT","/epics/support")
 epicsEnvSet("STREAMDEVICE","/epics/support/StreamDevice")
