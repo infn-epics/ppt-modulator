@@ -38,7 +38,7 @@ readAllData {
 # Bit 14: OFF: Charge PFN
 # Bit 15: OFF: Reset
 writeOnOffCmd {
-    out "%<w";           # write 16-bit little-endian word
+    out "%.2r";           # write 16-bit little-endian word
 }
 
 # ============================================================================
@@ -47,7 +47,7 @@ writeOnOffCmd {
 # Value range: 0..500 (representing 0..50.0kV)
 # Example: 45.12kV => value = 451
 writeHVPSVoltage {
-    out "%<w";           # write 16-bit little-endian word
+    out "%.2r";           # write 16-bit little-endian word
 }
 
 # ============================================================================
