@@ -19,6 +19,7 @@ epicsEnvSet("STREAM_PROTOCOL_PATH","../../db")
 
 ## Load record instances (using corrected aSub approach per documentation)
 dbLoadRecords("../../db/ppt.template", "P=PPT,R=MOD1, PORT=PPT1")
+dbLoadRecords("../../db/ppt_control.template", "P=PPT,R=MOD1, PORT=PPT1")
 
 
 # cd "${TOP}/iocBoot/${IOC}"
