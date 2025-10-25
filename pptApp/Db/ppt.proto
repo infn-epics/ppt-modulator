@@ -42,11 +42,18 @@ writeOnOffCmd {
 }
 
 # ============================================================================
-# Write HVPS Charging Voltage Setpoint (bytes 2-3)
+# Write HVPS Charging Voltage Setpoint Only (4 bytes: 00 00 VV VV)
 # ============================================================================
+# Writes 4 bytes with ON/OFF command = 0 (bytes 0-1) and voltage (bytes 2-3)
+# This allows updating voltage without triggering any ON/OFF commands
 # Value range: 0..500 (representing 0..50.0kV)
-# Example: 45.12kV => value = 451
-writeHVPSVoltage {
+# Example: 45.12kV => value = 451 => sends: 00 00 C3 01 (little-endian)
+writeHVPSVoltageOnly {
+    out "\x00\x00%.2r";   # 2 zero bytes + 16-bit little-endian voltage word
+}
+
+
+writeOnOffCmd {
     out "%.2r";           # write 16-bit little-endian word
 }
 

@@ -272,7 +272,7 @@ record(calcout, "$(P):$(R):TriggerAutoReset2") {
 record(ao, "$(P):$(R):HVPS:VoltageSet") {
     field(DESC, "HVPS Charging Voltage SP")
     field(DTYP, "stream")
-    field(OUT,  "@ppt.proto writeHVPSVoltage $(PORT)")
+    field(OUT,  "@ppt.proto writeHVPSVoltageOnly $(PORT)")
     field(EGU,  "kV")
     field(PREC, "1")
     field(LINR, "LINEAR")
