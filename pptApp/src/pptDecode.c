@@ -39,6 +39,9 @@
 static unsigned short getWord(const unsigned char *data, int offset) {
     return (unsigned short)(data[offset+1] | (data[offset] << 8));
 }
+static unsigned short getWordL(const unsigned char *data, int offset) {
+    return (unsigned short)(data[offset] | (data[offset+1] << 8));
+}
 
 /*
  * pptDecodeThyratronKlystron
@@ -134,21 +137,21 @@ long pptDecodeThyratronKlystron(aSubRecord *prec) {
     //printf("Klystron OilTemp: raw=%u scaled=%.1f C\n", rawVal, *outJ);
 
     /* Status/Interlock Words (no scaling, raw bitfields) */
-    rawVal = getWord(rawData, 10);
+    rawVal = getWordL(rawData, 10);
     *outK = (double)rawVal;  /* Thyratron Interlock (WORD5) */
     //printf("Thyratron InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
-    rawVal = getWord(rawData, 12);
+    rawVal = getWordL(rawData, 12);
     *outL = (double)rawVal;  /* Thyratron Status (WORD6) */
-    //printf("Thyratron StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
+//    printf("Thyratron StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
-    rawVal = getWord(rawData, 32);
+    rawVal = getWordL(rawData, 32);
     *outM = (double)rawVal;  /* Klystron Interlock (WORD16) */
     //printf("Klystron InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
-    rawVal = getWord(rawData, 34);
+    rawVal = getWordL(rawData, 34);
     *outN = (double)rawVal;  /* Klystron Status (WORD17) */
-    //printf("Klystron StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
+//    printf("Klystron StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
     *outO = 0.0;  /* Reserved */
 
@@ -255,19 +258,19 @@ long pptDecodeMagnetsTimersStatus(aSubRecord *prec) {
     //printf("Klystron TimerPreheat100Min: raw=%u value=%d min\n", rawVal, (int)*outK);
 
     /* Status/Interlock Words (no scaling, raw bitfields) */
-    rawVal = getWord(rawData, 48);
+    rawVal = getWordL(rawData, 48);
     *outL = (double)rawVal;  /* Focus Magnet Interlock (WORD24) */
     //printf("FocusMagnet InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
-    rawVal = getWord(rawData, 50);
+    rawVal = getWordL(rawData, 50);
     *outM = (double)rawVal;  /* Focus Magnet Status (WORD25) */
     //printf("FocusMagnet StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
-    rawVal = getWord(rawData, 56);
+    rawVal = getWordL(rawData, 56);
     *outN = (double)rawVal;  /* Premagnetisation Interlock (WORD28) */
     //printf("Premagnetisation InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
-    rawVal = getWord(rawData, 58);
+    rawVal = getWordL(rawData, 58);
     *outO = (double)rawVal;  /* Premagnetisation Status (WORD29) */
     //printf("Premagnetisation StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
 
