@@ -52,6 +52,9 @@ writeHVPSVoltageOnly {
     out "\x00\x00%.2r";   # 2 zero bytes + 16-bit little-endian voltage word
 }
 
+writeResetCmd {
+    out "\x00\xFF\x00\x00";   # 2 zero bytes + 16-bit little-endian voltage word
+}
 
 writeOnOffCmd {
     out "%.2r";           # write 16-bit little-endian word
