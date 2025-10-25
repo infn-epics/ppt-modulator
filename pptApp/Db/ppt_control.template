@@ -85,7 +85,17 @@ record(bo, "$(P):$(R):Reset:Cmd") {
     field(DESC, "Reset Command (rising edge)")
     field(ZNAM, "Idle")
     field(ONAM, "Reset")
+    # field(OUT,  "@ppt.proto writeResetCmd $(PORT)")
+    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+}
+
+record(bo, "$(P):$(R):OFF:Cmd") {
+    field(DESC, "Reset Command (rising edge)")
+    field(DTYP, "stream")
+    field(ZNAM, "Idle")
+    field(ONAM, "Reset")
     field(OUT,  "@ppt.proto writeResetCmd $(PORT)")
+    # field(FLNK, "$(P):$(R):CalcOnOffCmd1")
 }
 
 # ==========================================================================
