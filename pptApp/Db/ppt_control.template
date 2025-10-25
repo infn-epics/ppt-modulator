@@ -211,14 +211,14 @@ record(seq, "$(P):$(R):AutoResetOnCmds") {
     field(LNK7, "$(P):$(R):ChargePFN:OnCmd PP")
     field(DOL8, "0")
     field(LNK8, "$(P):$(R):Reset:Cmd PP")
-    field(DLY1, "0.5")
-    field(DLY2, "0.5")
-    field(DLY3, "0.5")
-    field(DLY4, "0.5")
-    field(DLY5, "0.5")
-    field(DLY6, "0.5")
-    field(DLY7, "0.5")
-    field(DLY8, "0.5")
+    field(DLY1, "1.1")
+    field(DLY2, "1.1")
+    field(DLY3, "1.1")
+    field(DLY4, "1.1")
+    field(DLY5, "1.1")
+    field(DLY6, "1.1")
+    field(DLY7, "1.1")
+    field(DLY8, "1.1")
 }
 
 record(seq, "$(P):$(R):AutoResetOffCmds") {
@@ -238,13 +238,13 @@ record(seq, "$(P):$(R):AutoResetOffCmds") {
     field(LNK6, "$(P):$(R):HVPS:OffCmd PP")
     field(DOL7, "0")
     field(LNK7, "$(P):$(R):ChargePFN:OffCmd PP")
-    field(DLY1, "0.5")
-    field(DLY2, "0.5")
-    field(DLY3, "0.5")
-    field(DLY4, "0.5")
-    field(DLY5, "0.5")
-    field(DLY6, "0.5")
-    field(DLY7, "0.5")
+    field(DLY1, "1.1")
+    field(DLY2, "1.1")
+    field(DLY3, "1.1")
+    field(DLY4, "1.1")
+    field(DLY5, "1.1")
+    field(DLY6, "1.1")
+    field(DLY7, "1.1")
 }
 
 # Trigger auto-reset when any command is processed
