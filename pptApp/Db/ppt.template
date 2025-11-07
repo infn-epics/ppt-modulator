@@ -869,7 +869,7 @@ record(calc, "$(P):$(R):Focus:Status:Ready") {
 
 record(calc, "$(P):$(R):Focus:Status:OnOff") {
     field(DESC, "Focus Magnet On/Off")
-    field(INP,  "$(P):$(R):Focus:StatusRaw CP MS")
+    field(INPA,  "$(P):$(R):Focus:StatusRaw CP MS")
     field(CALC, "(A>>1)&1")
 }
 
@@ -1053,7 +1053,7 @@ record(calc, "$(P):$(R):General:Interlock:EmergencyOff") {
 
 record(calc, "$(P):$(R):General:Interlock:CircuitBreaker") {
     field(DESC, "Circuit Breaker Alarm")
-    field(INP,  "$(P):$(R):General:InterlockRaw CP MS")
+    field(INPA,  "$(P):$(R):General:InterlockRaw CP MS")
     field(CALC, "(A>>9)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
