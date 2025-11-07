@@ -3,7 +3,7 @@
  * 
  * aSub record subroutines to decode PPT Modulator binary data
  * Input: 86 bytes (UCHAR array) from TCP stream
- * Output: 22 values split across two aSub records (11 values each)
+ * Output: 39 values split across three aSub records (14, 15, and 10 values each)
  * 
  * All 16-bit words are little-endian (LSB + MSB)
  * 
@@ -278,6 +278,107 @@ long pptDecodeMagnetsTimersStatus(aSubRecord *prec) {
     return 0;  /* Success */
 }
 
+/*
+ * pptDecodeWaveguideHVPS
+ * 
+ * Decodes Waveguide/VSWR/Clipper and HVPS + General sections (10 values) from 86-byte buffer
+ * 
+ * INPA: Raw data buffer (UCHAR array, 86 bytes)
+ * 
+ * VALA-VALJ: Output values (DOUBLE, one element each)
+ *   A = Waveguide Interlock Raw (bytes 60-61, WORD30)
+ *   B = VSWR Interlock Raw (bytes 62-63, WORD31)
+ *   C = Clipper Interlock Raw (bytes 64-65, WORD32)
+ *   D = Counter (bytes 66-67, WORD33)
+ *   E = HV Charging Voltage (bytes 68-69, WORD34)
+ *   F = HV Water Temperature (bytes 70-71, WORD35)
+ *   G = HVPS Interlock Raw (bytes 72-73, WORD36)
+ *   H = HVPS Status Raw (bytes 74-75, WORD37)
+ *   I = General Interlock Raw (bytes 76-77, WORD38)
+ *   J = General Status Raw (bytes 78-79, WORD39)
+ *   K-O = Reserved (set to 0.0)
+ */
+long pptDecodeWaveguideHVPS(aSubRecord *prec) {
+    unsigned char *rawData = (unsigned char *)prec->a;
+    double *outA = (double *)prec->vala;  /* Waveguide Interlock Raw */
+    double *outB = (double *)prec->valb;  /* VSWR Interlock Raw */
+    double *outC = (double *)prec->valc;  /* Clipper Interlock Raw */
+    double *outD = (double *)prec->vald;  /* Counter */
+    double *outE = (double *)prec->vale;  /* HV Charging Voltage */
+    double *outF = (double *)prec->valf;  /* HV Water Temperature */
+    double *outG = (double *)prec->valg;  /* HVPS Interlock Raw */
+    double *outH = (double *)prec->valh;  /* HVPS Status Raw */
+    double *outI = (double *)prec->vali;  /* General Interlock Raw */
+    double *outJ = (double *)prec->valj;  /* General Status Raw */
+    double *outK = (double *)prec->valk;  /* Reserved */
+    double *outL = (double *)prec->vall;  /* Reserved */
+    double *outM = (double *)prec->valm;  /* Reserved */
+    double *outN = (double *)prec->valn;  /* Reserved */
+    double *outO = (double *)prec->valo;  /* Reserved */
+    
+    unsigned short rawVal;
+    
+    if(prec->nea < 86) {
+        printf("ERROR: received less bytes %d<86\n", prec->nea);
+        return 1;
+    }
+    
+    //printf("=== Waveguide/HVPS Decode === %d\n", prec->nea);
+    
+    /* Waveguide/VSWR/Clipper Section (bytes 60-67) */
+    rawVal = getWordL(rawData, 60);
+    *outA = (double)rawVal;  /* Waveguide Interlock (WORD30) */
+    //printf("Waveguide InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+
+    rawVal = getWordL(rawData, 62);
+    *outB = (double)rawVal;  /* VSWR Interlock (WORD31) */
+    //printf("VSWR InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+
+    rawVal = getWordL(rawData, 64);
+    *outC = (double)rawVal;  /* Clipper Interlock (WORD32) */
+    //printf("Clipper InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+
+    rawVal = getWordL(rawData, 66);
+    *outD = (double)rawVal;  /* Counter (WORD33) */
+    //printf("Counter: 0x%04X (%u)\n", rawVal, rawVal);
+
+    /* HVPS + General Section (bytes 68-79) */
+    rawVal = getWord(rawData, 68);
+    *outE = rawVal / 10.0;  /* HV Charging Voltage (0..50.0kV) */
+    //printf("HV Charging Voltage: raw=%u scaled=%.1f kV\n", rawVal, *outE);
+
+    rawVal = getWord(rawData, 70);
+    *outF = rawVal / 10.0;  /* HV Water Temperature (0..100.0°C) */
+    //printf("HV Water Temperature: raw=%u scaled=%.1f C\n", rawVal, *outF);
+
+    rawVal = getWordL(rawData, 72);
+    *outG = (double)rawVal;  /* HVPS Interlock (WORD36) */
+    //printf("HVPS InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+
+    rawVal = getWordL(rawData, 74);
+    *outH = (double)rawVal;  /* HVPS Status (WORD37) */
+    //printf("HVPS StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
+
+    rawVal = getWordL(rawData, 76);
+    *outI = (double)rawVal;  /* General Interlock (WORD38) */
+    //printf("General InterlockRaw: 0x%04X (%u)\n", rawVal, rawVal);
+
+    rawVal = getWordL(rawData, 78);
+    *outJ = (double)rawVal;  /* General Status (WORD39) */
+    //printf("General StatusRaw: 0x%04X (%u)\n", rawVal, rawVal);
+
+    /* Reserved */
+    *outK = 0.0;
+    *outL = 0.0;
+    *outM = 0.0;
+    *outN = 0.0;
+    *outO = 0.0;
+
+    //printf("--- End Waveguide/HVPS decode ---\n");
+    return 0;  /* Success */
+}
+
 /* Register the functions */
 epicsRegisterFunction(pptDecodeThyratronKlystron);
 epicsRegisterFunction(pptDecodeMagnetsTimersStatus);
+epicsRegisterFunction(pptDecodeWaveguideHVPS);

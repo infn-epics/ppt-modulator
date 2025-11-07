@@ -1,0 +1,3323 @@
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Remote Control Interface Specification
+Project: IF-MOD2128C
+Rev. 2.1
+see ChangeLog on last page
+
+M.Kazmierczak
+
+C:\Dokumente und Einstellungen\markus\Desktop\IF-MOD2128C\RCI_RemoteControlInterface\tcpipinterface-description_IF-MOD2128C_Rev2-1.sxw
+
+M. Kaz
+
+Page 1 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Communication via TCP/IP
+Connection parameters PLC
+
+M. Kaz
+
+Page 2 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Overview data packets
+
+M. Kaz
+
+Page 3 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Thyratron: Analog values
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+Description
+
+2
+
+1
+
+0
+
+15
+
+14
+
+13
+
+12
+
+11
+
+Signal Range Value Range
+
+10
+
+9
+
+Byte
+
+Heater Voltage
+
+0..10V
+
+0..100
+
+0..1
+
+Reservoir Voltage
+
+0..10V
+
+0..100
+
+2..3
+
+Total Current (IReservoir + IHeater)
+
+0..100V
+
+0..1000
+
+4..5
+
+Timer Preheating (minutes)
+
+0..15min
+
+0..15
+
+6..7
+
+Timer Preheating (seconds)
+
+0..60s
+
+0..60
+
+8..9
+
+Remark: All values are integer values.
+Example: Heater Voltage = 7.5V => Value = 7510
+
+M. Kaz
+
+Page 4 of 27
+
+8
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Thyratron: Interlock and status messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+Bit
+
+Description
+
+Byte
+
+0
+
+Alarm: Thyratron heater voltage exceeds upper limit
+
+10
+
+1
+
+Alarm: Thyratron heater voltage falls below lower limit
+
+10
+
+2
+
+Alarm: Thyratron reservoir voltage exceeds upper limit
+
+10
+
+3
+
+Alarm: Thyratron reservoir voltage falls below lower limit
+
+10
+
+4
+
+Alarm: Thyratron total current exceeds upper limit
+
+10
+
+5
+
+Alarm: Thyratron total current falls below lower limit
+
+10
+
+6
+
+Alarm: Thyratron temperature switch
+
+10
+
+7
+
+10
+
+8
+
+11
+
+9
+
+11
+
+10
+
+11
+
+11
+
+11
+
+12
+
+11
+
+13
+
+11
+
+14
+
+11
+
+15
+
+11
+
+M. Kaz
+
+Page 5 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Thyratron: Status messages
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+2
+
+1
+
+0
+
+1
+
+ON
+
+ON
+
+Ready
+
+0
+
+OFF
+
+OFF
+
+-
+
+Bit
+
+3
+
+MSByte
+15
+
+14
+
+13
+
+12
+
+Description
+
+11
+
+10
+
+9
+
+8
+
+Byte
+
+0
+
+Status: Thyratron ready
+
+(no error and preheating time has run off)
+
+12
+
+1
+
+Status: Thyratron contacts
+
+(power supply on/off)
+
+12
+
+2
+
+Status: Thyratron Preheating time running
+
+12
+
+3
+
+12
+
+4
+
+12
+
+5
+
+12
+
+6
+
+12
+
+7
+
+12
+
+8
+
+13
+
+9
+
+13
+
+10
+
+13
+
+11
+
+13
+
+12
+
+13
+
+13
+
+13
+
+14
+
+13
+
+15
+
+13
+
+M. Kaz
+
+Page 6 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Klystron: Analog values
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+Description
+
+1
+
+0
+
+15
+
+14
+
+13
+
+12
+
+11
+
+Signal Range Value Range
+
+10
+
+9
+
+Byte
+
+Heater Voltage
+
+0..270V
+
+0..270
+
+14..15
+
+Heater Current
+
+0..6A
+
+0..6
+
+16..17
+
+Body Water Input Temperature
+
+0..100°C
+
+0..100
+
+18..19
+
+Body Water Output Temperature
+
+0..100°C
+
+0..100
+
+20..21
+
+Body Water Flow
+
+0..10l/min
+
+0..100
+
+22..23
+
+Dissipated Power
+
+0..5000kW
+
+0..5000
+
+24..25
+
+Oil Temperature
+
+0..100°C
+
+0..100
+
+26..27
+
+Timer Preheating 100% (minutes)
+
+0..15min
+
+0..15
+
+28..29
+
+Timer Preheating 100% (seconds)
+
+0..60s
+
+0..60
+
+30..31
+
+Remark: All values are integer values.
+Example: Heater Voltage = 7.5V => Value = 7510
+
+M. Kaz
+
+Page 7 of 27
+
+8
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Klystron: Interlock messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+Bit
+
+Description
+
+Byte
+
+0
+
+Alarm: Klystron heater voltage exceeds upper limit
+
+32
+
+1
+
+Alarm: Klystron heater voltage falls below lower limit
+
+32
+
+2
+
+Alarm: Klystron heater current exceeds upper limit
+
+32
+
+3
+
+Alarm: Klystron heater current falls below lower limit
+
+32
+
+4
+
+Alarm: Klystron Preheating Error
+
+32
+
+5
+
+Alarm: Klystron vacuum warning
+
+32
+
+6
+
+Alarm: Klystron tank oil level
+
+32
+
+7
+
+Alarm: Klystron dissipated power error
+
+32
+
+8
+
+Alarm: Klystron tank temperature
+
+33
+
+9
+
+Alarm: Klystron body water flow
+
+33
+
+10
+
+Alarm: Klystron collector water
+
+33
+
+11
+
+Alarm: max. klystron voltage
+
+(pulse voltage)
+
+33
+
+12
+
+Alarm: max. klystron current
+
+(pulse current)
+
+33
+
+13
+
+Alarm: Klystron vacuum
+
+33
+
+14
+
+Alarm: Klystron body water input temperature
+
+33
+
+15
+
+Alarm: Klystron body water output temperature
+
+33
+
+M. Kaz
+
+Page 8 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Klystron: Status messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ON
+
+ON
+
+ON
+
+ON
+
+Ready
+
+0
+
+OFF
+
+OFF
+
+OFF
+
+OFF
+
+Bit
+
+15
+
+14
+
+13
+
+12
+
+11
+
+Description
+
+10
+
+9
+
+8
+
+Byte
+34
+
+0
+
+Status: Klystron ready
+
+1
+
+Status: Klystron ON/OFF
+
+34
+
+2
+
+Status: Klystron Timer 100% is running
+
+34
+
+3
+
+Status: Klystron Heater voltage 80%
+
+34
+
+4
+
+Status: Klystron Heater voltage 100%
+
+34
+
+(no errors, preheating time has run off, heater voltage 100%)
+
+5
+
+34
+
+6
+
+34
+
+7
+
+34
+
+8
+
+35
+
+9
+
+35
+
+10
+
+35
+
+11
+
+35
+
+12
+
+35
+
+13
+
+35
+
+14
+
+35
+
+15
+
+35
+
+M. Kaz
+
+Page 9 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Focus: Analog values
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+Description
+
+3
+
+2
+
+1
+
+0
+
+15
+
+14
+
+13
+
+12
+
+11
+
+Signal Range Value Range
+
+10
+
+9
+
+Byte
+
+Magnet Voltage Coil 1
+
+0..132V
+
+0..1320
+
+36..37
+
+Magnet Current Coil 1
+
+0..50A
+
+0..500
+
+38..39
+
+Magnet Voltage Coil 2
+
+0..132V
+
+0..1320
+
+40..41
+
+Magnet Current Coil 2
+
+0..50A
+
+0..500
+
+42..43
+
+Magnet Voltage Coil 3
+
+0..132V
+
+0..1320
+
+44..45
+
+Magnet Current Coil 3
+
+0..50A
+
+0..500
+
+46..47
+
+Remark: All values are integer values.
+Example: Heater Voltage = 7.5V => Value = 7510
+
+M. Kaz
+
+Page 10 of 27
+
+8
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Focus: Interlock and status messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+Bit
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+Description
+
+Byte
+
+0
+
+Alarm: Focus coil 1 voltage exceeds upper limit
+
+48
+
+1
+
+Alarm: Focus coil 1 voltage falls below lower limit
+
+48
+
+2
+
+Alarm: Focus coil 1 current exceeds upper limit
+
+48
+
+3
+
+Alarm: Focus coil 1 current falls below lower limit
+
+48
+
+4
+
+Alarm: Focus coil 2 voltage exceeds upper limit
+
+48
+
+5
+
+Alarm: Focus coil 2 voltage falls below lower limit
+
+48
+
+6
+
+Alarm: Focus coil 2 current exceeds upper limit
+
+48
+
+7
+
+Alarm: Focus coil 2 current falls below lower limit
+
+48
+
+8
+
+Alarm: Focus coil 3 voltage exceeds upper limit
+
+49
+
+9
+
+Alarm: Focus coil 3 voltage falls below lower limit
+
+49
+
+10
+
+Alarm: Focus coil 3 current exceeds upper limit
+
+49
+
+11
+
+Alarm: Focus coil 3 current falls below lower limit
+
+49
+
+12
+
+Alarm: Focus magnet water flow
+
+49
+
+13
+
+Alarm Focus magnet temperature
+
+49
+
+14
+
+Alarm: Focus magnet short-circuit to ground
+
+49
+
+15
+
+M. Kaz
+
+49
+
+Page 11 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Focus: Interlock and status messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+1
+
+0
+
+1
+
+ON
+
+ready
+
+0
+
+OFF
+
+Bit
+0
+
+Status: Focus ready
+
+1
+
+Status: Focus ON/OFF
+
+3
+
+2
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+Description
+
+Byte
+
+(no error and ON)
+
+50
+50
+
+2
+
+50
+
+3
+
+50
+
+4
+
+50
+
+5
+
+50
+
+6
+
+50
+
+7
+
+50
+
+8
+
+51
+
+9
+
+51
+
+10
+
+51
+
+11
+
+51
+
+12
+
+51
+
+13
+
+51
+
+14
+
+51
+
+15
+
+51
+
+M. Kaz
+
+Page 12 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Premagnetisation Bias Transformer: Analog values
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+Description
+
+3
+
+2
+
+1
+
+0
+
+15
+
+14
+
+13
+
+12
+
+11
+
+Signal Range Value Range
+
+10
+
+9
+
+Byte
+
+Magnet Voltage
+
+0..70V
+
+0..700
+
+52..53
+
+Magnet Current
+
+0..20A
+
+0..200
+
+54..55
+
+Remark: All values are integer values.
+Example: Heater Voltage = 7.5V => Value = 7510
+
+M. Kaz
+
+Page 13 of 27
+
+8
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Premagnetisation: Interlock messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+Bit
+
+15
+
+Description
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+Byte
+
+0
+
+Alarm: Premagnetisation voltage exceeds upper limit
+
+56
+
+1
+
+Alarm: Premagnetisation voltage falls below lower limit
+
+56
+
+2
+
+Alarm: Premagnetisation current exceeds upper limit
+
+56
+
+3
+
+Alarm: Premagnetisation current falls below lower limit
+
+56
+
+4
+
+56
+
+5
+
+56
+
+6
+
+56
+
+7
+
+Alarm: HV-Cable not connected
+
+56
+
+8
+
+57
+
+9
+
+57
+
+10
+
+57
+
+11
+
+57
+
+12
+
+57
+
+13
+
+57
+
+14
+
+57
+
+15
+
+57
+
+M. Kaz
+
+Page 14 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Premagnetisation: Interlock and status messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ON
+
+0
+
+OFF
+
+Bit
+0
+
+Status: Premagnetisation ready
+
+1
+
+Status: Premagnetisation ON/OFF
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+Ready
+
+ON
+
+Ready
+
+-
+
+OFF
+
+-
+
+Description
+
+Byte
+
+(no error and ON)
+
+58
+58
+
+2
+
+58
+
+3
+
+58
+
+4
+
+58
+
+5
+
+58
+
+6
+
+58
+
+7
+
+58
+
+8
+
+59
+
+9
+
+59
+
+10
+
+59
+
+11
+
+59
+
+12
+
+59
+
+13
+
+59
+
+14
+
+59
+
+15
+
+59
+
+M. Kaz
+
+Page 15 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Vacuum (external): Interlock messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+15
+
+14
+
+13
+
+12
+
+1
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+Bit
+
+Description
+
+11
+
+10
+
+9
+
+8
+
+ALARM
+
+ALARM
+
+ALARM
+
+OK
+
+OK
+
+OK
+
+Byte
+
+0
+
+Alarm: Vacuum waveguide 1
+
+60
+
+1
+
+Alarm: Vacuum waveguide 2
+
+60
+
+2
+
+Alarm: Vacuum waveguide 3
+
+60
+
+3
+
+Alarm: Vacuum waveguide 4
+
+60
+
+4
+
+Alarm: Vacuum waveguide 5
+
+60
+
+5
+
+Alarm: Vacuum waveguide 6
+
+60
+
+6
+
+Alarm: Vacuum waveguide 7
+
+60
+
+7
+
+Alarm: Vacuum waveguide 8
+
+60
+
+8
+
+Alarm: VSWR interlock 1
+
+61
+
+9
+
+Alarm: VSWR interlock 2
+
+61
+
+10
+
+61
+
+11
+
+61
+
+12
+
+Alarm: Vacuum Acc 1
+
+61
+
+13
+
+Alarm: Vacuum Acc 2
+
+61
+
+14
+
+Alarm: Water Acc 1
+
+61
+
+15
+
+Alarm: Water Acc 2
+
+61
+
+M. Kaz
+
+Page 16 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Interlocks (external): Interlock messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+Bit
+
+15
+
+Description
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+Byte
+
+0
+
+Interlock 1A
+
+62
+
+1
+
+Interlock 1B
+
+62
+
+2
+
+Interlock 2A
+
+62
+
+3
+
+Interlock 2B
+
+62
+
+4
+
+Interlock 3A
+
+62
+
+5
+
+Interlock 3B
+
+62
+
+6
+
+Interlock 4A
+
+62
+
+7
+
+Interlock 4B
+
+62
+
+8
+
+63
+
+9
+
+63
+
+10
+
+63
+
+11
+
+63
+
+12
+
+63
+
+13
+
+63
+
+14
+
+63
+
+15
+
+63
+
+M. Kaz
+
+Page 17 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+End of line clipper: Interlock messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+1
+
+0
+
+1
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+Bit
+
+2
+
+15
+
+Description
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+Byte
+
+0
+
+Alarm: End of line clipper 1
+
+64
+
+1
+
+Alarm: End of line clipper 2
+
+64
+
+2
+
+Alarm: End of line clipper Error
+
+64
+
+3
+
+64
+
+4
+
+64
+
+5
+
+64
+
+6
+
+64
+
+7
+
+64
+
+8
+
+65
+
+9
+
+65
+
+10
+
+65
+
+11
+
+65
+
+12
+
+65
+
+13
+
+65
+
+14
+
+65
+
+15
+
+65
+
+M. Kaz
+
+Page 18 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+End of line clipper: Analog values
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+Description
+End of line clipper counter
+
+3
+
+2
+
+1
+
+0
+
+15
+
+14
+
+12
+
+11
+
+Signal Range Value Range
+0..100
+
+Remark: All values are integer values.
+Example: Heater Voltage = 7.5V => Value = 7510
+
+M. Kaz
+
+13
+
+Page 19 of 27
+
+0..100
+
+10
+
+9
+
+Byte
+66..67
+
+8
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+HVPS: Analog values
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+Description
+
+3
+
+2
+
+1
+
+0
+
+15
+
+14
+
+13
+
+12
+
+11
+
+Signal Range Value Range
+
+10
+
+9
+
+Byte
+
+Charging voltage
+
+0..50.0kV
+
+0..500
+
+68..69
+
+Water temperature
+
+0..100.0°C
+
+0..1000
+
+70..71
+
+Remark: All values are integer values.
+Example: Heater Voltage = 7.5V => Value = 7510
+
+M. Kaz
+
+Page 20 of 27
+
+8
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+HVPS: Interlock messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+OK
+
+OK
+
+Bit
+
+15
+
+14
+
+13
+
+Description
+
+12
+
+11
+
+10
+
+9
+
+8
+
+Byte
+
+0
+
+Alarm: HVPS internal interlock
+
+72
+
+1
+
+Alarm: HVPS line
+
+72
+
+2
+
+Alarm: HVPS overload
+
+72
+
+3
+
+Alarm: HVPS temperature
+
+72
+
+4
+
+Alarm: HVPS water temperature error
+
+72
+
+5
+
+Alarm: HVPS overvoltage protection
+
+72
+
+6
+
+Alarm: HVPS water flow
+
+72
+
+7
+
+Alarm: HVPS max. voltage reached (fixed trip level on MAXVOLT)
+
+72
+
+8
+
+73
+
+9
+
+73
+
+10
+
+73
+
+11
+
+73
+
+12
+
+73
+
+13
+
+73
+
+14
+
+73
+
+15
+
+73
+
+M. Kaz
+
+Page 21 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+HVPS: Status messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+1
+
+2
+
+1
+
+0
+
+Statur
+
+Statur
+
+Statur
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+0
+
+Bit
+
+Description
+
+0
+
+Status: HVPS ON/OFF
+
+1
+
+Status: HVPS ready
+
+2
+
+Status: High voltage ON/OFF
+
+Byte
+74
+
+(after 15s: HVPS is switched on and shows no error)
+
+74
+74
+
+3
+
+74
+
+4
+
+74
+
+5
+
+74
+
+6
+
+74
+
+7
+
+74
+
+8
+
+75
+
+9
+
+75
+
+10
+
+75
+
+11
+
+75
+
+12
+
+75
+
+13
+
+75
+
+14
+
+75
+
+15
+
+75
+
+M. Kaz
+
+Page 22 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Cabinets and Safety Systems: Interlock messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+ALARM
+
+0
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+OK
+
+Bit
+
+15
+
+Description
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+Byte
+
+0
+
+Alarm: Ground switches
+
+76
+
+1
+
+Alarm: Doors PFN
+
+76
+
+2
+
+Alarm: Ground Rods
+
+76
+
+3
+
+Alarm: Personnel safety system 1
+
+76
+
+4
+
+Alarm: Personnel safety system 2
+
+76
+
+5
+
+Alarm: Cooling Unit Error 1
+
+76
+
+6
+
+Alarm: Cooling Unit Error 1
+
+76
+
+7
+
+Alarm: Main Contactor
+
+76
+
+8
+
+Alarm: Emergency Off
+
+77
+
+9
+
+Alarm: Circuit Breaker
+
+77
+
+10
+
+Alarm: Smoke Detection Error
+
+77
+
+11
+
+77
+
+12
+
+77
+
+13
+
+77
+
+14
+
+77
+
+15
+
+77
+
+M. Kaz
+
+Page 23 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Cabinets and Safety Systems: Status messages
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+Statur
+
+Statur
+
+Statur
+
+Statur
+
+Statur
+
+Statur
+
+Statur
+
+Statur
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+Statur
+
+0
+
+Bit
+
+Description
+(false/true)
+
+Byte
+
+0
+
+Status: Local/Remote
+
+78
+
+1
+
+Status: Cabinet Doors
+
+78
+
+2
+
+Status: Emergency Off System
+
+78
+
+3
+
+Status: Main Contactor
+
+78
+
+4
+
+Status: Signal Light green
+
+(on = Ground switches are closed!)
+
+78
+
+5
+
+Status: Signal Light yellow
+
+(on = Ground switches are open!)
+
+78
+
+6
+
+Status: Signal Light red
+
+(on = THT100 & Trigger Relay are on; Trigger enabled)
+
+78
+
+7
+
+Status: Ground Rods
+
+78
+
+8
+
+Status: Ground Switches
+
+79
+
+9
+
+Status: Personnel Safety System 1
+
+79
+
+10
+
+Status: Personnel Safety System 1
+
+79
+
+11
+
+79
+
+12
+
+79
+
+13
+
+79
+
+14
+
+79
+
+15
+
+79
+
+M. Kaz
+
+Page 24 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+Commands from remote control system: ON/OFF-Commands
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+9
+
+8
+
+1
+0
+
+Bit
+
+Description
+
+Byte
+
+0
+
+ON: Heater Thyratron
+
+0
+
+1
+
+ON: Heater Klytron 80%
+
+(Start of Timer 80%)
+
+0
+
+2
+
+ON: Heater Klystron 100%
+
+(Start of Timer 100%)
+
+0
+
+3
+
+ON: Focus power supply
+
+0
+
+4
+
+ON. Premagnetisation power supply
+
+0
+
+5
+
+ON: HVPS
+
+0
+
+6
+
+ON: Charge PFN
+
+0
+
+7
+
+ON: Reset
+
+0
+
+8
+
+OFF: Heater Thyratron
+
+1
+
+9
+
+OFF: Heater Klytron 80%
+
+1
+
+10
+
+OFF: Heater Klystron 100%
+
+1
+
+11
+
+OFF: Focus power supply
+
+1
+
+12
+
+OFF. Premagnetisation power supply
+
+1
+
+13
+
+OFF: HVPS
+
+1
+
+14
+
+OFF: Charge PFN
+
+1
+
+15
+
+OFF: Reset
+
+1
+
+Reset-Command:
+
+Only the rising edge of the ON-Signal is important.
+Switch off Reset after setting reset.
+Example: Heater Thyratron
+Switch ON with rising edge of Bit0 (0 => 1)
+OFF while Bit8=1
+1
+Bit0
+0
+
+t
+
+1
+Bit8
+0
+
+t
+
+ON
+Heater
+Thyratron
+
+OFF
+
+M. Kaz
+
+t
+
+Page 25 of 27
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+HVPS: Set value charging voltage
+MSByte
+
+LSByte
+Bit
+
+7
+
+6
+
+5
+
+4
+
+3
+
+Description
+set value charging voltage PFN
+
+2
+
+1
+
+0
+
+15
+
+14
+
+13
+
+12
+
+11
+
+10
+
+Signal Range Value Range
+0..50kV
+
+0..500
+
+Remark: All values are integer values.
+Example: set value charging voltage = 45.12kV => Value = 451210
+
+M. Kaz
+
+Page 26 of 27
+
+9
+
+Byte
+2..3
+
+8
+
+Modulator IF-MOD2128C
+
+Puls-Plasmatechnik GmbH
+
+ChangeLog:
+Revision 2.0 => Revision 2.1:
+Page 10: Value Range extended to 1300 (132.0V) and 500 (50.0V).
+Page 8:
+
+29.04.2005
+
+Bit 7 (32.7)
+Alarm: Klystron dissipated power error
+instead of
+Alarm: Klystron tank water
+29.04.2005
+Bits 14..15 (33.6..33.7)
+Alarm: Klystron body water input temperature
+29.04.2005
+Alarm: Klystron body water output temperature
+29.04.2005
+Bit 4 (32.4)
+Alarm: Klystron Preheating Error
+instead of
+12.04.2005
+Alarm: Klystron Alarm: Klystron Preheating time 100% has not yet run off
+
+Page 13: Value range extended to 700 (70.0V) and 200 (20.0A).
+
+29.04.2005
+
+Page 14: Bit 7 (56.7)
+Alarm: HV-Cable not connected instead of
+Alarm: Premagnetisation magnet short-circuit to ground
+
+29.04.2005
+
+Page 14: Bits4..6 (56.4..56.7) not used!!!
+Alarm: Premagnetisation magnet water
+Alarm: Premagnetisation magnet temperature
+Alarm: Premagnetisation magnet short-circuit to ground
+
+29.04.2005
+
+Page 21: Bits 4..6 (72.4..72.6) new!!!
+Alarm: HVPS water temperature error
+Alarm: HVPS overvoltage protection
+Alarm: HVPS water flow
+
+29.04.2005
+
+Page 25: Bit 7 (0.7)
+Reset Command
+Page 23: Bit 8 (77.0)
+Alarm: Emergency Off
+
+09.05.2005
+
+Page 23: Bit 9 (77.1)
+Alarm: Circuit Breaker
+
+09.05.2005
+
+Page 23: Bit 10 (77.2)
+Alarm: Smoke Detection Error
+
+09.05.2005
+
+Page 16: Bit 8..9 (61.0..61.1)
+Alarm: SWR interlock 1
+Alarm: SWR interlock 2
+
+09.05.2005
+09.05.2005
+
+Page 18: Bit 2 (64.2) new!!!
+Alarm: End of line clipper Error
+Page 21: Bit 7 (72.7) new!!!
+Alarm: HVPS max. voltage reached
+
+M. Kaz
+
+Page 27 of 27
+
+11.05.2005
+13.05.2005
+
+

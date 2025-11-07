@@ -6,9 +6,10 @@
 #
 # Architecture:
 # 1. Master waveform reads all 86 bytes via StreamDevice (SCAN="1 second")
-# 2. Two aSub records decode 22 values:
-#    - DecodeThyKlys: Thyratron + Klystron measurements (11 values)
-#    - DecodeMagTimers: Focus Magnets + Premagn + Timers (11 values)
+# 2. Three aSub records decode 39 values:
+#    - DecodeThyKlys: Thyratron + Klystron measurements (14 values)
+#    - DecodeMagTimers: Focus Magnets + Premagn + Timers (15 values)
+#    - DecodeWaveguideHVPS: Waveguide + HVPS + General (10 values)
 # 3. Individual records get values from aSub outputs via CP MS links
 # 4. Status/Interlock bitfield records read raw words
 #
@@ -88,8 +89,40 @@ record(aSub, "$(P):$(R):DecodeMagTimers") {
     field(FTVM, "DOUBLE")  field(NOVM, "1")  # Focus Magnet Status Raw
     field(FTVN, "DOUBLE")  field(NOVN, "1")  # Premagnetisation Interlock Raw
     field(FTVO, "DOUBLE")  field(NOVO, "1")  # Premagnetisation Status Raw
+    
+    field(FLNK, "$(P):$(R):DecodeWaveguideHVPS")
 }
 
+# ==========================================================================
+# aSub Decoder 3 - Waveguide/VSWR/Clipper and HVPS + General sections (10 values)
+# ==========================================================================
+record(aSub, "$(P):$(R):DecodeWaveguideHVPS") {
+    field(DESC, "Decode Waveguide/HVPS")
+    field(SNAM, "pptDecodeWaveguideHVPS")
+    field(SCAN, "Passive")
+    
+    # Input: raw byte array
+    field(INPA, "$(P):$(R):RawData NPP NMS")
+    field(FTA,  "UCHAR")
+    field(NOA,  "86")
+    
+    # Outputs: Waveguide/VSWR/Clipper + HVPS + General
+    field(FTVA, "DOUBLE")  field(NOVA, "1")  # Waveguide Interlock Raw
+    field(FTVB, "DOUBLE")  field(NOVB, "1")  # VSWR Interlock Raw
+    field(FTVC, "DOUBLE")  field(NOVC, "1")  # Clipper Interlock Raw
+    field(FTVD, "DOUBLE")  field(NOVD, "1")  # Counter
+    field(FTVE, "DOUBLE")  field(NOVE, "1")  # HV Charging Voltage
+    field(FTVF, "DOUBLE")  field(NOVF, "1")  # HV Water Temperature
+    field(FTVG, "DOUBLE")  field(NOVG, "1")  # HVPS Interlock Raw
+    field(FTVH, "DOUBLE")  field(NOVH, "1")  # HVPS Status Raw
+    field(FTVI, "DOUBLE")  field(NOVI, "1")  # General Interlock Raw
+    field(FTVJ, "DOUBLE")  field(NOVJ, "1")  # General Status Raw
+    field(FTVK, "DOUBLE")  field(NOVK, "1")  # Reserved
+    field(FTVL, "DOUBLE")  field(NOVL, "1")  # Reserved
+    field(FTVM, "DOUBLE")  field(NOVM, "1")  # Reserved
+    field(FTVN, "DOUBLE")  field(NOVN, "1")  # Reserved
+    field(FTVO, "DOUBLE")  field(NOVO, "1")  # Reserved
+}
 # ==========================================================================
 # THYRATRON SECTION
 # ==========================================================================
@@ -358,6 +391,54 @@ record(longin, "$(P):$(R):Premag:StatusRaw") {
     field(EGU,  "")
 }
 
+# Waveguide Interlock (bytes 60-61, WORD30)
+record(longin, "$(P):$(R):Waveguide:InterlockRaw") {
+    field(DESC, "Waveguide Interlock Word")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALA CP MS")
+    field(EGU,  "")
+}
+
+# VSWR Interlock (bytes 62-63, WORD31)
+record(longin, "$(P):$(R):VSWR:InterlockRaw") {
+    field(DESC, "VSWR Interlock Word")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALB CP MS")
+    field(EGU,  "")
+}
+
+# Clipper Interlock (bytes 64-65, WORD32)
+record(longin, "$(P):$(R):Clipper:InterlockRaw") {
+    field(DESC, "Clipper Interlock Word")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALC CP MS")
+    field(EGU,  "")
+}
+
+# HVPS Interlock (bytes 72-73, WORD36)
+record(longin, "$(P):$(R):HVPS:InterlockRaw") {
+    field(DESC, "HVPS Interlock Word")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALG CP MS")
+    field(EGU,  "")
+}
+
+# HVPS Status (bytes 74-75, WORD37)
+record(longin, "$(P):$(R):HVPS:StatusRaw") {
+    field(DESC, "HVPS Status Word")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALH CP MS")
+    field(EGU,  "")
+}
+
+# General Interlock (bytes 76-77, WORD38)
+record(longin, "$(P):$(R):General:InterlockRaw") {
+    field(DESC, "General Interlock Word")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALI CP MS")
+    field(EGU,  "")
+}
+
+# General Status (bytes 78-79, WORD39)
+record(longin, "$(P):$(R):General:StatusRaw") {
+    field(DESC, "General Status Word")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALJ CP MS")
+    field(EGU,  "")
+}
 # ==========================================================================
 # DEBUG - Show connection status via first value
 # ==========================================================================
@@ -788,7 +869,7 @@ record(calc, "$(P):$(R):Focus:Status:Ready") {
 
 record(calc, "$(P):$(R):Focus:Status:OnOff") {
     field(DESC, "Focus Magnet On/Off")
-    field(INPA, "$(P):$(R):Focus:StatusRaw CP MS")
+    field(INP,  "$(P):$(R):Focus:StatusRaw CP MS")
     field(CALC, "(A>>1)&1")
 }
 
@@ -850,4 +931,190 @@ record(calc, "$(P):$(R):Premag:Status:OnOff") {
     field(DESC, "Premagnetisation On/Off")
     field(INPA, "$(P):$(R):Premag:StatusRaw CP MS")
     field(CALC, "(A>>1)&1")
+}
+
+# ==========================================================================
+# HVPS INTERLOCK BITS (WORD36, bytes 72-73)
+# ==========================================================================
+
+record(calc, "$(P):$(R):HVPS:Interlock:Internal") {
+    field(DESC, "HVPS Internal Interlock")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(CALC, "(A>>0)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):HVPS:Interlock:Line") {
+    field(DESC, "HVPS Line Alarm")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(CALC, "(A>>1)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):HVPS:Interlock:Overload") {
+    field(DESC, "HVPS Overload")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(CALC, "(A>>2)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):HVPS:Interlock:Temperature") {
+    field(DESC, "HVPS Temperature")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(CALC, "(A>>3)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):HVPS:Interlock:WaterTempError") {
+    field(DESC, "HVPS Water Temp Error")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(CALC, "(A>>4)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):HVPS:Interlock:OvervoltageProt") {
+    field(DESC, "HVPS Overvoltage Prot")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(CALC, "(A>>5)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):HVPS:Interlock:WaterFlow") {
+    field(DESC, "HVPS Water Flow")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(CALC, "(A>>6)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):HVPS:Interlock:MaxVoltageReached") {
+    field(DESC, "HVPS Max Voltage Reached")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(CALC, "(A>>7)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+# ==========================================================================
+# HVPS STATUS BITS (WORD37, bytes 74-75)
+# ==========================================================================
+
+record(calc, "$(P):$(R):HVPS:Status:OnOff") {
+    field(DESC, "HVPS On/Off")
+    field(INPA, "$(P):$(R):HVPS:StatusRaw CP MS")
+    field(CALC, "(A>>0)&1")
+}
+
+record(calc, "$(P):$(R):HVPS:Status:Ready") {
+    field(DESC, "HVPS Ready")
+    field(INPA, "$(P):$(R):HVPS:StatusRaw CP MS")
+    field(CALC, "(A>>1)&1")
+}
+
+record(calc, "$(P):$(R):HVPS:Status:HighVoltageOnOff") {
+    field(DESC, "High Voltage On/Off")
+    field(INPA, "$(P):$(R):HVPS:StatusRaw CP MS")
+    field(CALC, "(A>>2)&1")
+}
+
+# ==========================================================================
+# GENERAL INTERLOCK BITS (WORD38, bytes 76-77)
+# ==========================================================================
+
+record(calc, "$(P):$(R):General:Interlock:GroundSwitches") {
+    field(DESC, "Ground Switches Alarm")
+    field(INPA, "$(P):$(R):General:InterlockRaw CP MS")
+    field(CALC, "(A>>0)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):General:Interlock:DoorsPFN") {
+    field(DESC, "Doors PFN Alarm")
+    field(INPA, "$(P):$(R):General:InterlockRaw CP MS")
+    field(CALC, "(A>>1)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):General:Interlock:EmergencyOff") {
+    field(DESC, "Emergency Off Alarm")
+    field(INPA, "$(P):$(R):General:InterlockRaw CP MS")
+    field(CALC, "(A>>8)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):General:Interlock:CircuitBreaker") {
+    field(DESC, "Circuit Breaker Alarm")
+    field(INP,  "$(P):$(R):General:InterlockRaw CP MS")
+    field(CALC, "(A>>9)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+record(calc, "$(P):$(R):General:Interlock:SmokeDetection") {
+    field(DESC, "Smoke Detection Error")
+    field(INPA, "$(P):$(R):General:InterlockRaw CP MS")
+    field(CALC, "(A>>10)&1")
+    field(HIHI, "0.5")
+    field(HHSV, "MAJOR")
+}
+
+# ==========================================================================
+# GENERAL STATUS BITS (WORD39, bytes 78-79)
+# ==========================================================================
+
+record(calc, "$(P):$(R):General:Status:LocalRemote") {
+    field(DESC, "Local/Remote")
+    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(CALC, "(A>>0)&1")
+}
+
+record(calc, "$(P):$(R):General:Status:CabinetDoors") {
+    field(DESC, "Cabinet Doors")
+    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(CALC, "(A>>1)&1")
+}
+
+record(calc, "$(P):$(R):General:Status:EmergencyOffSystem") {
+    field(DESC, "Emergency Off System")
+    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(CALC, "(A>>2)&1")
+}
+
+record(calc, "$(P):$(R):General:Status:MainContactor") {
+    field(DESC, "Main Contactor")
+    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(CALC, "(A>>3)&1")
+}
+
+record(calc, "$(P):$(R):General:Status:SignalLightGreen") {
+    field(DESC, "Signal Light Green")
+    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(CALC, "(A>>4)&1")
+}
+
+record(calc, "$(P):$(R):General:Status:SignalLightYellow") {
+    field(DESC, "Signal Light Yellow")
+    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(CALC, "(A>>5)&1")
+}
+
+record(calc, "$(P):$(R):General:Status:SignalLightRed") {
+    field(DESC, "Signal Light Red")
+    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(CALC, "(A>>6)&1")
+}
+
+record(calc, "$(P):$(R):General:Status:GroundRods") {
+    field(DESC, "Ground Rods")
+    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(CALC, "(A>>7)&1")
 }
