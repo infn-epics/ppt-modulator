@@ -439,9 +439,37 @@ record(longin, "$(P):$(R):General:StatusRaw") {
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALJ CP MS")
     field(EGU,  "")
 }
+
 # ==========================================================================
-# DEBUG - Show connection status via first value
+# MEASUREMENT VALUES FROM DecodeWaveguideHVPS
 # ==========================================================================
+
+record(ai, "$(P):$(R):Counter") {
+    field(DESC, "Counter")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALD CP MS")
+    field(EGU,  "")
+    field(PREC, "0")
+    field(HOPR, "1000000")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P):$(R):HVPS:ChargingVoltage") {
+    field(DESC, "HVPS Charging Voltage")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALE CP MS")
+    field(EGU,  "V")
+    field(PREC, "1")
+    field(HOPR, "100000")
+    field(LOPR, "0")
+}
+
+record(ai, "$(P):$(R):HVPS:WaterTemperature") {
+    field(DESC, "HVPS Water Temperature")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALF CP MS")
+    field(EGU,  "C")
+    field(PREC, "1")
+    field(HOPR, "100")
+    field(LOPR, "0")
+}
 
 record(calc, "$(P):$(R):calcstatconn_") {
     field(DESC, "Device Connection Status")

@@ -5,8 +5,12 @@
 -->
 <display version="2.0.0">
   <name>PPT Modulator Status &amp; Interlocks</name>
+  <macros>
+  <P>SPARC:MOD:PPT</P>
+  <R>MOD001</R>
+  </macros>
   <width>1400</width>
-  <height>1000</height>
+  <height>1600</height>
   <background_color>
     <color red="240" green="240" blue="240">
     </color>
@@ -852,6 +856,866 @@
       <width>250</width>
       <height>25</height>
       <text>On/Off</text>
+    </widget>
+  </widget>
+
+  <!-- Waveguide Section -->
+  <widget type="group" version="2.0.0">
+    <name>WaveguideSection</name>
+    <x>10</x>
+    <y>520</y>
+    <width>680</width>
+    <height>150</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>WaveguideSectionLabel</name>
+      <x>10</x>
+      <y>5</y>
+      <width>660</width>
+      <height>30</height>
+      <text>WAVEGUIDE - Status &amp; Interlocks</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="0" green="0" blue="128">
+        </color>
+      </foreground_color>
+    </widget>
+
+    <!-- Interlocks -->
+    <widget type="label" version="2.0.0">
+      <name>WaveguideInterlocksLabel</name>
+      <x>20</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Interlocks (red = alarm)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>WaveguideInterlockNote</name>
+      <x>30</x>
+      <y>70</y>
+      <width>600</width>
+      <height>25</height>
+      <text>Raw interlock word available - individual bits not decoded</text>
+      <font>
+        <font family="Liberation Sans" style="ITALIC" size="12.0">
+        </font>
+      </font>
+    </widget>
+
+    <!-- Status -->
+    <widget type="label" version="2.0.0">
+      <name>WaveguideStatusLabel</name>
+      <x>350</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Status (green = active)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>WaveguideStatusNote</name>
+      <x>360</x>
+      <y>70</y>
+      <width>300</width>
+      <height>25</height>
+      <text>No status bits decoded</text>
+      <font>
+        <font family="Liberation Sans" style="ITALIC" size="12.0">
+        </font>
+      </font>
+    </widget>
+  </widget>
+
+  <!-- VSWR Section -->
+  <widget type="group" version="2.0.0">
+    <name>VSWRSection</name>
+    <x>700</x>
+    <y>520</y>
+    <width>680</width>
+    <height>150</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>VSWRSectionLabel</name>
+      <x>10</x>
+      <y>5</y>
+      <width>660</width>
+      <height>30</height>
+      <text>VSWR - Status &amp; Interlocks</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="0" green="0" blue="128">
+        </color>
+      </foreground_color>
+    </widget>
+
+    <!-- Interlocks -->
+    <widget type="label" version="2.0.0">
+      <name>VSWRInterlocksLabel</name>
+      <x>20</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Interlocks (red = alarm)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>VSWRInterlockNote</name>
+      <x>30</x>
+      <y>70</y>
+      <width>600</width>
+      <height>25</height>
+      <text>Raw interlock word available - individual bits not decoded</text>
+      <font>
+        <font family="Liberation Sans" style="ITALIC" size="12.0">
+        </font>
+      </font>
+    </widget>
+
+    <!-- Status -->
+    <widget type="label" version="2.0.0">
+      <name>VSWRStatusLabel</name>
+      <x>350</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Status (green = active)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>VSWRStatusNote</name>
+      <x>360</x>
+      <y>70</y>
+      <width>300</width>
+      <height>25</height>
+      <text>No status bits decoded</text>
+      <font>
+        <font family="Liberation Sans" style="ITALIC" size="12.0">
+        </font>
+      </font>
+    </widget>
+  </widget>
+
+  <!-- Clipper Section -->
+  <widget type="group" version="2.0.0">
+    <name>ClipperSection</name>
+    <x>10</x>
+    <y>680</y>
+    <width>680</width>
+    <height>150</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>ClipperSectionLabel</name>
+      <x>10</x>
+      <y>5</y>
+      <width>660</width>
+      <height>30</height>
+      <text>CLIPPER - Status &amp; Interlocks</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="0" green="0" blue="128">
+        </color>
+      </foreground_color>
+    </widget>
+
+    <!-- Interlocks -->
+    <widget type="label" version="2.0.0">
+      <name>ClipperInterlocksLabel</name>
+      <x>20</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Interlocks (red = alarm)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>ClipperInterlockNote</name>
+      <x>30</x>
+      <y>70</y>
+      <width>600</width>
+      <height>25</height>
+      <text>Raw interlock word available - individual bits not decoded</text>
+      <font>
+        <font family="Liberation Sans" style="ITALIC" size="12.0">
+        </font>
+      </font>
+    </widget>
+
+    <!-- Status -->
+    <widget type="label" version="2.0.0">
+      <name>ClipperStatusLabel</name>
+      <x>350</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Status (green = active)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>ClipperStatusNote</name>
+      <x>360</x>
+      <y>70</y>
+      <width>300</width>
+      <height>25</height>
+      <text>No status bits decoded</text>
+      <font>
+        <font family="Liberation Sans" style="ITALIC" size="12.0">
+        </font>
+      </font>
+    </widget>
+  </widget>
+
+  <!-- HVPS Section -->
+  <widget type="group" version="2.0.0">
+    <name>HVPSSection</name>
+    <x>700</x>
+    <y>680</y>
+    <width>680</width>
+    <height>220</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>HVPSSectionLabel</name>
+      <x>10</x>
+      <y>5</y>
+      <width>660</width>
+      <height>30</height>
+      <text>HVPS - Status &amp; Interlocks</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="0" green="0" blue="128">
+        </color>
+      </foreground_color>
+    </widget>
+
+    <!-- Interlocks -->
+    <widget type="label" version="2.0.0">
+      <name>HVPSInterlocksLabel</name>
+      <x>20</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Interlocks (red = alarm)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILInternal</name>
+      <pv_name>$(P)HVPS:Interlock:Internal</pv_name>
+      <x>30</x>
+      <y>70</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILInternalLabel</name>
+      <x>60</x>
+      <y>67</y>
+      <width>250</width>
+      <height>25</height>
+      <text>Internal</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILLine</name>
+      <pv_name>$(P)HVPS:Interlock:Line</pv_name>
+      <x>30</x>
+      <y>95</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILLineLabel</name>
+      <x>60</x>
+      <y>92</y>
+      <width>250</width>
+      <height>25</height>
+      <text>Line Alarm</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILOverload</name>
+      <pv_name>$(P)HVPS:Interlock:Overload</pv_name>
+      <x>30</x>
+      <y>120</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILOverloadLabel</name>
+      <x>60</x>
+      <y>117</y>
+      <width>250</width>
+      <height>25</height>
+      <text>Overload</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILTemperature</name>
+      <pv_name>$(P)HVPS:Interlock:Temperature</pv_name>
+      <x>30</x>
+      <y>145</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILTemperatureLabel</name>
+      <x>60</x>
+      <y>142</y>
+      <width>250</width>
+      <height>25</height>
+      <text>Temperature</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILWaterTempError</name>
+      <pv_name>$(P)HVPS:Interlock:WaterTempError</pv_name>
+      <x>30</x>
+      <y>170</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILWaterTempErrorLabel</name>
+      <x>60</x>
+      <y>167</y>
+      <width>250</width>
+      <height>25</height>
+      <text>Water Temp Error</text>
+    </widget>
+
+    <!-- Status -->
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusLabel</name>
+      <x>350</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Status (green = active)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSStatusOnOff</name>
+      <pv_name>$(P)HVPS:Status:OnOff</pv_name>
+      <x>360</x>
+      <y>70</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusOnOffLabel</name>
+      <x>390</x>
+      <y>67</y>
+      <width>250</width>
+      <height>25</height>
+      <text>On/Off</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSStatusReady</name>
+      <pv_name>$(P)HVPS:Status:Ready</pv_name>
+      <x>360</x>
+      <y>95</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusReadyLabel</name>
+      <x>390</x>
+      <y>92</y>
+      <width>250</width>
+      <height>25</height>
+      <text>Ready</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSStatusHighVoltageOnOff</name>
+      <pv_name>$(P)HVPS:Status:HighVoltageOnOff</pv_name>
+      <x>360</x>
+      <y>120</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusHighVoltageOnOffLabel</name>
+      <x>390</x>
+      <y>117</y>
+      <width>250</width>
+      <height>25</height>
+      <text>High Voltage On/Off</text>
+    </widget>
+  </widget>
+
+  <!-- General Section -->
+  <widget type="group" version="2.0.0">
+    <name>GeneralSection</name>
+    <x>10</x>
+    <y>900</y>
+    <width>1370</width>
+    <height>220</height>
+    <style>3</style>
+    <widget type="label" version="2.0.0">
+      <name>GeneralSectionLabel</name>
+      <x>10</x>
+      <y>5</y>
+      <width>1350</width>
+      <height>30</height>
+      <text>GENERAL - Status &amp; Interlocks</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="0" green="0" blue="128">
+        </color>
+      </foreground_color>
+    </widget>
+
+    <!-- Interlocks -->
+    <widget type="label" version="2.0.0">
+      <name>GeneralInterlocksLabel</name>
+      <x>20</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Interlocks (red = alarm)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILGroundSwitches</name>
+      <pv_name>$(P)General:Interlock:GroundSwitches</pv_name>
+      <x>30</x>
+      <y>70</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILGroundSwitchesLabel</name>
+      <x>60</x>
+      <y>67</y>
+      <width>200</width>
+      <height>25</height>
+      <text>Ground Switches</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILDoorsPFN</name>
+      <pv_name>$(P)General:Interlock:DoorsPFN</pv_name>
+      <x>30</x>
+      <y>95</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILDoorsPFNLabel</name>
+      <x>60</x>
+      <y>92</y>
+      <width>200</width>
+      <height>25</height>
+      <text>Doors PFN</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILEmergencyOff</name>
+      <pv_name>$(P)General:Interlock:EmergencyOff</pv_name>
+      <x>30</x>
+      <y>120</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILEmergencyOffLabel</name>
+      <x>60</x>
+      <y>117</y>
+      <width>200</width>
+      <height>25</height>
+      <text>Emergency Off</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILCircuitBreaker</name>
+      <pv_name>$(P)General:Interlock:CircuitBreaker</pv_name>
+      <x>30</x>
+      <y>145</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILCircuitBreakerLabel</name>
+      <x>60</x>
+      <y>142</y>
+      <width>200</width>
+      <height>25</height>
+      <text>Circuit Breaker</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILSmokeDetection</name>
+      <pv_name>$(P)General:Interlock:SmokeDetection</pv_name>
+      <x>30</x>
+      <y>170</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILSmokeDetectionLabel</name>
+      <x>60</x>
+      <y>167</y>
+      <width>200</width>
+      <height>25</height>
+      <text>Smoke Detection</text>
+    </widget>
+
+    <!-- Status -->
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusLabel</name>
+      <x>300</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Status (green = active)</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusLocalRemote</name>
+      <pv_name>$(P)General:Status:LocalRemote</pv_name>
+      <x>310</x>
+      <y>70</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusLocalRemoteLabel</name>
+      <x>340</x>
+      <y>67</y>
+      <width>150</width>
+      <height>25</height>
+      <text>Local/Remote</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusCabinetDoors</name>
+      <pv_name>$(P)General:Status:CabinetDoors</pv_name>
+      <x>310</x>
+      <y>95</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusCabinetDoorsLabel</name>
+      <x>340</x>
+      <y>92</y>
+      <width>150</width>
+      <height>25</height>
+      <text>Cabinet Doors</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusEmergencyOffSystem</name>
+      <pv_name>$(P)General:Status:EmergencyOffSystem</pv_name>
+      <x>310</x>
+      <y>120</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusEmergencyOffSystemLabel</name>
+      <x>340</x>
+      <y>117</y>
+      <width>150</width>
+      <height>25</height>
+      <text>Emergency Off System</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusMainContactor</name>
+      <pv_name>$(P)General:Status:MainContactor</pv_name>
+      <x>310</x>
+      <y>145</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusMainContactorLabel</name>
+      <x>340</x>
+      <y>142</y>
+      <width>150</width>
+      <height>25</height>
+      <text>Main Contactor</text>
+    </widget>
+
+    <!-- Signal Lights -->
+    <widget type="label" version="2.0.0">
+      <name>GeneralSignalLightsLabel</name>
+      <x>520</x>
+      <y>40</y>
+      <width>300</width>
+      <height>25</height>
+      <text>Signal Lights</text>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusSignalLightGreen</name>
+      <pv_name>$(P)General:Status:SignalLightGreen</pv_name>
+      <x>530</x>
+      <y>70</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusSignalLightGreenLabel</name>
+      <x>560</x>
+      <y>67</y>
+      <width>100</width>
+      <height>25</height>
+      <text>Green</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusSignalLightYellow</name>
+      <pv_name>$(P)General:Status:SignalLightYellow</pv_name>
+      <x>530</x>
+      <y>95</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="255" green="255" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusSignalLightYellowLabel</name>
+      <x>560</x>
+      <y>92</y>
+      <width>100</width>
+      <height>25</height>
+      <text>Yellow</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusSignalLightRed</name>
+      <pv_name>$(P)General:Status:SignalLightRed</pv_name>
+      <x>530</x>
+      <y>120</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusSignalLightRedLabel</name>
+      <x>560</x>
+      <y>117</y>
+      <width>100</width>
+      <height>25</height>
+      <text>Red</text>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusGroundRods</name>
+      <pv_name>$(P)General:Status:GroundRods</pv_name>
+      <x>530</x>
+      <y>145</y>
+      <width>20</width>
+      <height>20</height>
+      <off_color>
+        <color red="140" green="140" blue="140">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="200" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusGroundRodsLabel</name>
+      <x>560</x>
+      <y>142</y>
+      <width>100</width>
+      <height>25</height>
+      <text>Ground Rods</text>
     </widget>
   </widget>
 
