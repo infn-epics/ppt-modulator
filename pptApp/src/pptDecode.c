@@ -344,7 +344,7 @@ long pptDecodeWaveguideHVPS(aSubRecord *prec) {
 
     /* HVPS + General Section (bytes 68-79) */
     rawVal = getWord(rawData, 68);
-    *outE = rawVal / 10.0;  /* HV Charging Voltage (0..50.0kV) */
+    *outE = rawVal;  /* HV Charging Voltage (0..50.0kV) */
     //printf("HV Charging Voltage: raw=%u scaled=%.1f kV\n", rawVal, *outE);
 
     rawVal = getWord(rawData, 70);

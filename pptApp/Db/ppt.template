@@ -453,15 +453,22 @@ record(ai, "$(P):$(R):Counter") {
     field(LOPR, "0")
 }
 
-record(ai, "$(P):$(R):HVPS:ChargingVoltage") {
-    field(DESC, "HVPS Charging Voltage")
+record(ai, "$(P):$(R):HVPS:ChargingVoltageRaw") {
+    field(DESC, "HVPS Charging Voltage Raw")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALE CP MS")
     field(EGU,  "V")
     field(PREC, "1")
     field(HOPR, "100000")
     field(LOPR, "0")
+    field(FLNK, "$(P):$(R):HVPS:ChargingVoltage")
 }
 
+record(calc, "$(P):$(R):HVPS:ChargingVoltage") {
+    field(DESC, "HVPS Charging Voltage")
+    field(INPA,  "$(P):$(R):HVPS:ChargingVoltageRaw")
+    field(CALC,"A/10.0")
+   
+}
 record(ai, "$(P):$(R):HVPS:WaterTemperature") {
     field(DESC, "HVPS Water Temperature")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALF CP MS")
