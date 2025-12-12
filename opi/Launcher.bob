@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>Display</name>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button</name>
+    <actions>
+      <action type="open_display">
+        <description>PPT MOD001</description>
+        <file>ppt-modulator.bob</file>
+        <macros>
+          <P>SPARC:MOD:PPT</P>
+          <R>MOD001</R>
+        </macros>
+        <target>window</target>
+      </action>
+    </actions>
+    <x>30</x>
+    <y>10</y>
+    <tooltip>$(actions)</tooltip>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button_1</name>
+    <actions>
+      <action type="open_display">
+        <description>PPT MOD002</description>
+        <file>ppt-modulator.bob</file>
+        <macros>
+          <P>SPARC:MOD:PPT</P>
+          <R>MOD002</R>
+        </macros>
+        <target>window</target>
+      </action>
+    </actions>
+    <x>160</x>
+    <y>10</y>
+    <tooltip>$(actions)</tooltip>
+  </widget>
+</display>
