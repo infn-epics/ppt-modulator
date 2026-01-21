@@ -216,7 +216,7 @@ record(ai, "$(P):$(R):Klys:BodyWaterOutTemp") {
 record(ai, "$(P):$(R):Klys:BodyWaterFlow") {
     field(DESC, "Klystron Body Water Flow")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALH CP MS")
-    field(EGU,  "L/min")
+    field(EGU,  "L/Hour")
     field(PREC, "2")
     field(HOPR, "10")
     field(LOPR, "0")

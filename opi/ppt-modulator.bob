@@ -1517,8 +1517,8 @@
       </background_color>
     </widget>
     <widget type="label" version="2.0.0">
-      <name>HVPSRawLabel</name>
-      <text>HVPS raw</text>
+      <name>HVPSSetpointLabel</name>
+      <text>HV Setpoint (kV)</text>
       <x>860</x>
       <y>45</y>
       <width>120</width>
@@ -1543,11 +1543,46 @@
       <format>1</format>
       <precision>1</precision>
     </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVMaxLabel</name>
+      <text>Max:</text>
+      <x>860</x>
+      <y>110</y>
+      <width>40</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="11.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>HVMaxValue</name>
+      <pv_name>$(P):$(R):HVPS:VoltageMax</pv_name>
+      <x>900</x>
+      <y>110</y>
+      <width>50</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="11.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="255" green="100" blue="0">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="240" green="240" blue="240">
+        </color>
+      </background_color>
+      <format>1</format>
+      <precision>1</precision>
+      <show_units>true</show_units>
+    </widget>
     <widget type="textupdate" version="2.0.0">
       <name>HVPSRawReadback</name>
       <pv_name>$(P):$(R):HVPS:VoltageSet:RBV</pv_name>
       <x>860</x>
-      <y>115</y>
+      <y>140</y>
       <width>120</width>
       <height>30</height>
       <background_color>

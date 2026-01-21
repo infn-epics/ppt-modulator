@@ -1,11 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
-  <name>Display</name>
+  <name>PPT Modulator Launcher</name>
+  <width>450</width>
+  <height>180</height>
+  <background_color>
+    <color red="240" green="240" blue="240">
+    </color>
+  </background_color>
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <text>PPT Modulator Launcher</text>
+    <x>10</x>
+    <y>10</y>
+    <width>430</width>
+    <height>30</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="18.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </foreground_color>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Subtitle</name>
+    <text>Test IOC: P=SPARC:MOD:PPT, R=MOD001</text>
+    <x>10</x>
+    <y>40</y>
+    <width>430</width>
+    <height>20</height>
+    <font>
+      <font family="Liberation Sans" style="ITALIC" size="11.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="100" green="100" blue="100">
+      </color>
+    </foreground_color>
+    <horizontal_alignment>1</horizontal_alignment>
+  </widget>
   <widget type="action_button" version="3.0.0">
-    <name>Action Button</name>
+    <name>MainPanelBtn</name>
     <actions>
       <action type="open_display">
-        <description>PPT MOD001</description>
+        <description>PPT MOD001 - Main Panel</description>
         <file>ppt-modulator.bob</file>
         <macros>
           <P>SPARC:MOD:PPT</P>
@@ -14,25 +54,134 @@
         <target>window</target>
       </action>
     </actions>
-    <x>30</x>
-    <y>10</y>
-    <tooltip>$(actions)</tooltip>
+    <text>MOD001 Main Panel</text>
+    <x>20</x>
+    <y>70</y>
+    <width>200</width>
+    <height>40</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color red="0" green="100" blue="180">
+      </color>
+    </background_color>
+    <tooltip>Open main monitoring and control panel</tooltip>
   </widget>
   <widget type="action_button" version="3.0.0">
-    <name>Action Button_1</name>
+    <name>StatusInterlocksBtn</name>
     <actions>
       <action type="open_display">
-        <description>PPT MOD002</description>
-        <file>ppt-modulator.bob</file>
+        <description>PPT MOD001 - Status &amp; Interlocks</description>
+        <file>ppt-status-interlocks.bob</file>
         <macros>
           <P>SPARC:MOD:PPT</P>
-          <R>MOD002</R>
+          <R>MOD001</R>
         </macros>
         <target>window</target>
       </action>
     </actions>
-    <x>160</x>
-    <y>10</y>
-    <tooltip>$(actions)</tooltip>
+    <text>Status &amp; Interlocks</text>
+    <x>230</x>
+    <y>70</y>
+    <width>200</width>
+    <height>40</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color red="180" green="100" blue="0">
+      </color>
+    </background_color>
+    <tooltip>Open status and interlocks detail panel</tooltip>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>HVMaxLabel</name>
+    <text>HVMAX:</text>
+    <x>20</x>
+    <y>125</y>
+    <width>60</width>
+    <height>25</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="12.0">
+      </font>
+    </font>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>HVMaxValue</name>
+    <pv_name>SPARC:MOD:PPT:MOD001:HVPS:VoltageMax</pv_name>
+    <x>80</x>
+    <y>125</y>
+    <width>60</width>
+    <height>25</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="12.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="255" green="100" blue="0">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color red="240" green="240" blue="240">
+      </color>
+    </background_color>
+    <format>1</format>
+    <precision>1</precision>
+    <show_units>true</show_units>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>ConnectionLabel</name>
+    <text>Connection:</text>
+    <x>200</x>
+    <y>125</y>
+    <width>90</width>
+    <height>25</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="12.0">
+      </font>
+    </font>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>ConnectionLED</name>
+    <pv_name>SPARC:MOD:PPT:MOD001:RawData.SEVR</pv_name>
+    <x>290</x>
+    <y>125</y>
+    <width>25</width>
+    <height>25</height>
+    <off_color>
+      <color red="0" green="200" blue="0">
+      </color>
+    </off_color>
+    <on_color>
+      <color red="255" green="0" blue="0">
+      </color>
+    </on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>ConnectionStatus</name>
+    <text>(Green=OK)</text>
+    <x>320</x>
+    <y>125</y>
+    <width>100</width>
+    <height>25</height>
+    <font>
+      <font family="Liberation Sans" style="ITALIC" size="10.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="100" green="100" blue="100">
+      </color>
+    </foreground_color>
   </widget>
 </display>

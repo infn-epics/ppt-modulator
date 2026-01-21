@@ -7,13 +7,48 @@
 # 1. ON/OFF commands (bytes 0-1): 16-bit bitfield for all subsystems
 # 2. HVPS Charging Voltage setpoint (bytes 2-3)
 #
+# Architecture:
+# - 32-bit image register stores both ON/OFF command bits and HV setpoint
+# - Any command or HV change writes the full 32-bit register atomically
+# - HVMAX macro defines maximum operational HV voltage (default: 37 kV)
+#
 # Load this template in addition to ppt.template:
 #   dbLoadRecords("db/ppt.template", "P=PPT:,R=MOD1:,PORT=PPT1")
-#   dbLoadRecords("db/ppt_control.template", "P=PPT:,R=MOD1:,PORT=PPT1")
+#   dbLoadRecords("db/ppt_control.template", "P=PPT:,R=MOD1:,PORT=PPT1,HVMAX=37")
 # ============================================================================
 
 # ==========================================================================
-# ON/OFF COMMAND WORD REGISTER (bytes 0-1, 16-bit bitfield)
+# 32-BIT IMAGE REGISTER (bytes 0-3)
+# ==========================================================================
+# Stores the complete command register:
+#   Bits 0-15:  ON/OFF command word (written by command buttons)
+#   Bits 16-31: HVPS voltage setpoint (written by voltage controls)
+#
+# This is the master register that gets written to the device
+
+record(longout, "$(P):$(R):CmdReg32") {
+    field(DESC, "32-bit Command Register")
+    field(DTYP, "stream")
+    field(OUT,  "@ppt.proto writeFullCmd32 $(PORT)")
+    field(VAL,  "0")
+    info(autosaveFields, "VAL")
+}
+
+# Shadow registers for ON/OFF bits and HV value
+record(longin, "$(P):$(R):CmdReg:OnOffBits") {
+    field(DESC, "Current ON/OFF bits (0-15)")
+    field(VAL,  "0")
+    info(autosaveFields, "VAL")
+}
+
+record(longin, "$(P):$(R):CmdReg:HVBits") {
+    field(DESC, "Current HV bits (16-31)")
+    field(VAL,  "0")
+    info(autosaveFields, "VAL")
+}
+
+# ==========================================================================
+# ON/OFF COMMAND WORD REGISTER (bytes 0-1, 16-bit bitfield) - LEGACY
 # ==========================================================================
 # This is the master command word sent to the device
 # Individual bits control ON/OFF for each subsystem
@@ -155,6 +190,7 @@ record(bo, "$(P):$(R):ChargePFN:OffCmd") {
 # COMMAND WORD CALCULATION
 # ==========================================================================
 # Combines all individual ON/OFF bits into a single 16-bit word
+# Then combines with HV setpoint and writes full 32-bit register
 # Split into multiple calcout records due to CALC string length limit (80 chars)
 
 # Calculate lower byte (bits 0-7: ON commands)
@@ -186,13 +222,25 @@ record(calcout, "$(P):$(R):CalcOnOffCmd2") {
     field(FLNK, "$(P):$(R):CalcOnOffCmd3")
 }
 
-# Combine both bytes and write to device
+# Combine both bytes into 16-bit ON/OFF word and store in shadow register
 record(calcout, "$(P):$(R):CalcOnOffCmd3") {
-    field(DESC, "Combine and Write Command")
+    field(DESC, "Combine ON/OFF bits")
     field(INPA, "$(P):$(R):CalcOnOffCmd1")
     field(INPB, "$(P):$(R):CalcOnOffCmd2")
     field(CALC, "A+B")
-    field(OUT,  "$(P):$(R):OnOffCmd PP")
+    field(OUT,  "$(P):$(R):CmdReg:OnOffBits PP")
+    field(OOPT, "Every Time")
+    field(FLNK, "$(P):$(R):CalcFullCmd32")
+}
+
+# Calculate full 32-bit register: (HV << 16) | ON_OFF_BITS
+# HV value stored in raw units (0-500 for 0-50kV) in the HV shadow register
+record(calcout, "$(P):$(R):CalcFullCmd32") {
+    field(DESC, "Calc 32-bit Command Reg")
+    field(INPA, "$(P):$(R):CmdReg:OnOffBits")
+    field(INPB, "$(P):$(R):CmdReg:HVBits")
+    field(CALC, "A+(B<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
     field(OOPT, "Every Time")
 }
 
@@ -274,34 +322,63 @@ record(calcout, "$(P):$(R):TriggerAutoReset2") {
 }
 
 # ==========================================================================
-# HVPS CHARGING VOLTAGE SETPOINT (bytes 2-3)
+# HVPS CHARGING VOLTAGE SETPOINT (bytes 2-3 in 32-bit register)
 # ==========================================================================
 # Value range: 0..500 (0..50.0 kV)
-# Example: 45.12 kV = value 451
+# HVMAX macro limits operational voltage (default: 37 kV)
+# Example: 37 kV = value 370 in raw units
 
+# User-facing voltage setpoint (in kV display units)
 record(ao, "$(P):$(R):HVPS:VoltageSet") {
     field(DESC, "HVPS Charging Voltage SP")
-    field(DTYP, "stream")
-    field(OUT,  "@ppt.proto writeHVPSVoltageOnly $(PORT)")
     field(EGU,  "kV")
     field(PREC, "1")
-    field(LINR, "LINEAR")
-    field(ESLO, "0.1")    # Convert display kV to device units (x10)
-    field(EOFF, "0")
-    field(HOPR, "50.0")
+    field(HOPR, "$(HVMAX=37)")
     field(LOPR, "0")
-    field(DRVH, "50.0")
+    field(DRVH, "$(HVMAX=37)")
     field(DRVL, "0")
+    field(VAL,  "0")
+    field(FLNK, "$(P):$(R):HVPS:VoltageCalc")
     info(autosaveFields, "VAL")
 }
 
-# Readback for confirmation (optional - if device echoes setpoint)
+# Convert kV to raw units (x10) and clamp to HVMAX
+record(calcout, "$(P):$(R):HVPS:VoltageCalc") {
+    field(DESC, "Convert kV to raw units")
+    field(INPA, "$(P):$(R):HVPS:VoltageSet")
+    field(INPB, "$(HVMAX=37)")
+    field(CALC, "MIN(A,B)*10")
+    field(OUT,  "$(P):$(R):CmdReg:HVBits PP")
+    field(OOPT, "Every Time")
+    field(FLNK, "$(P):$(R):CalcFullCmd32FromHV")
+}
+
+# Trigger full 32-bit write when HV changes
+record(calcout, "$(P):$(R):CalcFullCmd32FromHV") {
+    field(DESC, "Write 32-bit reg on HV change")
+    field(INPA, "$(P):$(R):CmdReg:OnOffBits")
+    field(INPB, "$(P):$(R):CmdReg:HVBits")
+    field(CALC, "A+(B<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+}
+
+# Maximum operational voltage display
+record(ai, "$(P):$(R):HVPS:VoltageMax") {
+    field(DESC, "HVPS Maximum Voltage")
+    field(VAL,  "$(HVMAX=37)")
+    field(EGU,  "kV")
+    field(PREC, "1")
+    field(PINI, "YES")
+}
+
+# Readback for confirmation (from device read)
 record(ai, "$(P):$(R):HVPS:VoltageSet:RBV") {
     field(DESC, "HVPS Voltage SP Readback")
     field(INP,  "$(P):$(R):HVPS:VoltageSet")
     field(EGU,  "kV")
     field(PREC, "1")
-    field(HOPR, "50.0")
+    field(HOPR, "$(HVMAX=37)")
     field(LOPR, "0")
 }
 

@@ -18,7 +18,7 @@ readAllData {
 }
 
 # ============================================================================
-# Write ON/OFF Command Word (bytes 0-1)
+# Write ON/OFF Command Word (bytes 0-1) - DEPRECATED, use writeFullCmd32
 # ============================================================================
 # Bit mapping (LSB first, little-endian 16-bit word):
 # Bit 0:  ON: Heater Thyratron
@@ -44,6 +44,7 @@ writeOnOffCmd {
 # ============================================================================
 # Write HVPS Charging Voltage Setpoint Only (4 bytes: 00 00 VV VV)
 # ============================================================================
+# DEPRECATED - use writeFullCmd32 instead
 # Writes 4 bytes with ON/OFF command = 0 (bytes 0-1) and voltage (bytes 2-3)
 # This allows updating voltage without triggering any ON/OFF commands
 # Value range: 0..500 (representing 0..50.0kV)
@@ -53,7 +54,23 @@ writeHVPSVoltageOnly {
 }
 
 writeResetCmd {
-    out "\xFF\x80\x00\x00";   # 2 zero bytes + 16-bit little-endian voltage word
+    out "\xFF\x80\x00\x00";   # Reset command with all OFF bits set
+}
+
+# ============================================================================
+# Write Full 32-bit Command Register (bytes 0-3)
+# ============================================================================
+# This writes a complete 32-bit value containing both ON/OFF commands and HV setpoint
+# Format: 4 bytes little-endian
+#   Bytes 0-1: ON/OFF command word (16-bit, same bit mapping as writeOnOffCmd)
+#   Bytes 2-3: HVPS Charging Voltage setpoint (16-bit, value 0..500 = 0..50.0kV)
+#
+# The 32-bit value is constructed as: (HV_VALUE << 16) | ON_OFF_CMD
+# Example: HV=370 (37kV), CMD=0x0001 (Thy ON) => 0x01720001 => sends: 01 00 72 01
+#
+# This ensures atomic write of both command and voltage, avoiding race conditions
+writeFullCmd32 {
+    out "%.4r";           # write 32-bit little-endian value
 }
 
 # ============================================================================
