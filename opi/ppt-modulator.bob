@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
   <name>PPT Modulator</name>
-  <width>1390</width>
-  <height>2500</height>
+  <width>1380</width>
+  <height>2680</height>
   <background_color>
     <color red="240" green="240" blue="240">
     </color>
@@ -1356,7 +1356,7 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>HVPSStatusLED</name>
-      <pv_name>$(P):$(R):Klys:Status:Ready</pv_name>
+      <pv_name>$(P):$(R):HVPS:Status:Ready</pv_name>
       <x>410</x>
       <y>230</y>
       <width>80</width>
@@ -1410,13 +1410,13 @@
               </color>
             </value>
           </exp>
-          <exp bool_exp="pvInt0==0">
+          <exp bool_exp="PvInt0==0">
             <value>
               <color red="0" green="128" blue="0">
               </color>
             </value>
           </exp>
-          <pv_name>$(P):$(R):ChargePFN:Status:Ready</pv_name>
+          <pv_name>$(P):$(R):HVPS:Status:HighVoltageOnOff</pv_name>
         </rule>
       </rules>
       <tooltip>$(actions)</tooltip>
@@ -1445,30 +1445,30 @@
       </background_color>
       <rules>
         <rule name="color" prop_id="background_color" out_exp="false">
-          <exp bool_exp="pvInt0==0">
-            <value>
-              <color red="0" green="255" blue="0">
-              </color>
-            </value>
-          </exp>
           <exp bool_exp="pvInt0==1">
             <value>
               <color name="Off" red="60" green="100" blue="60">
               </color>
             </value>
           </exp>
-          <pv_name>$(P):$(R):ChargePFN:Status:Ready</pv_name>
+          <exp bool_exp="pvInt0==0">
+            <value>
+              <color name="On" red="0" green="255" blue="0">
+              </color>
+            </value>
+          </exp>
+          <pv_name>$(P):$(R):HVPS:Status:HighVoltageOnOff</pv_name>
         </rule>
       </rules>
       <tooltip>$(actions)</tooltip>
     </widget>
     <widget type="led" version="2.0.0">
       <name>ChargePFNStatusLED</name>
-      <pv_name>$(P):$(R):ChargePFN:On</pv_name>
-      <x>575</x>
-      <y>115</y>
-      <width>80</width>
-      <height>30</height>
+      <pv_name>$(P):$(R):HVPS:Status:HighVoltageOnOff</pv_name>
+      <x>1150</x>
+      <y>155</y>
+      <width>100</width>
+      <height>100</height>
       <off_label>OFF</off_label>
       <on_label>ON</on_label>
     </widget>
@@ -1517,8 +1517,8 @@
       </background_color>
     </widget>
     <widget type="label" version="2.0.0">
-      <name>HVPSSetpointLabel</name>
-      <text>HV Setpoint (kV)</text>
+      <name>HVPSRawLabel</name>
+      <text>HVPS raw</text>
       <x>860</x>
       <y>45</y>
       <width>120</width>
@@ -1531,7 +1531,7 @@
     </widget>
     <widget type="textentry" version="3.0.0">
       <name>HVPSRawEntry</name>
-      <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>
+      <pv_name>loc://loc_$(P):$(R):HVPS:VoltageSet&lt;VDouble&gt;(0)</pv_name>
       <x>860</x>
       <y>75</y>
       <width>120</width>
@@ -1543,46 +1543,11 @@
       <format>1</format>
       <precision>1</precision>
     </widget>
-    <widget type="label" version="2.0.0">
-      <name>HVMaxLabel</name>
-      <text>Max:</text>
-      <x>860</x>
-      <y>110</y>
-      <width>40</width>
-      <height>25</height>
-      <font>
-        <font family="Liberation Sans" style="BOLD" size="11.0">
-        </font>
-      </font>
-    </widget>
-    <widget type="textupdate" version="2.0.0">
-      <name>HVMaxValue</name>
-      <pv_name>$(P):$(R):HVPS:VoltageMax</pv_name>
-      <x>900</x>
-      <y>110</y>
-      <width>50</width>
-      <height>25</height>
-      <font>
-        <font family="Liberation Sans" style="BOLD" size="11.0">
-        </font>
-      </font>
-      <foreground_color>
-        <color red="255" green="100" blue="0">
-        </color>
-      </foreground_color>
-      <background_color>
-        <color red="240" green="240" blue="240">
-        </color>
-      </background_color>
-      <format>1</format>
-      <precision>1</precision>
-      <show_units>true</show_units>
-    </widget>
     <widget type="textupdate" version="2.0.0">
       <name>HVPSRawReadback</name>
       <pv_name>$(P):$(R):HVPS:VoltageSet:RBV</pv_name>
       <x>860</x>
-      <y>140</y>
+      <y>115</y>
       <width>120</width>
       <height>30</height>
       <background_color>
@@ -1611,7 +1576,7 @@
         <action type="write_pv">
           <description>Apply Voltage</description>
           <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>
-          <value>$(P):$(R):HVPS:VoltageSet</value>
+          <value>loc://loc_$(P):$(R):HVPS:VoltageSet</value>
         </action>
       </actions>
       <text>APPLY</text>
@@ -1687,6 +1652,18 @@
       <format>1</format>
       <precision>1</precision>
       <show_units>false</show_units>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusHighVoltageOnOffLabel_1</name>
+      <text>READY</text>
+      <x>1060</x>
+      <y>190</y>
+      <width>90</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
     </widget>
   </widget>
   <widget type="group" version="3.0.0">
@@ -3148,9 +3125,9 @@
   <widget type="led" version="2.0.0">
     <name>ConnectionLED</name>
     <pv_name>$(P):$(R):Connected</pv_name>
-    <x>1140</x>
-    <y>15</y>
-    <width>40</width>
+    <x>990</x>
+    <y>18</y>
+    <width>30</width>
     <height>30</height>
     <off_color>
       <color red="150" green="0" blue="0">
@@ -3581,7 +3558,7 @@
     <x>700</x>
     <y>1880</y>
     <width>680</width>
-    <height>120</height>
+    <height>400</height>
     <style>3</style>
     <widget type="label" version="2.0.0">
       <name>HVPSSectionLabel</name>
@@ -3604,7 +3581,7 @@
       <text>Interlocks (red = alarm)</text>
       <x>20</x>
       <y>40</y>
-      <width>160</width>
+      <width>200</width>
       <height>25</height>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
@@ -3630,14 +3607,168 @@
       <text>Internal</text>
       <x>60</x>
       <y>67</y>
-      <width>120</width>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILLine</name>
+      <pv_name>$(P):$(R):HVPS:Interlock:Line</pv_name>
+      <x>30</x>
+      <y>95</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILLineLabel</name>
+      <text>Line</text>
+      <x>60</x>
+      <y>92</y>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILOverload</name>
+      <pv_name>$(P):$(R):HVPS:Interlock:Overload</pv_name>
+      <x>30</x>
+      <y>120</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILOverloadLabel</name>
+      <text>Overload</text>
+      <x>60</x>
+      <y>117</y>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILTemperature</name>
+      <pv_name>$(P):$(R):HVPS:Interlock:Temperature</pv_name>
+      <x>30</x>
+      <y>145</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILTemperatureLabel</name>
+      <text>Temperature</text>
+      <x>60</x>
+      <y>142</y>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILWaterTempError</name>
+      <pv_name>$(P):$(R):HVPS:Interlock:WaterTempError</pv_name>
+      <x>30</x>
+      <y>170</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILWaterTempErrorLabel</name>
+      <text>Water Temp Error</text>
+      <x>60</x>
+      <y>167</y>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILOvervoltageProt</name>
+      <pv_name>$(P):$(R):HVPS:Interlock:OvervoltageProt</pv_name>
+      <x>30</x>
+      <y>195</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILOvervoltageProtLabel</name>
+      <text>Overvoltage Prot</text>
+      <x>60</x>
+      <y>192</y>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILWaterFlow</name>
+      <pv_name>$(P):$(R):HVPS:Interlock:WaterFlow</pv_name>
+      <x>30</x>
+      <y>220</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILWaterFlowLabel</name>
+      <text>Water Flow</text>
+      <x>60</x>
+      <y>217</y>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSILMaxVoltageReached</name>
+      <pv_name>$(P):$(R):HVPS:Interlock:MaxVoltageReached</pv_name>
+      <x>30</x>
+      <y>245</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSILMaxVoltageReachedLabel</name>
+      <text>Max Voltage Reached</text>
+      <x>60</x>
+      <y>242</y>
+      <width>170</width>
       <height>25</height>
     </widget>
     <widget type="textupdate" version="2.0.0">
       <name>HVPSInterlockRaw_Value</name>
       <pv_name>$(P):$(R):HVPS:InterlockRaw</pv_name>
-      <x>190</x>
-      <y>40</y>
+      <x>240</x>
+      <y>70</y>
       <width>120</width>
       <height>25</height>
       <background_color>
@@ -3646,35 +3777,123 @@
       </background_color>
       <format>1</format>
     </widget>
+    <widget type="byte_monitor" version="2.0.0">
+      <name>HVPSByteMonitor</name>
+      <pv_name>$(P):$(R):HVPS:InterlockRaw</pv_name>
+      <x>370</x>
+      <y>70</y>
+      <width>12</width>
+      <height>200</height>
+      <numBits>16</numBits>
+      <horizontal>false</horizontal>
+    </widget>
     <widget type="label" version="2.0.0">
-      <name>HVPSMeasurementsLabel</name>
-      <text>Measurements</text>
-      <x>350</x>
+      <name>HVPSStatusLabel</name>
+      <text>Status (green = active)</text>
+      <x>400</x>
       <y>40</y>
-      <width>160</width>
+      <width>200</width>
       <height>25</height>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
       </font>
     </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSStatusOnOff</name>
+      <pv_name>$(P):$(R):HVPS:Status:OnOff</pv_name>
+      <x>410</x>
+      <y>70</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusOnOffLabel</name>
+      <text>On/Off</text>
+      <x>440</x>
+      <y>67</y>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSStatusReady</name>
+      <pv_name>$(P):$(R):HVPS:Status:Ready</pv_name>
+      <x>410</x>
+      <y>95</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusReadyLabel</name>
+      <text>Ready</text>
+      <x>440</x>
+      <y>92</y>
+      <width>150</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>HVPSStatusHighVoltageOnOff</name>
+      <pv_name>$(P):$(R):HVPS:Status:HighVoltageOnOff</pv_name>
+      <x>410</x>
+      <y>120</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusHighVoltageOnOffLabel</name>
+      <text>High Voltage On/Off</text>
+      <x>440</x>
+      <y>117</y>
+      <width>180</width>
+      <height>25</height>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>HVPSStatusRaw_Value</name>
+      <pv_name>$(P):$(R):HVPS:StatusRaw</pv_name>
+      <x>410</x>
+      <y>160</y>
+      <width>120</width>
+      <height>25</height>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+      <format>1</format>
+    </widget>
     <widget type="byte_monitor" version="2.0.0">
-      <name>HVPSByteMonitor</name>
-      <pv_name>$(P):$(R):HVPS:InterlockRaw</pv_name>
+      <name>HVPSStatusByteMonitor</name>
+      <pv_name>$(P):$(R):HVPS:StatusRaw</pv_name>
       <x>540</x>
-      <y>65</y>
-      <width>12</width>
-      <height>45</height>
+      <y>160</y>
+      <width>120</width>
+      <height>13</height>
       <numBits>16</numBits>
-      <horizontal>false</horizontal>
     </widget>
   </widget>
   <widget type="group" version="3.0.0">
     <name>GeneralSection</name>
     <x>10</x>
-    <y>2010</y>
+    <y>2290</y>
     <width>1370</width>
-    <height>120</height>
+    <height>340</height>
     <style>3</style>
     <widget type="label" version="2.0.0">
       <name>GeneralSectionLabel</name>
@@ -3697,7 +3916,7 @@
       <text>Interlocks (red = alarm)</text>
       <x>20</x>
       <y>40</y>
-      <width>160</width>
+      <width>200</width>
       <height>25</height>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
@@ -3726,11 +3945,99 @@
       <width>120</width>
       <height>25</height>
     </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILGroundSwitches</name>
+      <pv_name>$(P):$(R):General:Interlock:GroundSwitches</pv_name>
+      <x>30</x>
+      <y>100</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILGroundSwitchesLabel</name>
+      <text>Ground Switches</text>
+      <x>60</x>
+      <y>97</y>
+      <width>140</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILDoorsPFN</name>
+      <pv_name>$(P):$(R):General:Interlock:DoorsPFN</pv_name>
+      <x>30</x>
+      <y>130</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILDoorsPFNLabel</name>
+      <text>Doors PFN</text>
+      <x>60</x>
+      <y>127</y>
+      <width>120</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILCircuitBreaker</name>
+      <pv_name>$(P):$(R):General:Interlock:CircuitBreaker</pv_name>
+      <x>30</x>
+      <y>160</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILCircuitBreakerLabel</name>
+      <text>Circuit Breaker</text>
+      <x>60</x>
+      <y>157</y>
+      <width>130</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralILSmokeDetection</name>
+      <pv_name>$(P):$(R):General:Interlock:SmokeDetection</pv_name>
+      <x>30</x>
+      <y>190</y>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralILSmokeDetectionLabel</name>
+      <text>Smoke Detection</text>
+      <x>60</x>
+      <y>187</y>
+      <width>140</width>
+      <height>25</height>
+    </widget>
     <widget type="textupdate" version="2.0.0">
       <name>GeneralInterlockRaw_Value</name>
       <pv_name>$(P):$(R):General:InterlockRaw</pv_name>
-      <x>190</x>
-      <y>40</y>
+      <x>220</x>
+      <y>70</y>
       <width>120</width>
       <height>25</height>
       <background_color>
@@ -3742,19 +4049,241 @@
     <widget type="byte_monitor" version="2.0.0">
       <name>GeneralByteMonitor</name>
       <pv_name>$(P):$(R):General:InterlockRaw</pv_name>
-      <x>540</x>
-      <y>65</y>
+      <x>350</x>
+      <y>70</y>
       <width>12</width>
-      <height>45</height>
+      <height>150</height>
       <numBits>16</numBits>
       <horizontal>false</horizontal>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusLabel</name>
+      <text>Status Bits (green = active)</text>
+      <x>700</x>
+      <y>40</y>
+      <width>220</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusLocalRemote</name>
+      <pv_name>$(P):$(R):General:Status:LocalRemote</pv_name>
+      <x>710</x>
+      <y>70</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusLocalRemoteLabel</name>
+      <text>Local/Remote</text>
+      <x>740</x>
+      <y>67</y>
+      <width>140</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusCabinetDoors</name>
+      <pv_name>$(P):$(R):General:Status:CabinetDoors</pv_name>
+      <x>710</x>
+      <y>100</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusCabinetDoorsLabel</name>
+      <text>Cabinet Doors</text>
+      <x>740</x>
+      <y>97</y>
+      <width>140</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusEmergencyOff</name>
+      <pv_name>$(P):$(R):General:Status:EmergencyOffSystem</pv_name>
+      <x>710</x>
+      <y>130</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusEmergencyOffLabel</name>
+      <text>Emergency Off System</text>
+      <x>740</x>
+      <y>127</y>
+      <width>180</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusMainContactor</name>
+      <pv_name>$(P):$(R):General:Status:MainContactor</pv_name>
+      <x>710</x>
+      <y>160</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusMainContactorLabel</name>
+      <text>Main Contactor</text>
+      <x>740</x>
+      <y>157</y>
+      <width>140</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusGroundRods</name>
+      <pv_name>$(P):$(R):General:Status:GroundRods</pv_name>
+      <x>710</x>
+      <y>190</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusGroundRodsLabel</name>
+      <text>Ground Rods</text>
+      <x>740</x>
+      <y>187</y>
+      <width>140</width>
+      <height>25</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusSignalLightsLabel</name>
+      <text>Signal Lights:</text>
+      <x>940</x>
+      <y>70</y>
+      <width>120</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusSignalLightGreen</name>
+      <pv_name>$(P):$(R):General:Status:SignalLightGreen</pv_name>
+      <x>950</x>
+      <y>100</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusSignalLightGreenLabel</name>
+      <text>Green</text>
+      <x>980</x>
+      <y>97</y>
+      <width>80</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusSignalLightYellow</name>
+      <pv_name>$(P):$(R):General:Status:SignalLightYellow</pv_name>
+      <x>950</x>
+      <y>130</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="255" green="220" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusSignalLightYellowLabel</name>
+      <text>Yellow</text>
+      <x>980</x>
+      <y>127</y>
+      <width>80</width>
+      <height>25</height>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralStatusSignalLightRed</name>
+      <pv_name>$(P):$(R):General:Status:SignalLightRed</pv_name>
+      <x>950</x>
+      <y>160</y>
+      <off_color>
+        <color red="100" green="100" blue="100">
+        </color>
+      </off_color>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralStatusSignalLightRedLabel</name>
+      <text>Red</text>
+      <x>980</x>
+      <y>157</y>
+      <width>80</width>
+      <height>25</height>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>GeneralStatusRaw_Value</name>
+      <pv_name>$(P):$(R):General:StatusRaw</pv_name>
+      <x>710</x>
+      <y>230</y>
+      <width>120</width>
+      <height>25</height>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+      <format>1</format>
+    </widget>
+    <widget type="byte_monitor" version="2.0.0">
+      <name>GeneralStatusByteMonitor</name>
+      <pv_name>$(P):$(R):General:StatusRaw</pv_name>
+      <x>840</x>
+      <y>230</y>
+      <width>220</width>
+      <height>13</height>
+      <numBits>16</numBits>
     </widget>
   </widget>
   <widget type="label" version="2.0.0">
     <name>ConnectionLabel</name>
     <text>IOC Connected:</text>
-    <x>1000</x>
-    <y>15</y>
+    <x>850</x>
+    <y>18</y>
     <width>130</width>
     <height>30</height>
     <horizontal_alignment>2</horizontal_alignment>
@@ -3763,8 +4292,7 @@
   <widget type="label" version="2.0.0">
     <name>Footer</name>
     <text>PPT Modulator Monitor - TCP Port 2000 - 86 bytes binary data</text>
-    <x>10</x>
-    <y>2150</y>
+    <y>2350</y>
     <width>1180</width>
     <font>
       <font family="Liberation Sans" style="ITALIC" size="11.0">
@@ -3798,5 +4326,29 @@
     <format>1</format>
     <precision>1</precision>
     <show_units>false</show_units>
+  </widget>
+  <widget type="led" version="2.0.0">
+    <name>GeneralStatusLocalRemote_1</name>
+    <pv_name>$(P):$(R):General:Status:LocalRemote</pv_name>
+    <x>1190</x>
+    <y>18</y>
+    <width>30</width>
+    <height>30</height>
+    <off_color>
+      <color name="OK" red="0" green="255" blue="0">
+      </color>
+    </off_color>
+    <on_color>
+      <color name="MAJOR" red="255" green="0" blue="0">
+      </color>
+    </on_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>GeneralStatusLocalRemoteLabel_1</name>
+    <text>Remote</text>
+    <x>1110</x>
+    <y>18</y>
+    <width>70</width>
+    <height>25</height>
   </widget>
 </display>
