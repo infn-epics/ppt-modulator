@@ -672,7 +672,7 @@
     <name>Control Interface</name>
     <x>10</x>
     <y>485</y>
-    <width>1290</width>
+    <width>1400</width>
     <height>280</height>
     <style>3</style>
     <font>
@@ -1465,8 +1465,8 @@
     <widget type="led" version="2.0.0">
       <name>ChargePFNStatusLED</name>
       <pv_name>$(P):$(R):HVPS:Status:Ready</pv_name>
-      <x>1150</x>
-      <y>155</y>
+      <x>1050</x>
+      <y>180</y>
       <width>100</width>
       <height>100</height>
       <off_label>OFF</off_label>
@@ -1656,8 +1656,8 @@
     <widget type="label" version="2.0.0">
       <name>HVPSStatusHighVoltageOnOffLabel_1</name>
       <text>READY</text>
-      <x>1060</x>
-      <y>190</y>
+      <x>960</x>
+      <y>215</y>
       <width>90</width>
       <height>25</height>
       <font>
@@ -1678,6 +1678,28 @@
       </background_color>
       <format>1</format>
       <precision>1</precision>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>HVPSStatusHighVoltageOnOffLabel_2</name>
+      <text>HV</text>
+      <x>1180</x>
+      <y>215</y>
+      <width>45</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ChargePFNStatusLED_1</name>
+      <pv_name>$(P):$(R):HVPS:Status:HighVoltageOnOff</pv_name>
+      <x>1210</x>
+      <y>180</y>
+      <width>100</width>
+      <height>100</height>
+      <off_label>OFF</off_label>
+      <on_label>ON</on_label>
     </widget>
   </widget>
   <widget type="group" version="3.0.0">
