@@ -21,10 +21,12 @@ epicsEnvSet("STREAM_PROTOCOL_PATH","../../db")
 ## HVMAX macro sets the maximum operational HV voltage (default: 37 kV)
 dbLoadRecords("../../db/ppt.template", "P=SPARC:MOD:PPT,R=MOD001, PORT=PPT1")
 dbLoadRecords("../../db/ppt_control.template", "P=SPARC:MOD:PPT,R=MOD001, PORT=PPT1, HVMAX=37")
+dbLoadRecords("../../db/ppt_autoseq.template", "P=SPARC:MOD:PPT,R=MOD001")
 
 
 # cd "${TOP}/iocBoot/${IOC}"
 iocInit
 
 ## Start any sequence programs
-#seq sncExample, "user=epics"
+## Uncomment the following line if seq module is available
+#seq pptAutoSeq, "P=SPARC:MOD:PPT,R=MOD001"

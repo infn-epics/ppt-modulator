@@ -4387,4 +4387,243 @@
     <width>70</width>
     <height>25</height>
   </widget>
+  <widget type="group" version="3.0.0">
+    <name>Auto Sequence Group</name>
+    <x>10</x>
+    <y>770</y>
+    <width>1180</width>
+    <height>160</height>
+    <style>3</style>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </foreground_color>
+    <line_color>
+      <color red="0" green="0" blue="128">
+      </color>
+    </line_color>
+    <widget type="label" version="2.0.0">
+      <name>AutoSeqTitle</name>
+      <text>Automatic Startup/Shutdown Sequence</text>
+      <width>1160</width>
+      <height>30</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="16.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>AutoOnBtn</name>
+      <actions>
+        <action type="write_pv">
+          <description>Start Auto ON</description>
+          <pv_name>$(P):$(R):AutoOn:Cmd</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>AUTO ON</text>
+      <x>20</x>
+      <y>40</y>
+      <width>150</width>
+      <height>50</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="0" green="100" blue="0">
+        </color>
+      </background_color>
+      <tooltip>Start automatic ON sequence</tooltip>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>AutoOffBtn</name>
+      <actions>
+        <action type="write_pv">
+          <description>Start Auto OFF</description>
+          <pv_name>$(P):$(R):AutoOff:Cmd</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>AUTO OFF</text>
+      <x>180</x>
+      <y>40</y>
+      <width>150</width>
+      <height>50</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="139" green="0" blue="0">
+        </color>
+      </background_color>
+      <tooltip>Start automatic OFF sequence</tooltip>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>AbortBtn</name>
+      <actions>
+        <action type="write_pv">
+          <description>Abort Sequence</description>
+          <pv_name>$(P):$(R):Auto:Abort</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>ABORT</text>
+      <x>340</x>
+      <y>40</y>
+      <width>100</width>
+      <height>50</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="255" green="165" blue="0">
+        </color>
+      </background_color>
+      <tooltip>Abort current sequence</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>AutoOnStateLabel</name>
+      <text>ON State:</text>
+      <x>460</x>
+      <y>40</y>
+      <width>80</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>AutoOnStateValue</name>
+      <pv_name>$(P):$(R):AutoOn:State</pv_name>
+      <x>550</x>
+      <y>40</y>
+      <width>100</width>
+      <height>25</height>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>AutoOnStepLabel</name>
+      <text>ON Step:</text>
+      <x>460</x>
+      <y>70</y>
+      <width>80</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>AutoOnStepValue</name>
+      <pv_name>$(P):$(R):AutoOn:StepLabel</pv_name>
+      <x>550</x>
+      <y>70</y>
+      <width>130</width>
+      <height>25</height>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>AutoOffStateLabel</name>
+      <text>OFF State:</text>
+      <x>700</x>
+      <y>40</y>
+      <width>80</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>AutoOffStateValue</name>
+      <pv_name>$(P):$(R):AutoOff:State</pv_name>
+      <x>790</x>
+      <y>40</y>
+      <width>100</width>
+      <height>25</height>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>AutoOffStepLabel</name>
+      <text>OFF Step:</text>
+      <x>700</x>
+      <y>70</y>
+      <width>80</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>AutoOffStepValue</name>
+      <pv_name>$(P):$(R):AutoOff:StepLabel</pv_name>
+      <x>790</x>
+      <y>70</y>
+      <width>130</width>
+      <height>25</height>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>AutoMessageLabel</name>
+      <text>Status:</text>
+      <x>20</x>
+      <y>105</y>
+      <width>60</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>AutoMessageValue</name>
+      <pv_name>$(P):$(R):Auto:Message</pv_name>
+      <x>90</x>
+      <y>105</y>
+      <width>830</width>
+      <height>30</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+      <background_color>
+        <color red="200" green="200" blue="255">
+        </color>
+      </background_color>
+    </widget>
+  </widget>
 </display>

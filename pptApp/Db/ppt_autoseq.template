@@ -1,0 +1,151 @@
+# ============================================================================
+# PPT Modulator Auto Sequence Database Template
+# ============================================================================
+# Records for Auto ON/OFF sequencing controlled by SNL program
+# 
+# Load with:
+#   dbLoadRecords("db/ppt_autoseq.template", "P=SPARC:MOD:PPT,R=MOD001")
+# ============================================================================
+
+# ==========================================================================
+# AUTO ON CONTROLS
+# ==========================================================================
+
+record(bo, "$(P):$(R):AutoOn:Cmd") {
+    field(DESC, "Start Auto ON Sequence")
+    field(ZNAM, "Idle")
+    field(ONAM, "Start")
+    field(HIGH, "1")
+    field(VAL,  "0")
+}
+
+record(mbbi, "$(P):$(R):AutoOn:State") {
+    field(DESC, "Auto ON State")
+    field(ZRVL, "0")
+    field(ZRST, "Idle")
+    field(ZRSV, "NO_ALARM")
+    field(ONVL, "1")
+    field(ONST, "Running")
+    field(ONSV, "MINOR")
+    field(TWVL, "2")
+    field(TWST, "Done")
+    field(TWSV, "NO_ALARM")
+    field(THVL, "3")
+    field(THST, "Error")
+    field(THSV, "MAJOR")
+    field(FRVL, "4")
+    field(FRST, "Aborted")
+    field(FRSV, "MINOR")
+}
+
+record(longin, "$(P):$(R):AutoOn:Step") {
+    field(DESC, "Auto ON Current Step")
+    field(HOPR, "8")
+    field(LOPR, "0")
+    field(VAL,  "0")
+}
+
+# ==========================================================================
+# AUTO OFF CONTROLS
+# ==========================================================================
+
+record(bo, "$(P):$(R):AutoOff:Cmd") {
+    field(DESC, "Start Auto OFF Sequence")
+    field(ZNAM, "Idle")
+    field(ONAM, "Start")
+    field(HIGH, "1")
+    field(VAL,  "0")
+}
+
+record(mbbi, "$(P):$(R):AutoOff:State") {
+    field(DESC, "Auto OFF State")
+    field(ZRVL, "0")
+    field(ZRST, "Idle")
+    field(ZRSV, "NO_ALARM")
+    field(ONVL, "1")
+    field(ONST, "Running")
+    field(ONSV, "MINOR")
+    field(TWVL, "2")
+    field(TWST, "Done")
+    field(TWSV, "NO_ALARM")
+    field(THVL, "3")
+    field(THST, "Error")
+    field(THSV, "MAJOR")
+    field(FRVL, "4")
+    field(FRST, "Aborted")
+    field(FRSV, "MINOR")
+}
+
+record(longin, "$(P):$(R):AutoOff:Step") {
+    field(DESC, "Auto OFF Current Step")
+    field(HOPR, "8")
+    field(LOPR, "0")
+    field(VAL,  "0")
+}
+
+# ==========================================================================
+# COMMON CONTROLS
+# ==========================================================================
+
+record(bo, "$(P):$(R):Auto:Abort") {
+    field(DESC, "Abort Auto Sequence")
+    field(ZNAM, "Idle")
+    field(ONAM, "Abort")
+    field(HIGH, "1")
+    field(VAL,  "0")
+}
+
+record(stringin, "$(P):$(R):Auto:Message") {
+    field(DESC, "Auto Sequence Status Message")
+    field(VAL,  "Idle")
+}
+
+# ==========================================================================
+# STEP LABELS FOR DISPLAY
+# ==========================================================================
+
+record(mbbi, "$(P):$(R):AutoOn:StepLabel") {
+    field(DESC, "Auto ON Step Description")
+    field(INP,  "$(P):$(R):AutoOn:Step CP")
+    field(ZRVL, "0")
+    field(ZRST, "Idle")
+    field(ONVL, "1")
+    field(ONST, "1: Thyratron")
+    field(TWVL, "2")
+    field(TWST, "2: Klys 80%")
+    field(THVL, "3")
+    field(THST, "3: Klys 100%")
+    field(FRVL, "4")
+    field(FRST, "4: Focus")
+    field(FVVL, "5")
+    field(FVST, "5: Premag")
+    field(SXVL, "6")
+    field(SXST, "6: HVPS")
+    field(SVVL, "7")
+    field(SVST, "7: Charge PFN")
+    field(EIVL, "8")
+    field(EIST, "Complete")
+}
+
+record(mbbi, "$(P):$(R):AutoOff:StepLabel") {
+    field(DESC, "Auto OFF Step Description")
+    field(INP,  "$(P):$(R):AutoOff:Step CP")
+    field(ZRVL, "0")
+    field(ZRST, "Idle")
+    field(ONVL, "1")
+    field(ONST, "1: Charge PFN")
+    field(TWVL, "2")
+    field(TWST, "2: HVPS")
+    field(THVL, "3")
+    field(THST, "3: Premag")
+    field(FRVL, "4")
+    field(FRST, "4: Focus")
+    field(FVVL, "5")
+    field(FVST, "5: Klys 100%")
+    field(SXVL, "6")
+    field(SXST, "6: Klys 80%")
+    field(SVVL, "7")
+    field(SVST, "7: Thyratron")
+    field(EIVL, "8")
+    field(EIST, "Complete")
+}

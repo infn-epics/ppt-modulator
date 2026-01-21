@@ -35,13 +35,14 @@ record(longout, "$(P):$(R):CmdReg32") {
 }
 
 # Shadow registers for ON/OFF bits and HV value
-record(longin, "$(P):$(R):CmdReg:OnOffBits") {
+# Must be longout to accept writes from calcout records
+record(longout, "$(P):$(R):CmdReg:OnOffBits") {
     field(DESC, "Current ON/OFF bits (0-15)")
     field(VAL,  "0")
     info(autosaveFields, "VAL")
 }
 
-record(longin, "$(P):$(R):CmdReg:HVBits") {
+record(longout, "$(P):$(R):CmdReg:HVBits") {
     field(DESC, "Current HV bits (16-31)")
     field(VAL,  "0")
     info(autosaveFields, "VAL")
@@ -235,6 +236,7 @@ record(calcout, "$(P):$(R):CalcOnOffCmd3") {
 
 # Calculate full 32-bit register: (HV << 16) | ON_OFF_BITS
 # HV value stored in raw units (0-500 for 0-50kV) in the HV shadow register
+# FLNK triggers auto-reset after command is sent
 record(calcout, "$(P):$(R):CalcFullCmd32") {
     field(DESC, "Calc 32-bit Command Reg")
     field(INPA, "$(P):$(R):CmdReg:OnOffBits")
@@ -242,6 +244,7 @@ record(calcout, "$(P):$(R):CalcFullCmd32") {
     field(CALC, "A+(B<<16)")
     field(OUT,  "$(P):$(R):CmdReg32 PP")
     field(OOPT, "Every Time")
+    field(FLNK, "$(P):$(R):AutoResetOnCmds")
 }
 
 # ==========================================================================
@@ -250,75 +253,68 @@ record(calcout, "$(P):$(R):CalcFullCmd32") {
 # Automatically reset command bits after 500ms (pulse mode)
 # This ensures commands are edge-triggered, not level-triggered
 
+# Auto-reset uses NPP to avoid re-triggering command chain
 record(seq, "$(P):$(R):AutoResetOnCmds") {
     field(DESC, "Auto-reset ON commands")
     field(SELM, "All")
     field(DOL1, "0")
-    field(LNK1, "$(P):$(R):Thy:OnCmd PP")
+    field(LNK1, "$(P):$(R):Thy:OnCmd NPP")
     field(DOL2, "0")
-    field(LNK2, "$(P):$(R):Klys:On80Cmd PP")
+    field(LNK2, "$(P):$(R):Klys:On80Cmd NPP")
     field(DOL3, "0")
-    field(LNK3, "$(P):$(R):Klys:On100Cmd PP")
+    field(LNK3, "$(P):$(R):Klys:On100Cmd NPP")
     field(DOL4, "0")
-    field(LNK4, "$(P):$(R):Focus:OnCmd PP")
+    field(LNK4, "$(P):$(R):Focus:OnCmd NPP")
     field(DOL5, "0")
-    field(LNK5, "$(P):$(R):Premag:OnCmd PP")
+    field(LNK5, "$(P):$(R):Premag:OnCmd NPP")
     field(DOL6, "0")
-    field(LNK6, "$(P):$(R):HVPS:OnCmd PP")
+    field(LNK6, "$(P):$(R):HVPS:OnCmd NPP")
     field(DOL7, "0")
-    field(LNK7, "$(P):$(R):ChargePFN:OnCmd PP")
+    field(LNK7, "$(P):$(R):ChargePFN:OnCmd NPP")
     field(DOL8, "0")
-    field(LNK8, "$(P):$(R):Reset:Cmd PP")
-    field(DLY1, "1.1")
-    field(DLY2, "1.1")
-    field(DLY3, "1.1")
-    field(DLY4, "1.1")
-    field(DLY5, "1.1")
-    field(DLY6, "1.1")
-    field(DLY7, "1.1")
-    field(DLY8, "1.1")
+    field(LNK8, "$(P):$(R):Reset:Cmd NPP")
+    field(DLY1, "0.5")
+    field(DLY2, "0.0")
+    field(DLY3, "0.0")
+    field(DLY4, "0.0")
+    field(DLY5, "0.0")
+    field(DLY6, "0.0")
+    field(DLY7, "0.0")
+    field(DLY8, "0.0")
+    field(FLNK, "$(P):$(R):ClearOnOffBits")
 }
 
 record(seq, "$(P):$(R):AutoResetOffCmds") {
     field(DESC, "Auto-reset OFF commands")
     field(SELM, "All")
     field(DOL1, "0")
-    field(LNK1, "$(P):$(R):Thy:OffCmd PP")
+    field(LNK1, "$(P):$(R):Thy:OffCmd NPP")
     field(DOL2, "0")
-    field(LNK2, "$(P):$(R):Klys:Off80Cmd PP")
+    field(LNK2, "$(P):$(R):Klys:Off80Cmd NPP")
     field(DOL3, "0")
-    field(LNK3, "$(P):$(R):Klys:Off100Cmd PP")
+    field(LNK3, "$(P):$(R):Klys:Off100Cmd NPP")
     field(DOL4, "0")
-    field(LNK4, "$(P):$(R):Focus:OffCmd PP")
+    field(LNK4, "$(P):$(R):Focus:OffCmd NPP")
     field(DOL5, "0")
-    field(LNK5, "$(P):$(R):Premag:OffCmd PP")
+    field(LNK5, "$(P):$(R):Premag:OffCmd NPP")
     field(DOL6, "0")
-    field(LNK6, "$(P):$(R):HVPS:OffCmd PP")
+    field(LNK6, "$(P):$(R):HVPS:OffCmd NPP")
     field(DOL7, "0")
-    field(LNK7, "$(P):$(R):ChargePFN:OffCmd PP")
-    field(DLY1, "1.1")
-    field(DLY2, "1.1")
-    field(DLY3, "1.1")
-    field(DLY4, "1.1")
-    field(DLY5, "1.1")
-    field(DLY6, "1.1")
-    field(DLY7, "1.1")
+    field(LNK7, "$(P):$(R):ChargePFN:OffCmd NPP")
+    field(DLY1, "0.0")
+    field(DLY2, "0.0")
+    field(DLY3, "0.0")
+    field(DLY4, "0.0")
+    field(DLY5, "0.0")
+    field(DLY6, "0.0")
+    field(DLY7, "0.0")
 }
 
-# Trigger auto-reset when any command is processed
-record(calcout, "$(P):$(R):TriggerAutoReset") {
-    field(DESC, "Trigger Auto Reset")
-    field(INPA, "$(P):$(R):CalcOnOffCmd3 CP")
-    field(CALC, "1")
-    field(OUT,  "$(P):$(R):AutoResetOnCmds.PROC PP")
-    field(OOPT, "When Non-zero")
-    field(FLNK, "$(P):$(R):TriggerAutoReset2")
-}
-
-record(calcout, "$(P):$(R):TriggerAutoReset2") {
-    field(DESC, "Trigger Auto Reset 2")
-    field(CALC, "1")
-    field(OUT,  "$(P):$(R):AutoResetOffCmds.PROC PP")
+# Clear shadow register after reset to prevent stale commands on HV change
+record(longout, "$(P):$(R):ClearOnOffBits") {
+    field(DESC, "Clear ON/OFF shadow register")
+    field(VAL,  "0")
+    field(OUT,  "$(P):$(R):CmdReg:OnOffBits NPP")
 }
 
 # ==========================================================================

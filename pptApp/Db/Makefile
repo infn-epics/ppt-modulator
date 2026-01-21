@@ -12,6 +12,7 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 DB += ppt.template
 DB += ppt_control.template
+DB += ppt_autoseq.template
 
 DB += ppt.proto
 
