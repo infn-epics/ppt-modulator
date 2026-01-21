@@ -1464,7 +1464,7 @@
     </widget>
     <widget type="led" version="2.0.0">
       <name>ChargePFNStatusLED</name>
-      <pv_name>$(P):$(R):HVPS:Status:HighVoltageOnOff</pv_name>
+      <pv_name>$(P):$(R):HVPS:Status:Ready</pv_name>
       <x>1150</x>
       <y>155</y>
       <width>100</width>
@@ -1664,6 +1664,20 @@
         <font family="Liberation Sans" style="BOLD" size="18.0">
         </font>
       </font>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>HVPSRawReadback_1</name>
+      <pv_name>loc://loc_$(P):$(R):HVPS:VoltageSet&lt;VDouble&gt;</pv_name>
+      <x>990</x>
+      <y>115</y>
+      <width>120</width>
+      <height>30</height>
+      <background_color>
+        <color red="220" green="220" blue="220">
+        </color>
+      </background_color>
+      <format>1</format>
+      <precision>1</precision>
     </widget>
   </widget>
   <widget type="group" version="3.0.0">
