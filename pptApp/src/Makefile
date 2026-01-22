@@ -22,12 +22,22 @@ ppt_DBD += drvAsynIPPort.dbd
 ppt_DBD += drvAsynSerialPort.dbd
 ppt_DBD += pptsup.dbd 
 
-# Add sequencer support for Auto ON/OFF
+# Add sequencer dbd to IOC
 ifneq ($(SEQ),)
 ppt_DBD += pptAutoSeq.dbd
-ppt_LIBS += seq pv
 endif
 
+# pptsup library - reusable by other IOCs
+# Add aSub record subroutine for decoding binary data
+pptsup_SRCS += pptDecode.c
+
+# Add sequencer Auto ON/OFF state program to library
+ifneq ($(SEQ),)
+SNCFLAGS += +r
+pptsup_SNCFLAGS += +r
+pptsup_SRCS += pptAutoSeq.st
+pptsup_LIBS += seq pv
+endif
 
 # Include dbd files from all support applications:
 #streamdevice_DBD += xxx.dbd
@@ -37,19 +47,13 @@ endif
 ppt_LIBS += stream
 ppt_LIBS += asyn
 
+# Add sequencer libs if available
+ifneq ($(SEQ),)
+ppt_LIBS += seq pv
+endif
 
 # streamdevice_registerRecordDeviceDriver.cpp derives from streamdevice.dbd
 ppt_SRCS += ppt_registerRecordDeviceDriver.cpp
-
-# Add aSub record subroutine for decoding binary data
-pptsup_SRCS += pptDecode.c
-
-# Add sequencer Auto ON/OFF state program
-ifneq ($(SEQ),)
-SNCFLAGS += +r
-ppt_SNCFLAGS += +r
-ppt_SRCS += pptAutoSeq.st
-endif
 
 # Build the main IOC entry point on workstation OSs.
 ppt_SRCS_DEFAULT += pptMain.cpp
