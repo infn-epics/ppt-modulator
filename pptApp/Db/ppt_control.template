@@ -34,287 +34,202 @@ record(longout, "$(P):$(R):CmdReg32") {
     info(autosaveFields, "VAL")
 }
 
-# Shadow registers for ON/OFF bits and HV value
+# Shadow register for HV value
 # Must be longout to accept writes from calcout records
-record(longout, "$(P):$(R):CmdReg:OnOffBits") {
-    field(DESC, "Current ON/OFF bits (0-15)")
-    field(VAL,  "0")
-    info(autosaveFields, "VAL")
-}
-
 record(longout, "$(P):$(R):CmdReg:HVBits") {
     field(DESC, "Current HV bits (16-31)")
     field(VAL,  "0")
-    info(autosaveFields, "VAL")
-}
-
-# ==========================================================================
-# ON/OFF COMMAND WORD REGISTER (bytes 0-1, 16-bit bitfield) - LEGACY
-# ==========================================================================
-# This is the master command word sent to the device
-# Individual bits control ON/OFF for each subsystem
-
-record(mbbo, "$(P):$(R):OnOffCmd") {
-    field(DESC, "ON/OFF Command Register")
-    field(DTYP, "stream")
-    field(OUT,  "@ppt.proto writeOnOffCmd $(PORT)")
-    field(NOBT, "16")
-    field(ZRVL, "0")
-    field(ZRST, "All OFF")
+    field(PINI, "YES")
     info(autosaveFields, "VAL")
 }
 
 # ==========================================================================
 # INDIVIDUAL ON COMMAND RECORDS (set bits 0-7)
 # ==========================================================================
+# Each command writes the bit + HV, then FLNKs to CmdReg:Clear
 
-record(bo, "$(P):$(R):Thy:OnCmd") {
+record(longout, "$(P):$(R):Thy:OnCmd") {
     field(DESC, "Thyratron Heater ON")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn ON")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+    field(FLNK, "$(P):$(R):Thy:OnCmd:Write")
+}
+record(calcout, "$(P):$(R):Thy:OnCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "1+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-record(bo, "$(P):$(R):Klys:On80Cmd") {
+record(longout, "$(P):$(R):Klys:On80Cmd") {
     field(DESC, "Klystron Heater 80% ON")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn ON")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+    field(FLNK, "$(P):$(R):Klys:On80Cmd:Write")
+}
+record(calcout, "$(P):$(R):Klys:On80Cmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "2+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-record(bo, "$(P):$(R):Klys:On100Cmd") {
+record(longout, "$(P):$(R):Klys:On100Cmd") {
     field(DESC, "Klystron Heater 100% ON")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn ON")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+    field(FLNK, "$(P):$(R):Klys:On100Cmd:Write")
+}
+record(calcout, "$(P):$(R):Klys:On100Cmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "4+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-record(bo, "$(P):$(R):Focus:OnCmd") {
+record(longout, "$(P):$(R):Focus:OnCmd") {
     field(DESC, "Focus Power Supply ON")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn ON")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+    field(FLNK, "$(P):$(R):Focus:OnCmd:Write")
+}
+record(calcout, "$(P):$(R):Focus:OnCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "8+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-record(bo, "$(P):$(R):Premag:OnCmd") {
+record(longout, "$(P):$(R):Premag:OnCmd") {
     field(DESC, "Premagnetisation ON")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn ON")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+    field(FLNK, "$(P):$(R):Premag:OnCmd:Write")
+}
+record(calcout, "$(P):$(R):Premag:OnCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "16+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-record(bo, "$(P):$(R):HVPS:OnCmd") {
+record(longout, "$(P):$(R):HVPS:OnCmd") {
     field(DESC, "HVPS ON")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn ON")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+    field(FLNK, "$(P):$(R):HVPS:OnCmd:Write")
+}
+record(calcout, "$(P):$(R):HVPS:OnCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "32+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-record(bo, "$(P):$(R):ChargePFN:OnCmd") {
+record(longout, "$(P):$(R):ChargePFN:OnCmd") {
     field(DESC, "Charge PFN ON")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn ON")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+    field(FLNK, "$(P):$(R):ChargePFN:OnCmd:Write")
+}
+record(calcout, "$(P):$(R):ChargePFN:OnCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "64+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-record(bo, "$(P):$(R):Reset:Cmd") {
-    field(DESC, "Reset Command (rising edge)")
-    field(ZNAM, "Idle")
-    field(ONAM, "Reset")
-    # field(OUT,  "@ppt.proto writeResetCmd $(PORT)")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+record(longout, "$(P):$(R):Reset:Cmd") {
+    field(DESC, "Reset Command")
+    field(FLNK, "$(P):$(R):Reset:Cmd:Write")
 }
-
-record(bo, "$(P):$(R):OFF:Cmd") {
-    field(DESC, "Reset Command (rising edge)")
-    field(DTYP, "stream")
-    field(ZNAM, "Idle")
-    field(ONAM, "Reset")
-    field(OUT,  "@ppt.proto writeResetCmd $(PORT)")
-    # field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+record(calcout, "$(P):$(R):Reset:Cmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "128+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
 # ==========================================================================
 # INDIVIDUAL OFF COMMAND RECORDS (set bits 8-15)
 # ==========================================================================
 
-record(bo, "$(P):$(R):Thy:OffCmd") {
+record(longout, "$(P):$(R):Thy:OffCmd") {
     field(DESC, "Thyratron Heater OFF")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn OFF")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
+    field(FLNK, "$(P):$(R):Thy:OffCmd:Write")
 }
-
-record(bo, "$(P):$(R):Klys:Off80Cmd") {
-    field(DESC, "Klystron Heater 80% OFF")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn OFF")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
-}
-
-record(bo, "$(P):$(R):Klys:Off100Cmd") {
-    field(DESC, "Klystron Heater 100% OFF")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn OFF")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
-}
-
-record(bo, "$(P):$(R):Focus:OffCmd") {
-    field(DESC, "Focus Power Supply OFF")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn OFF")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
-}
-
-record(bo, "$(P):$(R):Premag:OffCmd") {
-    field(DESC, "Premagnetisation OFF")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn OFF")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
-}
-
-record(bo, "$(P):$(R):HVPS:OffCmd") {
-    field(DESC, "HVPS OFF")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn OFF")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
-}
-
-record(bo, "$(P):$(R):ChargePFN:OffCmd") {
-    field(DESC, "Charge PFN OFF")
-    field(ZNAM, "Idle")
-    field(ONAM, "Turn OFF")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd1")
-}
-
-# ==========================================================================
-# COMMAND WORD CALCULATION
-# ==========================================================================
-# Combines all individual ON/OFF bits into a single 16-bit word
-# Then combines with HV setpoint and writes full 32-bit register
-# Split into multiple calcout records due to CALC string length limit (80 chars)
-
-# Calculate lower byte (bits 0-7: ON commands)
-record(calcout, "$(P):$(R):CalcOnOffCmd1") {
-    field(DESC, "Calc ON Cmds (bits 0-7)")
-    field(INPA, "$(P):$(R):Thy:OnCmd")
-    field(INPB, "$(P):$(R):Klys:On80Cmd")
-    field(INPC, "$(P):$(R):Klys:On100Cmd")
-    field(INPD, "$(P):$(R):Focus:OnCmd")
-    field(INPE, "$(P):$(R):Premag:OnCmd")
-    field(INPF, "$(P):$(R):HVPS:OnCmd")
-    field(INPG, "$(P):$(R):ChargePFN:OnCmd")
-    field(INPH, "$(P):$(R):Reset:Cmd")
-    field(CALC, "A+(B<<1)+(C<<2)+(D<<3)+(E<<4)+(F<<5)+(G<<6)+(H<<7)")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd2")
-}
-
-# Calculate upper byte (bits 8-15: OFF commands)
-record(calcout, "$(P):$(R):CalcOnOffCmd2") {
-    field(DESC, "Calc OFF Cmds (bits 8-15)")
-    field(INPA, "$(P):$(R):Thy:OffCmd")
-    field(INPB, "$(P):$(R):Klys:Off80Cmd")
-    field(INPC, "$(P):$(R):Klys:Off100Cmd")
-    field(INPD, "$(P):$(R):Focus:OffCmd")
-    field(INPE, "$(P):$(R):Premag:OffCmd")
-    field(INPF, "$(P):$(R):HVPS:OffCmd")
-    field(INPG, "$(P):$(R):ChargePFN:OffCmd")
-    field(CALC, "(A<<8)+(B<<9)+(C<<10)+(D<<11)+(E<<12)+(F<<13)+(G<<14)")
-    field(FLNK, "$(P):$(R):CalcOnOffCmd3")
-}
-
-# Combine both bytes into 16-bit ON/OFF word and store in shadow register
-record(calcout, "$(P):$(R):CalcOnOffCmd3") {
-    field(DESC, "Combine ON/OFF bits")
-    field(INPA, "$(P):$(R):CalcOnOffCmd1")
-    field(INPB, "$(P):$(R):CalcOnOffCmd2")
-    field(CALC, "A+B")
-    field(OUT,  "$(P):$(R):CmdReg:OnOffBits PP")
-    field(OOPT, "Every Time")
-    field(FLNK, "$(P):$(R):CalcFullCmd32")
-}
-
-# Calculate full 32-bit register: (HV << 16) | ON_OFF_BITS
-# HV value stored in raw units (0-500 for 0-50kV) in the HV shadow register
-# FLNK triggers auto-reset after command is sent
-record(calcout, "$(P):$(R):CalcFullCmd32") {
-    field(DESC, "Calc 32-bit Command Reg")
-    field(INPA, "$(P):$(R):CmdReg:OnOffBits")
-    field(INPB, "$(P):$(R):CmdReg:HVBits")
-    field(CALC, "A+(B<<16)")
+record(calcout, "$(P):$(R):Thy:OffCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "256+(A<<16)")
     field(OUT,  "$(P):$(R):CmdReg32 PP")
     field(OOPT, "Every Time")
-    field(FLNK, "$(P):$(R):AutoResetOnCmds")
+    field(DOPT, "Use CALC")
 }
 
-# ==========================================================================
-# AUTO-RESET MECHANISM FOR COMMAND BITS
-# ==========================================================================
-# Automatically reset command bits after 500ms (pulse mode)
-# This ensures commands are edge-triggered, not level-triggered
-
-# Auto-reset uses NPP to avoid re-triggering command chain
-record(seq, "$(P):$(R):AutoResetOnCmds") {
-    field(DESC, "Auto-reset ON commands")
-    field(SELM, "All")
-    field(DOL1, "0")
-    field(LNK1, "$(P):$(R):Thy:OnCmd NPP")
-    field(DOL2, "0")
-    field(LNK2, "$(P):$(R):Klys:On80Cmd NPP")
-    field(DOL3, "0")
-    field(LNK3, "$(P):$(R):Klys:On100Cmd NPP")
-    field(DOL4, "0")
-    field(LNK4, "$(P):$(R):Focus:OnCmd NPP")
-    field(DOL5, "0")
-    field(LNK5, "$(P):$(R):Premag:OnCmd NPP")
-    field(DOL6, "0")
-    field(LNK6, "$(P):$(R):HVPS:OnCmd NPP")
-    field(DOL7, "0")
-    field(LNK7, "$(P):$(R):ChargePFN:OnCmd NPP")
-    field(DOL8, "0")
-    field(LNK8, "$(P):$(R):Reset:Cmd NPP")
-    field(DLY1, "0.5")
-    field(DLY2, "0.0")
-    field(DLY3, "0.0")
-    field(DLY4, "0.0")
-    field(DLY5, "0.0")
-    field(DLY6, "0.0")
-    field(DLY7, "0.0")
-    field(DLY8, "0.0")
-    field(FLNK, "$(P):$(R):ClearOnOffBits")
+record(longout, "$(P):$(R):Klys:Off80Cmd") {
+    field(DESC, "Klystron Heater 80% OFF")
+    field(FLNK, "$(P):$(R):Klys:Off80Cmd:Write")
+}
+record(calcout, "$(P):$(R):Klys:Off80Cmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "512+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-record(seq, "$(P):$(R):AutoResetOffCmds") {
-    field(DESC, "Auto-reset OFF commands")
-    field(SELM, "All")
-    field(DOL1, "0")
-    field(LNK1, "$(P):$(R):Thy:OffCmd NPP")
-    field(DOL2, "0")
-    field(LNK2, "$(P):$(R):Klys:Off80Cmd NPP")
-    field(DOL3, "0")
-    field(LNK3, "$(P):$(R):Klys:Off100Cmd NPP")
-    field(DOL4, "0")
-    field(LNK4, "$(P):$(R):Focus:OffCmd NPP")
-    field(DOL5, "0")
-    field(LNK5, "$(P):$(R):Premag:OffCmd NPP")
-    field(DOL6, "0")
-    field(LNK6, "$(P):$(R):HVPS:OffCmd NPP")
-    field(DOL7, "0")
-    field(LNK7, "$(P):$(R):ChargePFN:OffCmd NPP")
-    field(DLY1, "0.0")
-    field(DLY2, "0.0")
-    field(DLY3, "0.0")
-    field(DLY4, "0.0")
-    field(DLY5, "0.0")
-    field(DLY6, "0.0")
-    field(DLY7, "0.0")
+record(longout, "$(P):$(R):Klys:Off100Cmd") {
+    field(DESC, "Klystron Heater 100% OFF")
+    field(FLNK, "$(P):$(R):Klys:Off100Cmd:Write")
+}
+record(calcout, "$(P):$(R):Klys:Off100Cmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "1024+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
-# Clear shadow register after reset to prevent stale commands on HV change
-record(longout, "$(P):$(R):ClearOnOffBits") {
-    field(DESC, "Clear ON/OFF shadow register")
-    field(VAL,  "0")
-    field(OUT,  "$(P):$(R):CmdReg:OnOffBits NPP")
+record(longout, "$(P):$(R):Focus:OffCmd") {
+    field(DESC, "Focus Power Supply OFF")
+    field(FLNK, "$(P):$(R):Focus:OffCmd:Write")
+}
+record(calcout, "$(P):$(R):Focus:OffCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "2048+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+}
+
+record(longout, "$(P):$(R):Premag:OffCmd") {
+    field(DESC, "Premagnetisation OFF")
+    field(FLNK, "$(P):$(R):Premag:OffCmd:Write")
+}
+record(calcout, "$(P):$(R):Premag:OffCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "4096+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+}
+
+record(longout, "$(P):$(R):HVPS:OffCmd") {
+    field(DESC, "HVPS OFF")
+    field(FLNK, "$(P):$(R):HVPS:OffCmd:Write")
+}
+record(calcout, "$(P):$(R):HVPS:OffCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "8192+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
+}
+
+record(longout, "$(P):$(R):ChargePFN:OffCmd") {
+    field(DESC, "Charge PFN OFF")
+    field(FLNK, "$(P):$(R):ChargePFN:OffCmd:Write")
+}
+record(calcout, "$(P):$(R):ChargePFN:OffCmd:Write") {
+    field(INPA, "$(P):$(R):CmdReg:HVBits NPP")
+    field(CALC, "16384+(A<<16)")
+    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OOPT, "Every Time")
+    field(DOPT, "Use CALC")
 }
 
 # ==========================================================================
@@ -352,9 +267,8 @@ record(calcout, "$(P):$(R):HVPS:VoltageCalc") {
 # Trigger full 32-bit write when HV changes
 record(calcout, "$(P):$(R):CalcFullCmd32FromHV") {
     field(DESC, "Write 32-bit reg on HV change")
-    field(INPA, "$(P):$(R):CmdReg:OnOffBits")
-    field(INPB, "$(P):$(R):CmdReg:HVBits")
-    field(CALC, "A+(B<<16)")
+    field(INPA, "$(P):$(R):CmdReg:HVBits")
+    field(CALC, "A<<16")
     field(OUT,  "$(P):$(R):CmdReg32 PP")
     field(OOPT, "Every Time")
 }

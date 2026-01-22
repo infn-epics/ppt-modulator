@@ -4,7 +4,7 @@
  * Provides automatic ON and OFF sequencing for the modulator
  * 
  * Auto ON sequence:
- *   1. Thyratron Heater ON → wait for Thy:Status:Ready
+ *   1. Thyratron Heater ON → wait for Thy:Status:ContactsOn
  *   2. Klystron 80% ON → wait for Klys:Status:HeaterVoltage80Percent
  *   3. Klystron 100% ON → wait for Klys:Status:HeaterVoltage100Percent
  *   4. Focus ON → wait for Focus:Status:Ready
@@ -22,11 +22,19 @@
  *   7. Thyratron OFF → wait for Thy:Status:Ready = 0
  */
 
-program pptAutoSeq("P=SPARC:MOD:PPT,R=MOD001")
+program pptAutoSeq("P=SPARC:MOD:PPT,R=MOD001,RETRY_DELAY=5.0")
 
 /* Timeout for each step in seconds */
 #define STEP_TIMEOUT    300.0
 #define COMMAND_DELAY   1.0
+
+/* Retry delay - time between command retries if status doesn't change */
+double retryDelay;
+assign retryDelay;
+
+/* Retry counters for tracking attempts */
+int onRetryCount;
+int offRetryCount;
 
 %%#include <stdio.h>
 %%#include <string.h>
@@ -109,6 +117,10 @@ double thyReady;
 assign thyReady to "{P}:{R}:Thy:Status:Ready";
 monitor thyReady;
 
+double thyContactsOn;
+assign thyContactsOn to "{P}:{R}:Thy:Status:ContactsOn";
+monitor thyContactsOn;
+
 double klys80Status;
 assign klys80Status to "{P}:{R}:Klys:Status:HeaterVoltage80Percent";
 monitor klys80Status;
@@ -133,6 +145,11 @@ double hvOnOff;
 assign hvOnOff to "{P}:{R}:HVPS:Status:HighVoltageOnOff";
 monitor hvOnOff;
 
+/* Interlock monitoring */
+double generalInterlockRaw;
+assign generalInterlockRaw to "{P}:{R}:General:InterlockRaw";
+monitor generalInterlockRaw;
+
 /* === State Set: Auto ON Sequence === */
 ss autoOnSequence {
 
@@ -142,12 +159,14 @@ ss autoOnSequence {
             pvPut(autoOnState);
             autoOnStep = 0;
             pvPut(autoOnStep);
+            onRetryCount = 0;
         }
         when (autoOnCmd == 1) {
             autoOnCmd = 0;
             pvPut(autoOnCmd);
             autoAbortCmd = 0;
             pvPut(autoAbortCmd);
+            onRetryCount = 0;
         } state autoOn_thyratron
     }
 
@@ -158,22 +177,37 @@ ss autoOnSequence {
             pvPut(autoOnState);
             autoOnStep = 1;
             pvPut(autoOnStep);
-            strcpy(autoMessage, "Step 1: Turning ON Thyratron...");
+            if (onRetryCount == 0) {
+                strcpy(autoMessage, "Step 1: Turning ON Thyratron...");
+            } else {
+                sprintf(autoMessage, "Step 1: Retry %d - Thyratron ON...", onRetryCount);
+            }
             pvPut(autoMessage);
             thyOnCmd = 1;
             pvPut(thyOnCmd);
+            onRetryCount++;
         }
-        when (thyReady >= 1.0) {
-            strcpy(autoMessage, "Thyratron Ready");
+        when (thyContactsOn >= 1.0) {
+            strcpy(autoMessage, "Thyratron Contacts ON");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_klys80
+        when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOn_thyratron
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Thyratron not ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_error
+        when (generalInterlockRaw != 0) {
+            strcpy(autoMessage, "ABORTED: Interlock active");
+            pvPut(autoMessage);
+            onRetryCount = 0;
+        } state autoOn_aborted
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_aborted
     }
 
@@ -182,22 +216,37 @@ ss autoOnSequence {
         entry {
             autoOnStep = 2;
             pvPut(autoOnStep);
-            strcpy(autoMessage, "Step 2: Turning ON Klystron 80%...");
+            if (onRetryCount == 0) {
+                strcpy(autoMessage, "Step 2: Turning ON Klystron 80%...");
+            } else {
+                sprintf(autoMessage, "Step 2: Retry %d - Klystron 80% ON...", onRetryCount);
+            }
             pvPut(autoMessage);
             klys80OnCmd = 1;
             pvPut(klys80OnCmd);
+            onRetryCount++;
         }
         when (klys80Status >= 1.0) {
             strcpy(autoMessage, "Klystron 80% Ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_klys100
+        when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOn_klys80
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Klystron 80% not ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_error
+        when (generalInterlockRaw != 0) {
+            strcpy(autoMessage, "ABORTED: Interlock active");
+            pvPut(autoMessage);
+            onRetryCount = 0;
+        } state autoOn_aborted
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_aborted
     }
 
@@ -206,22 +255,37 @@ ss autoOnSequence {
         entry {
             autoOnStep = 3;
             pvPut(autoOnStep);
-            strcpy(autoMessage, "Step 3: Turning ON Klystron 100%...");
+            if (onRetryCount == 0) {
+                strcpy(autoMessage, "Step 3: Turning ON Klystron 100%...");
+            } else {
+                sprintf(autoMessage, "Step 3: Retry %d - Klystron 100% ON...", onRetryCount);
+            }
             pvPut(autoMessage);
             klys100OnCmd = 1;
             pvPut(klys100OnCmd);
+            onRetryCount++;
         }
         when (klys100Status >= 1.0) {
             strcpy(autoMessage, "Klystron 100% Ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_focus
+        when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOn_klys100
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Klystron 100% not ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_error
+        when (generalInterlockRaw != 0) {
+            strcpy(autoMessage, "ABORTED: Interlock active");
+            pvPut(autoMessage);
+            onRetryCount = 0;
+        } state autoOn_aborted
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_aborted
     }
 
@@ -230,22 +294,37 @@ ss autoOnSequence {
         entry {
             autoOnStep = 4;
             pvPut(autoOnStep);
-            strcpy(autoMessage, "Step 4: Turning ON Focus...");
+            if (onRetryCount == 0) {
+                strcpy(autoMessage, "Step 4: Turning ON Focus...");
+            } else {
+                sprintf(autoMessage, "Step 4: Retry %d - Focus ON...", onRetryCount);
+            }
             pvPut(autoMessage);
             focusOnCmd = 1;
             pvPut(focusOnCmd);
+            onRetryCount++;
         }
         when (focusReady >= 1.0) {
             strcpy(autoMessage, "Focus Ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_premag
+        when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOn_focus
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Focus not ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_error
+        when (generalInterlockRaw != 0) {
+            strcpy(autoMessage, "ABORTED: Interlock active");
+            pvPut(autoMessage);
+            onRetryCount = 0;
+        } state autoOn_aborted
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_aborted
     }
 
@@ -254,22 +333,37 @@ ss autoOnSequence {
         entry {
             autoOnStep = 5;
             pvPut(autoOnStep);
-            strcpy(autoMessage, "Step 5: Turning ON Premagnetisation...");
+            if (onRetryCount == 0) {
+                strcpy(autoMessage, "Step 5: Turning ON Premagnetisation...");
+            } else {
+                sprintf(autoMessage, "Step 5: Retry %d - Premag ON...", onRetryCount);
+            }
             pvPut(autoMessage);
             premagOnCmd = 1;
             pvPut(premagOnCmd);
+            onRetryCount++;
         }
         when (premagReady >= 1.0) {
             strcpy(autoMessage, "Premagnetisation Ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_hvps
+        when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOn_premag
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Premagnetisation not ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_error
+        when (generalInterlockRaw != 0) {
+            strcpy(autoMessage, "ABORTED: Interlock active");
+            pvPut(autoMessage);
+            onRetryCount = 0;
+        } state autoOn_aborted
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_aborted
     }
 
@@ -278,22 +372,37 @@ ss autoOnSequence {
         entry {
             autoOnStep = 6;
             pvPut(autoOnStep);
-            strcpy(autoMessage, "Step 6: Turning ON HVPS...");
+            if (onRetryCount == 0) {
+                strcpy(autoMessage, "Step 6: Turning ON HVPS...");
+            } else {
+                sprintf(autoMessage, "Step 6: Retry %d - HVPS ON...", onRetryCount);
+            }
             pvPut(autoMessage);
             hvpsOnCmd = 1;
             pvPut(hvpsOnCmd);
+            onRetryCount++;
         }
         when (hvpsReady >= 1.0) {
             strcpy(autoMessage, "HVPS Ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_chargePfn
+        when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOn_hvps
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: HVPS not ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_error
+        when (generalInterlockRaw != 0) {
+            strcpy(autoMessage, "ABORTED: Interlock active");
+            pvPut(autoMessage);
+            onRetryCount = 0;
+        } state autoOn_aborted
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_aborted
     }
 
@@ -302,22 +411,37 @@ ss autoOnSequence {
         entry {
             autoOnStep = 7;
             pvPut(autoOnStep);
-            strcpy(autoMessage, "Step 7: Turning ON Charge PFN...");
+            if (onRetryCount == 0) {
+                strcpy(autoMessage, "Step 7: Turning ON Charge PFN...");
+            } else {
+                sprintf(autoMessage, "Step 7: Retry %d - Charge PFN ON...", onRetryCount);
+            }
             pvPut(autoMessage);
             chargePfnOnCmd = 1;
             pvPut(chargePfnOnCmd);
+            onRetryCount++;
         }
         when (hvOnOff >= 1.0) {
             strcpy(autoMessage, "Charge PFN Ready - SEQUENCE COMPLETE");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_done
+        when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOn_chargePfn
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Charge PFN not ready");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_error
+        when (generalInterlockRaw != 0) {
+            strcpy(autoMessage, "ABORTED: Interlock active");
+            pvPut(autoMessage);
+            onRetryCount = 0;
+        } state autoOn_aborted
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            onRetryCount = 0;
         } state autoOn_aborted
     }
 
@@ -362,10 +486,26 @@ ss autoOffSequence {
             pvPut(autoOffState);
             autoOffStep = 0;
             pvPut(autoOffStep);
+            offRetryCount = 0;
         }
         when (autoOffCmd == 1) {
             autoOffCmd = 0;
             pvPut(autoOffCmd);
+            /* If Auto ON is running, abort it first */
+            if (autoOnState == 1) {  /* Running */
+                autoAbortCmd = 1;
+                pvPut(autoAbortCmd);
+            }
+            offRetryCount = 0;
+        } state autoOff_waitAbort
+        when (autoOffCmd == 0 && autoOnState != 1) {
+            /* Not used, but keeps state machine clean */
+        } state idle
+    }
+
+    /* Wait for Auto ON to abort if it was running */
+    state autoOff_waitAbort {
+        when (delay(0.5) || autoOnState != 1) {
             autoAbortCmd = 0;
             pvPut(autoAbortCmd);
         } state autoOff_chargePfn
@@ -378,22 +518,32 @@ ss autoOffSequence {
             pvPut(autoOffState);
             autoOffStep = 1;
             pvPut(autoOffStep);
-            strcpy(autoMessage, "Step 1: Turning OFF Charge PFN...");
+            if (offRetryCount == 0) {
+                strcpy(autoMessage, "Step 1: Turning OFF Charge PFN...");
+            } else {
+                sprintf(autoMessage, "Step 1: Retry %d - Charge PFN OFF...", offRetryCount);
+            }
             pvPut(autoMessage);
             chargePfnOffCmd = 1;
             pvPut(chargePfnOffCmd);
+            offRetryCount++;
         }
         when (hvOnOff < 1.0) {
             strcpy(autoMessage, "Charge PFN OFF");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_hvps
+        when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOff_chargePfn
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Charge PFN still on");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_error
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_aborted
     }
 
@@ -402,22 +552,32 @@ ss autoOffSequence {
         entry {
             autoOffStep = 2;
             pvPut(autoOffStep);
-            strcpy(autoMessage, "Step 2: Turning OFF HVPS...");
+            if (offRetryCount == 0) {
+                strcpy(autoMessage, "Step 2: Turning OFF HVPS...");
+            } else {
+                sprintf(autoMessage, "Step 2: Retry %d - HVPS OFF...", offRetryCount);
+            }
             pvPut(autoMessage);
             hvpsOffCmd = 1;
             pvPut(hvpsOffCmd);
+            offRetryCount++;
         }
         when (hvpsReady < 1.0) {
             strcpy(autoMessage, "HVPS OFF");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_premag
+        when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOff_hvps
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: HVPS still on");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_error
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_aborted
     }
 
@@ -426,22 +586,32 @@ ss autoOffSequence {
         entry {
             autoOffStep = 3;
             pvPut(autoOffStep);
-            strcpy(autoMessage, "Step 3: Turning OFF Premagnetisation...");
+            if (offRetryCount == 0) {
+                strcpy(autoMessage, "Step 3: Turning OFF Premagnetisation...");
+            } else {
+                sprintf(autoMessage, "Step 3: Retry %d - Premag OFF...", offRetryCount);
+            }
             pvPut(autoMessage);
             premagOffCmd = 1;
             pvPut(premagOffCmd);
+            offRetryCount++;
         }
         when (premagReady < 1.0) {
             strcpy(autoMessage, "Premagnetisation OFF");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_focus
+        when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOff_premag
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Premagnetisation still on");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_error
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_aborted
     }
 
@@ -450,22 +620,32 @@ ss autoOffSequence {
         entry {
             autoOffStep = 4;
             pvPut(autoOffStep);
-            strcpy(autoMessage, "Step 4: Turning OFF Focus...");
+            if (offRetryCount == 0) {
+                strcpy(autoMessage, "Step 4: Turning OFF Focus...");
+            } else {
+                sprintf(autoMessage, "Step 4: Retry %d - Focus OFF...", offRetryCount);
+            }
             pvPut(autoMessage);
             focusOffCmd = 1;
             pvPut(focusOffCmd);
+            offRetryCount++;
         }
         when (focusReady < 1.0) {
             strcpy(autoMessage, "Focus OFF");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_klys100
+        when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOff_focus
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Focus still on");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_error
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_aborted
     }
 
@@ -474,22 +654,32 @@ ss autoOffSequence {
         entry {
             autoOffStep = 5;
             pvPut(autoOffStep);
-            strcpy(autoMessage, "Step 5: Turning OFF Klystron 100%...");
+            if (offRetryCount == 0) {
+                strcpy(autoMessage, "Step 5: Turning OFF Klystron 100%...");
+            } else {
+                sprintf(autoMessage, "Step 5: Retry %d - Klystron 100% OFF...", offRetryCount);
+            }
             pvPut(autoMessage);
             klys100OffCmd = 1;
             pvPut(klys100OffCmd);
+            offRetryCount++;
         }
         when (klys100Status < 1.0) {
             strcpy(autoMessage, "Klystron 100% OFF");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_klys80
+        when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOff_klys100
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Klystron 100% still on");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_error
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_aborted
     }
 
@@ -498,22 +688,32 @@ ss autoOffSequence {
         entry {
             autoOffStep = 6;
             pvPut(autoOffStep);
-            strcpy(autoMessage, "Step 6: Turning OFF Klystron 80%...");
+            if (offRetryCount == 0) {
+                strcpy(autoMessage, "Step 6: Turning OFF Klystron 80%...");
+            } else {
+                sprintf(autoMessage, "Step 6: Retry %d - Klystron 80% OFF...", offRetryCount);
+            }
             pvPut(autoMessage);
             klys80OffCmd = 1;
             pvPut(klys80OffCmd);
+            offRetryCount++;
         }
         when (klys80Status < 1.0) {
             strcpy(autoMessage, "Klystron 80% OFF");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_thyratron
+        when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOff_klys80
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Klystron 80% still on");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_error
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_aborted
     }
 
@@ -522,22 +722,32 @@ ss autoOffSequence {
         entry {
             autoOffStep = 7;
             pvPut(autoOffStep);
-            strcpy(autoMessage, "Step 7: Turning OFF Thyratron...");
+            if (offRetryCount == 0) {
+                strcpy(autoMessage, "Step 7: Turning OFF Thyratron...");
+            } else {
+                sprintf(autoMessage, "Step 7: Retry %d - Thyratron OFF...", offRetryCount);
+            }
             pvPut(autoMessage);
             thyOffCmd = 1;
             pvPut(thyOffCmd);
+            offRetryCount++;
         }
         when (thyReady < 1.0) {
             strcpy(autoMessage, "Thyratron OFF - SEQUENCE COMPLETE");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_done
+        when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+        } state autoOff_thyratron
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Thyratron still on");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_error
         when (autoAbortCmd == 1) {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
+            offRetryCount = 0;
         } state autoOff_aborted
     }
 

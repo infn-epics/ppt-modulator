@@ -1,5 +1,7 @@
 epicsEnvSet("IOC","iocppt")
 epicsEnvSet("TOP","/app/ppt-modulator")
+epicsEnvSet("SNCSEQ","/epics/support/sequencer")
+epicsEnvSet("SEQ","/epics/support/sequencer")
 epicsEnvSet("EPICS_BASE","/epics/epics-base")
 epicsEnvSet("SUPPORT","/epics/support")
 epicsEnvSet("STREAMDEVICE","/epics/support/StreamDevice")

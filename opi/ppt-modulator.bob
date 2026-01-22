@@ -4390,7 +4390,7 @@
   <widget type="group" version="3.0.0">
     <name>Auto Sequence Group</name>
     <x>10</x>
-    <y>770</y>
+    <y>960</y>
     <width>1180</width>
     <height>160</height>
     <style>3</style>
