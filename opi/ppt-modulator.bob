@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
   <name>PPT Modulator</name>
-  <width>1380</width>
-  <height>2680</height>
+  <width>1530</width>
+  <height>2640</height>
   <background_color>
     <color red="240" green="240" blue="240">
     </color>
@@ -661,7 +661,7 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>WaterFlow_Unit</name>
-      <text>L/min</text>
+      <text>L/H</text>
       <x>345</x>
       <y>105</y>
       <width>60</width>
@@ -1706,7 +1706,7 @@
     <name>Timers Group</name>
     <x>10</x>
     <y>770</y>
-    <width>580</width>
+    <width>470</width>
     <height>180</height>
     <style>3</style>
     <font>
@@ -4389,10 +4389,10 @@
   </widget>
   <widget type="group" version="3.0.0">
     <name>Auto Sequence Group</name>
-    <x>10</x>
-    <y>960</y>
-    <width>1180</width>
-    <height>160</height>
+    <x>480</x>
+    <y>770</y>
+    <width>930</width>
+    <height>180</height>
     <style>3</style>
     <font>
       <font family="Liberation Sans" style="BOLD" size="14.0">
@@ -4485,7 +4485,6 @@
       <text>ABORT</text>
       <x>340</x>
       <y>40</y>
-      <width>100</width>
       <height>50</height>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
@@ -4518,7 +4517,6 @@
       <pv_name>$(P):$(R):AutoOn:State</pv_name>
       <x>550</x>
       <y>40</y>
-      <width>100</width>
       <height>25</height>
       <background_color>
         <color red="220" green="220" blue="220">
@@ -4566,7 +4564,6 @@
       <pv_name>$(P):$(R):AutoOff:State</pv_name>
       <x>790</x>
       <y>40</y>
-      <width>100</width>
       <height>25</height>
       <background_color>
         <color red="220" green="220" blue="220">
