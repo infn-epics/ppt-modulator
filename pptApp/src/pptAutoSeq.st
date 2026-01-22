@@ -24,20 +24,20 @@
 
 program pptAutoSeq("P=SPARC:MOD:PPT,R=MOD001,RETRY_DELAY=5.0")
 
+%%#include <stdio.h>
+%%#include <string.h>
+
 /* Timeout for each step in seconds */
 #define STEP_TIMEOUT    300.0
 #define COMMAND_DELAY   1.0
+#define DEFAULT_RETRY_DELAY 5.0
 
-/* Retry delay - time between command retries if status doesn't change */
-double retryDelay;
-assign retryDelay;
+/* Retry delay - time between command retries */
+double retryDelay = DEFAULT_RETRY_DELAY;
 
 /* Retry counters for tracking attempts */
 int onRetryCount;
 int offRetryCount;
-
-%%#include <stdio.h>
-%%#include <string.h>
 
 /* === Control Variables === */
 int autoOnCmd;
@@ -55,6 +55,7 @@ monitor autoAbortCmd;
 /* === State Variables === */
 int autoOnState;
 assign autoOnState to "{P}:{R}:AutoOn:State";
+monitor autoOnState;  /* Monitor so OFF sequence can see it */
 
 int autoOffState;
 assign autoOffState to "{P}:{R}:AutoOff:State";
@@ -150,11 +151,21 @@ double generalInterlockRaw;
 assign generalInterlockRaw to "{P}:{R}:General:InterlockRaw";
 monitor generalInterlockRaw;
 
+/* Thyratron preheat timer - must be 0 before HVPS can be enabled */
+double thyPreheatMin;
+assign thyPreheatMin to "{P}:{R}:Thy:TimerPreheatMin";
+monitor thyPreheatMin;
+
+double thyPreheatSec;
+assign thyPreheatSec to "{P}:{R}:Thy:TimerPreheatSec";
+monitor thyPreheatSec;
+
 /* === State Set: Auto ON Sequence === */
 ss autoOnSequence {
 
     state idle {
         entry {
+            printf("pptAutoSeq ON: Entering IDLE state\n");
             autoOnState = 0;  /* Idle */
             pvPut(autoOnState);
             autoOnStep = 0;
@@ -162,6 +173,7 @@ ss autoOnSequence {
             onRetryCount = 0;
         }
         when (autoOnCmd == 1) {
+            printf("pptAutoSeq ON: AutoOnCmd received, starting sequence, retryDelay=%.1f\n", retryDelay);
             autoOnCmd = 0;
             pvPut(autoOnCmd);
             autoAbortCmd = 0;
@@ -173,6 +185,8 @@ ss autoOnSequence {
     /* Step 1: Thyratron */
     state autoOn_thyratron {
         entry {
+            printf("pptAutoSeq ON: Step 1 Thyratron entry, retryCount=%d, thyContactsOn=%.1f, thyReady=%.1f\n", 
+                   onRetryCount, thyContactsOn, thyReady);
             autoOnState = 1;  /* Running */
             pvPut(autoOnState);
             autoOnStep = 1;
@@ -183,28 +197,41 @@ ss autoOnSequence {
                 sprintf(autoMessage, "Step 1: Retry %d - Thyratron ON...", onRetryCount);
             }
             pvPut(autoMessage);
+            /* Send command on initial entry */
             thyOnCmd = 1;
             pvPut(thyOnCmd);
+            printf("pptAutoSeq ON: *** SENDING thyOnCmd=1 (attempt %d) ***\n", onRetryCount + 1);
             onRetryCount++;
         }
         when (thyContactsOn >= 1.0) {
+            printf("pptAutoSeq ON: thyContactsOn=%.1f >= 1.0, moving to klys80\n", thyContactsOn);
             strcpy(autoMessage, "Thyratron Contacts ON");
             pvPut(autoMessage);
             onRetryCount = 0;
         } state autoOn_klys80
         when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+            /* Re-send command on retry - entry block doesn't re-run on self-transition */
+            onRetryCount++;
+            printf("pptAutoSeq ON: Retry %d, re-sending thyOnCmd=1\n", onRetryCount);
+            sprintf(autoMessage, "Step 1: Retry %d - Thyratron ON...", onRetryCount);
+            pvPut(autoMessage);
+            thyOnCmd = 1;
+            pvPut(thyOnCmd);
         } state autoOn_thyratron
         when (delay(STEP_TIMEOUT)) {
+            printf("pptAutoSeq ON: STEP_TIMEOUT reached for thyratron\n");
             strcpy(autoMessage, "TIMEOUT: Thyratron not ready");
             pvPut(autoMessage);
             onRetryCount = 0;
         } state autoOn_error
         when (generalInterlockRaw != 0) {
+            printf("pptAutoSeq ON: INTERLOCK detected, generalInterlockRaw=%.1f\n", generalInterlockRaw);
             strcpy(autoMessage, "ABORTED: Interlock active");
             pvPut(autoMessage);
             onRetryCount = 0;
         } state autoOn_aborted
         when (autoAbortCmd == 1) {
+            printf("pptAutoSeq ON: ABORT command received\n");
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
             onRetryCount = 0;
@@ -214,6 +241,7 @@ ss autoOnSequence {
     /* Step 2: Klystron 80% */
     state autoOn_klys80 {
         entry {
+            printf("pptAutoSeq ON: Step 2 Klys80 entry, klys80Status=%.1f\n", klys80Status);
             autoOnStep = 2;
             pvPut(autoOnStep);
             if (onRetryCount == 0) {
@@ -232,6 +260,11 @@ ss autoOnSequence {
             onRetryCount = 0;
         } state autoOn_klys100
         when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+            onRetryCount++;
+            sprintf(autoMessage, "Step 2: Retry %d - Klystron 80%% ON...", onRetryCount);
+            pvPut(autoMessage);
+            klys80OnCmd = 1;
+            pvPut(klys80OnCmd);
         } state autoOn_klys80
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Klystron 80% not ready");
@@ -271,6 +304,11 @@ ss autoOnSequence {
             onRetryCount = 0;
         } state autoOn_focus
         when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+            onRetryCount++;
+            sprintf(autoMessage, "Step 3: Retry %d - Klystron 100%% ON...", onRetryCount);
+            pvPut(autoMessage);
+            klys100OnCmd = 1;
+            pvPut(klys100OnCmd);
         } state autoOn_klys100
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Klystron 100% not ready");
@@ -310,6 +348,11 @@ ss autoOnSequence {
             onRetryCount = 0;
         } state autoOn_premag
         when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+            onRetryCount++;
+            sprintf(autoMessage, "Step 4: Retry %d - Focus ON...", onRetryCount);
+            pvPut(autoMessage);
+            focusOnCmd = 1;
+            pvPut(focusOnCmd);
         } state autoOn_focus
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Focus not ready");
@@ -347,8 +390,13 @@ ss autoOnSequence {
             strcpy(autoMessage, "Premagnetisation Ready");
             pvPut(autoMessage);
             onRetryCount = 0;
-        } state autoOn_hvps
+        } state autoOn_waitPreheat
         when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+            onRetryCount++;
+            sprintf(autoMessage, "Step 5: Retry %d - Premag ON...", onRetryCount);
+            pvPut(autoMessage);
+            premagOnCmd = 1;
+            pvPut(premagOnCmd);
         } state autoOn_premag
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Premagnetisation not ready");
@@ -364,6 +412,37 @@ ss autoOnSequence {
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
             onRetryCount = 0;
+        } state autoOn_aborted
+    }
+
+    /* Wait for Thyratron preheat timer to elapse before enabling HVPS */
+    state autoOn_waitPreheat {
+        entry {
+            printf("pptAutoSeq ON: Waiting for preheat timer, min=%.0f sec=%.0f\n", thyPreheatMin, thyPreheatSec);
+            if (thyPreheatMin > 0 || thyPreheatSec > 0) {
+                sprintf(autoMessage, "Waiting for preheat: %d:%02d remaining", (int)thyPreheatMin, (int)thyPreheatSec);
+            } else {
+                strcpy(autoMessage, "Preheat complete");
+            }
+            pvPut(autoMessage);
+        }
+        when (thyPreheatMin <= 0 && thyPreheatSec <= 0) {
+            printf("pptAutoSeq ON: Preheat complete, proceeding to HVPS\n");
+            strcpy(autoMessage, "Preheat complete - enabling HVPS");
+            pvPut(autoMessage);
+        } state autoOn_hvps
+        when (delay(1.0) && (thyPreheatMin > 0 || thyPreheatSec > 0)) {
+            /* Update message every second while waiting */
+            sprintf(autoMessage, "Waiting for preheat: %d:%02d remaining", (int)thyPreheatMin, (int)thyPreheatSec);
+            pvPut(autoMessage);
+        } state autoOn_waitPreheat
+        when (generalInterlockRaw != 0) {
+            strcpy(autoMessage, "ABORTED: Interlock active");
+            pvPut(autoMessage);
+        } state autoOn_aborted
+        when (autoAbortCmd == 1) {
+            strcpy(autoMessage, "ABORTED by user");
+            pvPut(autoMessage);
         } state autoOn_aborted
     }
 
@@ -388,6 +467,11 @@ ss autoOnSequence {
             onRetryCount = 0;
         } state autoOn_chargePfn
         when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+            onRetryCount++;
+            sprintf(autoMessage, "Step 6: Retry %d - HVPS ON...", onRetryCount);
+            pvPut(autoMessage);
+            hvpsOnCmd = 1;
+            pvPut(hvpsOnCmd);
         } state autoOn_hvps
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: HVPS not ready");
@@ -427,6 +511,11 @@ ss autoOnSequence {
             onRetryCount = 0;
         } state autoOn_done
         when (delay(retryDelay) && onRetryCount * retryDelay < STEP_TIMEOUT) {
+            onRetryCount++;
+            sprintf(autoMessage, "Step 7: Retry %d - Charge PFN ON...", onRetryCount);
+            pvPut(autoMessage);
+            chargePfnOnCmd = 1;
+            pvPut(chargePfnOnCmd);
         } state autoOn_chargePfn
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Charge PFN not ready");
@@ -447,32 +536,38 @@ ss autoOnSequence {
 
     state autoOn_done {
         entry {
+            printf("pptAutoSeq ON: DONE - Entering done state\n");
             autoOnState = 2;  /* Done */
             pvPut(autoOnState);
             autoOnStep = 8;   /* Complete */
             pvPut(autoOnStep);
         }
         when (delay(2.0)) {
+            printf("pptAutoSeq ON: Done timeout, returning to idle\n");
         } state idle
     }
 
     state autoOn_error {
         entry {
+            printf("pptAutoSeq ON: ERROR - Entering error state\n");
             autoOnState = 3;  /* Error */
             pvPut(autoOnState);
         }
         when (delay(5.0)) {
+            printf("pptAutoSeq ON: Error timeout, returning to idle\n");
         } state idle
     }
 
     state autoOn_aborted {
         entry {
+            printf("pptAutoSeq ON: ABORTED - Entering aborted state, clearing autoAbortCmd\n");
             autoOnState = 4;  /* Aborted */
             pvPut(autoOnState);
             autoAbortCmd = 0;
             pvPut(autoAbortCmd);
         }
         when (delay(2.0)) {
+            printf("pptAutoSeq ON: Aborted timeout, returning to idle\n");
         } state idle
     }
 }
@@ -482,6 +577,7 @@ ss autoOffSequence {
 
     state idle {
         entry {
+            printf("pptAutoSeq OFF: Entering IDLE state, autoOnState=%d\n", autoOnState);
             autoOffState = 0;  /* Idle */
             pvPut(autoOffState);
             autoOffStep = 0;
@@ -489,10 +585,12 @@ ss autoOffSequence {
             offRetryCount = 0;
         }
         when (autoOffCmd == 1) {
+            printf("pptAutoSeq OFF: AutoOffCmd received, autoOnState=%d\n", autoOnState);
             autoOffCmd = 0;
             pvPut(autoOffCmd);
             /* If Auto ON is running, abort it first */
             if (autoOnState == 1) {  /* Running */
+                printf("pptAutoSeq OFF: AutoON is running, sending abort\n");
                 autoAbortCmd = 1;
                 pvPut(autoAbortCmd);
             }
@@ -505,7 +603,12 @@ ss autoOffSequence {
 
     /* Wait for Auto ON to abort if it was running */
     state autoOff_waitAbort {
+        entry {
+            printf("pptAutoSeq OFF: Waiting for AutoON abort, autoOnState=%d, autoAbortCmd=%d\n", 
+                   autoOnState, autoAbortCmd);
+        }
         when (delay(0.5) || autoOnState != 1) {
+            printf("pptAutoSeq OFF: Wait done, autoOnState=%d, proceeding to step 1\n", autoOnState);
             autoAbortCmd = 0;
             pvPut(autoAbortCmd);
         } state autoOff_chargePfn
@@ -514,6 +617,8 @@ ss autoOffSequence {
     /* Step 1: Charge PFN OFF */
     state autoOff_chargePfn {
         entry {
+            printf("pptAutoSeq OFF: Step 1 ChargePFN entry, hvOnOff=%.1f, retryCount=%d\n", 
+                   hvOnOff, offRetryCount);
             autoOffState = 1;  /* Running */
             pvPut(autoOffState);
             autoOffStep = 1;
@@ -526,17 +631,26 @@ ss autoOffSequence {
             pvPut(autoMessage);
             chargePfnOffCmd = 1;
             pvPut(chargePfnOffCmd);
+            printf("pptAutoSeq OFF: Sent chargePfnOffCmd=1\n");
             offRetryCount++;
         }
         when (hvOnOff < 1.0) {
+            printf("pptAutoSeq OFF: hvOnOff=%.1f < 1.0, moving to hvps\n", hvOnOff);
             strcpy(autoMessage, "Charge PFN OFF");
             pvPut(autoMessage);
             offRetryCount = 0;
         } state autoOff_hvps
         when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+            offRetryCount++;
+            printf("pptAutoSeq OFF: Retry %d, re-sending chargePfnOffCmd=1\n", offRetryCount);
+            sprintf(autoMessage, "Step 1: Retry %d - Charge PFN OFF...", offRetryCount);
+            pvPut(autoMessage);
+            chargePfnOffCmd = 1;
+            pvPut(chargePfnOffCmd);
         } state autoOff_chargePfn
         when (delay(STEP_TIMEOUT)) {
-            strcpy(autoMessage, "TIMEOUT: Charge PFN still on");
+            printf("pptAutoSeq OFF: TIMEOUT for ChargePFN\n");
+            strcpy(autoMessage, "TIMEOUT: Charge PFN still on");;
             pvPut(autoMessage);
             offRetryCount = 0;
         } state autoOff_error
@@ -568,6 +682,11 @@ ss autoOffSequence {
             offRetryCount = 0;
         } state autoOff_premag
         when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+            offRetryCount++;
+            sprintf(autoMessage, "Step 2: Retry %d - HVPS OFF...", offRetryCount);
+            pvPut(autoMessage);
+            hvpsOffCmd = 1;
+            pvPut(hvpsOffCmd);
         } state autoOff_hvps
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: HVPS still on");
@@ -602,6 +721,11 @@ ss autoOffSequence {
             offRetryCount = 0;
         } state autoOff_focus
         when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+            offRetryCount++;
+            sprintf(autoMessage, "Step 3: Retry %d - Premag OFF...", offRetryCount);
+            pvPut(autoMessage);
+            premagOffCmd = 1;
+            pvPut(premagOffCmd);
         } state autoOff_premag
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Premagnetisation still on");
@@ -636,6 +760,11 @@ ss autoOffSequence {
             offRetryCount = 0;
         } state autoOff_klys100
         when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+            offRetryCount++;
+            sprintf(autoMessage, "Step 4: Retry %d - Focus OFF...", offRetryCount);
+            pvPut(autoMessage);
+            focusOffCmd = 1;
+            pvPut(focusOffCmd);
         } state autoOff_focus
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Focus still on");
@@ -670,6 +799,11 @@ ss autoOffSequence {
             offRetryCount = 0;
         } state autoOff_klys80
         when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+            offRetryCount++;
+            sprintf(autoMessage, "Step 5: Retry %d - Klystron 100%% OFF...", offRetryCount);
+            pvPut(autoMessage);
+            klys100OffCmd = 1;
+            pvPut(klys100OffCmd);
         } state autoOff_klys100
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Klystron 100% still on");
@@ -704,6 +838,11 @@ ss autoOffSequence {
             offRetryCount = 0;
         } state autoOff_thyratron
         when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+            offRetryCount++;
+            sprintf(autoMessage, "Step 6: Retry %d - Klystron 80%% OFF...", offRetryCount);
+            pvPut(autoMessage);
+            klys80OffCmd = 1;
+            pvPut(klys80OffCmd);
         } state autoOff_klys80
         when (delay(STEP_TIMEOUT)) {
             strcpy(autoMessage, "TIMEOUT: Klystron 80% still on");
@@ -720,6 +859,8 @@ ss autoOffSequence {
     /* Step 7: Thyratron OFF */
     state autoOff_thyratron {
         entry {
+            printf("pptAutoSeq OFF: Step 7 Thyratron entry, thyReady=%.1f, thyContactsOn=%.1f, retryCount=%d\n", 
+                   thyReady, thyContactsOn, offRetryCount);
             autoOffStep = 7;
             pvPut(autoOffStep);
             if (offRetryCount == 0) {
@@ -730,21 +871,32 @@ ss autoOffSequence {
             pvPut(autoMessage);
             thyOffCmd = 1;
             pvPut(thyOffCmd);
+            printf("pptAutoSeq OFF: Sent thyOffCmd=1\n");
             offRetryCount++;
         }
-        when (thyReady < 1.0) {
+        /* Check thyContactsOn < 1.0 - matches ON sequence which waits for thyContactsOn >= 1.0 */
+        when (thyContactsOn < 1.0) {
+            printf("pptAutoSeq OFF: thyContactsOn=%.1f < 1.0, SEQUENCE COMPLETE\n", thyContactsOn);
             strcpy(autoMessage, "Thyratron OFF - SEQUENCE COMPLETE");
             pvPut(autoMessage);
             offRetryCount = 0;
         } state autoOff_done
         when (delay(retryDelay) && offRetryCount * retryDelay < STEP_TIMEOUT) {
+            offRetryCount++;
+            printf("pptAutoSeq OFF: Retry %d, re-sending thyOffCmd=1\n", offRetryCount);
+            sprintf(autoMessage, "Step 7: Retry %d - Thyratron OFF...", offRetryCount);
+            pvPut(autoMessage);
+            thyOffCmd = 1;
+            pvPut(thyOffCmd);
         } state autoOff_thyratron
         when (delay(STEP_TIMEOUT)) {
+            printf("pptAutoSeq OFF: TIMEOUT for Thyratron\n");
             strcpy(autoMessage, "TIMEOUT: Thyratron still on");
             pvPut(autoMessage);
             offRetryCount = 0;
         } state autoOff_error
         when (autoAbortCmd == 1) {
+            printf("pptAutoSeq OFF: ABORT command in thyratron step\n");
             strcpy(autoMessage, "ABORTED by user");
             pvPut(autoMessage);
             offRetryCount = 0;
@@ -753,32 +905,38 @@ ss autoOffSequence {
 
     state autoOff_done {
         entry {
+            printf("pptAutoSeq OFF: DONE - Entering done state\n");
             autoOffState = 2;  /* Done */
             pvPut(autoOffState);
             autoOffStep = 8;   /* Complete */
             pvPut(autoOffStep);
         }
         when (delay(2.0)) {
+            printf("pptAutoSeq OFF: Done timeout, returning to idle\n");
         } state idle
     }
 
     state autoOff_error {
         entry {
+            printf("pptAutoSeq OFF: ERROR - Entering error state\n");
             autoOffState = 3;  /* Error */
             pvPut(autoOffState);
         }
         when (delay(5.0)) {
+            printf("pptAutoSeq OFF: Error timeout, returning to idle\n");
         } state idle
     }
 
     state autoOff_aborted {
         entry {
+            printf("pptAutoSeq OFF: ABORTED - Entering aborted state\n");
             autoOffState = 4;  /* Aborted */
             pvPut(autoOffState);
             autoAbortCmd = 0;
             pvPut(autoAbortCmd);
         }
         when (delay(2.0)) {
+            printf("pptAutoSeq OFF: Aborted timeout, returning to idle\n");
         } state idle
     }
 }
