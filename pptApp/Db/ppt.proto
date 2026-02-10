@@ -71,9 +71,9 @@ writeResetCmd {
 # This ensures atomic write of both command and voltage, avoiding race conditions
 # Write twice with delay to ensure device receives command
 writeFullCmd32 {
-    out "%.4r";           # write 32-bit little-endian value (first)
-    wait 100;              # wait 50ms
-    out "%.4r";           # write same value again (second)
+    out "%.4r\xFF\xFF";      # write 32-bit little-endian value (first) + FFFF
+    # wait 100;              # wait 50ms
+    # out "%.4r";           # write same value again (second)
 }
 
 # ============================================================================
