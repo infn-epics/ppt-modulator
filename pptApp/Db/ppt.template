@@ -130,7 +130,7 @@ record(aSub, "$(P):$(R):DecodeWaveguideHVPS") {
 record(ai, "$(P):$(R):Thy:HeaterVoltage") {
     field(SCAN, "1 second")
     field(DESC, "Thyratron Heater Voltage")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALA CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALA MS")
     field(EGU,  "V")
     field(PREC, "2")
     field(HOPR, "10")
@@ -143,7 +143,7 @@ record(ai, "$(P):$(R):Thy:HeaterVoltage") {
 record(ai, "$(P):$(R):Thy:ReservoirVoltage") {
     field(SCAN, "1 second")
     field(DESC, "Thyratron Reservoir Voltage")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALB CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALB MS")
     field(EGU,  "V")
     field(PREC, "2")
     field(HOPR, "10")
@@ -153,7 +153,7 @@ record(ai, "$(P):$(R):Thy:ReservoirVoltage") {
 record(ai, "$(P):$(R):Thy:TotalCurrent") {
     field(SCAN, "1 second")
     field(DESC, "Thyratron Total Current")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALC CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALC MS")
     field(EGU,  "A")
     field(PREC, "2")
     field(HOPR, "100")
@@ -163,7 +163,7 @@ record(ai, "$(P):$(R):Thy:TotalCurrent") {
 record(longin, "$(P):$(R):Thy:TimerPreheatMin") {
     field(SCAN, "1 second")
     field(DESC, "Thyratron Preheat Timer Min")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALI CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALI MS")
     field(EGU,  "min")
     field(HOPR, "15")
     field(LOPR, "0")
@@ -172,7 +172,7 @@ record(longin, "$(P):$(R):Thy:TimerPreheatMin") {
 record(longin, "$(P):$(R):Thy:TimerPreheatSec") {
     field(SCAN, "1 second")
     field(DESC, "Thyratron Preheat Timer Sec")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALJ CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALJ MS")
     field(EGU,  "s")
     field(HOPR, "60")
     field(LOPR, "0")
@@ -185,7 +185,7 @@ record(longin, "$(P):$(R):Thy:TimerPreheatSec") {
 record(ai, "$(P):$(R):Klys:HeaterVoltage") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Heater Voltage")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALD CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALD MS")
     field(EGU,  "V")
     field(PREC, "2")
     field(HOPR, "270")
@@ -195,7 +195,7 @@ record(ai, "$(P):$(R):Klys:HeaterVoltage") {
 record(ai, "$(P):$(R):Klys:HeaterCurrent") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Heater Current")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALE CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALE MS")
     field(EGU,  "A")
     field(PREC, "2")
     field(HOPR, "6")
@@ -205,7 +205,7 @@ record(ai, "$(P):$(R):Klys:HeaterCurrent") {
 record(ai, "$(P):$(R):Klys:BodyWaterInTemp") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Body Water In Temp")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALF CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALF MS")
     field(EGU,  "C")
     field(PREC, "1")
     field(HOPR, "100")
@@ -215,7 +215,7 @@ record(ai, "$(P):$(R):Klys:BodyWaterInTemp") {
 record(ai, "$(P):$(R):Klys:BodyWaterOutTemp") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Body Water Out Temp")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALG CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALG MS")
     field(EGU,  "C")
     field(PREC, "1")
     field(HOPR, "100")
@@ -225,7 +225,7 @@ record(ai, "$(P):$(R):Klys:BodyWaterOutTemp") {
 record(ai, "$(P):$(R):Klys:BodyWaterFlow") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Body Water Flow")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALH CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALH MS")
     field(EGU,  "L/Hour")
     field(PREC, "2")
     field(HOPR, "10")
@@ -235,7 +235,7 @@ record(ai, "$(P):$(R):Klys:BodyWaterFlow") {
 record(ai, "$(P):$(R):Klys:DissipatedPower") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Dissipated Power")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALI CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALI MS")
     field(EGU,  "kW")
     field(PREC, "1")
     field(HOPR, "5000")
@@ -245,7 +245,7 @@ record(ai, "$(P):$(R):Klys:DissipatedPower") {
 record(ai, "$(P):$(R):Klys:OilTemp") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Oil Temperature")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALJ CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALJ MS")
     field(EGU,  "C")
     field(PREC, "1")
     field(HOPR, "100")
@@ -255,7 +255,7 @@ record(ai, "$(P):$(R):Klys:OilTemp") {
 record(longin, "$(P):$(R):Klys:TimerPreheat100Min") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Preheat100 Timer Min")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALK CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALK MS")
     field(EGU,  "min")
     field(HOPR, "15")
     field(LOPR, "0")
@@ -268,7 +268,7 @@ record(longin, "$(P):$(R):Klys:TimerPreheat100Min") {
 record(ai, "$(P):$(R):Focus:Coil1Voltage") {
     field(SCAN, "1 second")
     field(DESC, "Focus Coil 1 Voltage")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALA CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALA MS")
     field(EGU,  "V")
     field(PREC, "2")
     field(HOPR, "132")
@@ -278,7 +278,7 @@ record(ai, "$(P):$(R):Focus:Coil1Voltage") {
 record(ai, "$(P):$(R):Focus:Coil1Current") {
     field(SCAN, "1 second")
     field(DESC, "Focus Coil 1 Current")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALB CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALB MS")
     field(EGU,  "A")
     field(PREC, "2")
     field(HOPR, "50")
@@ -288,7 +288,7 @@ record(ai, "$(P):$(R):Focus:Coil1Current") {
 record(ai, "$(P):$(R):Focus:Coil2Voltage") {
     field(SCAN, "1 second")
     field(DESC, "Focus Coil 2 Voltage")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALC CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALC MS")
     field(EGU,  "V")
     field(PREC, "2")
     field(HOPR, "132")
@@ -298,7 +298,7 @@ record(ai, "$(P):$(R):Focus:Coil2Voltage") {
 record(ai, "$(P):$(R):Focus:Coil2Current") {
     field(SCAN, "1 second")
     field(DESC, "Focus Coil 2 Current")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALD CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALD MS")
     field(EGU,  "A")
     field(PREC, "2")
     field(HOPR, "50")
@@ -308,7 +308,7 @@ record(ai, "$(P):$(R):Focus:Coil2Current") {
 record(ai, "$(P):$(R):Focus:Coil3Voltage") {
     field(SCAN, "1 second")
     field(DESC, "Focus Coil 3 Voltage")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALE CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALE MS")
     field(EGU,  "V")
     field(PREC, "2")
     field(HOPR, "132")
@@ -318,7 +318,7 @@ record(ai, "$(P):$(R):Focus:Coil3Voltage") {
 record(ai, "$(P):$(R):Focus:Coil3Current") {
     field(SCAN, "1 second")
     field(DESC, "Focus Coil 3 Current")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALF CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALF MS")
     field(EGU,  "A")
     field(PREC, "2")
     field(HOPR, "50")
@@ -332,7 +332,7 @@ record(ai, "$(P):$(R):Focus:Coil3Current") {
 record(ai, "$(P):$(R):Premag:Voltage") {
     field(SCAN, "1 second")
     field(DESC, "Premagnetisation Voltage")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALG CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALG MS")
     field(EGU,  "V")
     field(PREC, "2")
     field(HOPR, "70")
@@ -342,7 +342,7 @@ record(ai, "$(P):$(R):Premag:Voltage") {
 record(ai, "$(P):$(R):Premag:Current") {
     field(SCAN, "1 second")
     field(DESC, "Premagnetisation Current")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALH CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALH MS")
     field(EGU,  "A")
     field(PREC, "2")
     field(HOPR, "20")
@@ -360,7 +360,7 @@ record(ai, "$(P):$(R):Premag:Current") {
 record(longin, "$(P):$(R):Thy:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "Thyratron Interlock Word")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALK CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALK MS")
     field(EGU,  "")
 }
 
@@ -368,7 +368,7 @@ record(longin, "$(P):$(R):Thy:InterlockRaw") {
 record(longin, "$(P):$(R):Thy:StatusRaw") {
     field(SCAN, "1 second")
     field(DESC, "Thyratron Status Word")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALL CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALL MS")
     field(EGU,  "")
 }
 
@@ -376,7 +376,7 @@ record(longin, "$(P):$(R):Thy:StatusRaw") {
 record(longin, "$(P):$(R):Klys:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Interlock Word")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALM CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALM MS")
     field(EGU,  "")
 }
 
@@ -384,7 +384,7 @@ record(longin, "$(P):$(R):Klys:InterlockRaw") {
 record(longin, "$(P):$(R):Klys:StatusRaw") {
     field(SCAN, "1 second")
     field(DESC, "Klystron Status Word")
-    field(INP,  "$(P):$(R):DecodeThyKlys.VALN CP MS")
+    field(INP,  "$(P):$(R):DecodeThyKlys.VALN MS")
     field(EGU,  "")
 }
 
@@ -392,7 +392,7 @@ record(longin, "$(P):$(R):Klys:StatusRaw") {
 record(longin, "$(P):$(R):Focus:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "Focus Magnet Interlock Word")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALL CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALL MS")
     field(EGU,  "")
 }
 
@@ -400,7 +400,7 @@ record(longin, "$(P):$(R):Focus:InterlockRaw") {
 record(longin, "$(P):$(R):Focus:StatusRaw") {
     field(SCAN, "1 second")
     field(DESC, "Focus Magnet Status Word")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALM CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALM MS")
     field(EGU,  "")
 }
 
@@ -408,7 +408,7 @@ record(longin, "$(P):$(R):Focus:StatusRaw") {
 record(longin, "$(P):$(R):Premag:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "Premag Interlock Word")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALN CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALN MS")
     field(EGU,  "")
 }
 
@@ -416,7 +416,7 @@ record(longin, "$(P):$(R):Premag:InterlockRaw") {
 record(longin, "$(P):$(R):Premag:StatusRaw") {
     field(SCAN, "1 second")
     field(DESC, "Premag Status Word")
-    field(INP,  "$(P):$(R):DecodeMagTimers.VALO CP MS")
+    field(INP,  "$(P):$(R):DecodeMagTimers.VALO MS")
     field(EGU,  "")
 }
 
@@ -424,7 +424,7 @@ record(longin, "$(P):$(R):Premag:StatusRaw") {
 record(longin, "$(P):$(R):Waveguide:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "Waveguide Interlock Word")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALA CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALA MS")
     field(EGU,  "")
 }
 
@@ -432,7 +432,7 @@ record(longin, "$(P):$(R):Waveguide:InterlockRaw") {
 record(longin, "$(P):$(R):VSWR:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "VSWR Interlock Word")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALB CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALB MS")
     field(EGU,  "")
 }
 
@@ -440,7 +440,7 @@ record(longin, "$(P):$(R):VSWR:InterlockRaw") {
 record(longin, "$(P):$(R):Clipper:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "Clipper Interlock Word")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALC CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALC MS")
     field(EGU,  "")
 }
 
@@ -448,7 +448,7 @@ record(longin, "$(P):$(R):Clipper:InterlockRaw") {
 record(longin, "$(P):$(R):HVPS:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "HVPS Interlock Word")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALG CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALG MS")
     field(EGU,  "")
 }
 
@@ -456,7 +456,7 @@ record(longin, "$(P):$(R):HVPS:InterlockRaw") {
 record(longin, "$(P):$(R):HVPS:StatusRaw") {
     field(SCAN, "1 second")
     field(DESC, "HVPS Status Word")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALH CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALH MS")
     field(EGU,  "")
 }
 
@@ -464,7 +464,7 @@ record(longin, "$(P):$(R):HVPS:StatusRaw") {
 record(longin, "$(P):$(R):General:InterlockRaw") {
     field(SCAN, "1 second")
     field(DESC, "General Interlock Word")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALI CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALI MS")
     field(EGU,  "")
 }
 
@@ -472,7 +472,7 @@ record(longin, "$(P):$(R):General:InterlockRaw") {
 record(longin, "$(P):$(R):General:StatusRaw") {
     field(SCAN, "1 second")
     field(DESC, "General Status Word")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALJ CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALJ MS")
     field(EGU,  "")
 }
 
@@ -483,7 +483,7 @@ record(longin, "$(P):$(R):General:StatusRaw") {
 record(ai, "$(P):$(R):Counter") {
     field(SCAN, "1 second")
     field(DESC, "Counter")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALD CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALD MS")
     field(EGU,  "")
     field(PREC, "0")
     field(HOPR, "1000000")
@@ -493,7 +493,7 @@ record(ai, "$(P):$(R):Counter") {
 record(ai, "$(P):$(R):HVPS:ChargingVoltageRaw") {
     field(SCAN, "1 second")
     field(DESC, "HVPS Charging Voltage Raw")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALE CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALE MS")
     field(EGU,  "V")
     field(PREC, "1")
     field(HOPR, "100000")
@@ -510,7 +510,7 @@ record(calc, "$(P):$(R):HVPS:ChargingVoltage") {
 record(ai, "$(P):$(R):HVPS:WaterTemperature") {
     field(SCAN, "1 second")
     field(DESC, "HVPS Water Temperature")
-    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALF CP MS")
+    field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALF MS")
     field(EGU,  "C")
     field(PREC, "1")
     field(HOPR, "100")
@@ -518,8 +518,9 @@ record(ai, "$(P):$(R):HVPS:WaterTemperature") {
 }
 
 record(calc, "$(P):$(R):calcstatconn_") {
+    field(SCAN, "1 second")
     field(DESC, "Device Connection Status")
-    field(INPA, "$(P):$(R):RawData.SEVR CP MS")
+    field(INPA, "$(P):$(R):RawData.SEVR MS")
     field(CALC, "A=0?1:0")     
     field(FLNK,"$(P):$(R):Connected")
 }
@@ -560,8 +561,9 @@ record(bi, "$(P):$(R):Connected") {
 # Using calc records to extract individual bits from raw interlock words
 
 record(calc, "$(P):$(R):Thy:Interlock:HeaterVoltageHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Thy Heater V Too High")
-    field(INPA, "$(P):$(R):Thy:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:InterlockRaw MS")
     field(CALC, "(A>>0)&1")
     field(EGU,  "")
     field(HOPR, "1")
@@ -571,48 +573,54 @@ record(calc, "$(P):$(R):Thy:Interlock:HeaterVoltageHigh") {
 }
 
 record(calc, "$(P):$(R):Thy:Interlock:HeaterVoltageLow") {
+    field(SCAN, "1 second")
     field(DESC, "Thy Heater V Too Low")
-    field(INPA, "$(P):$(R):Thy:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:InterlockRaw MS")
     field(CALC, "(A>>1)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Thy:Interlock:ReservoirVoltageHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Thy Reservoir V Too High")
-    field(INPA, "$(P):$(R):Thy:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:InterlockRaw MS")
     field(CALC, "(A>>2)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Thy:Interlock:ReservoirVoltageLow") {
+    field(SCAN, "1 second")
     field(DESC, "Thy Reservoir V Too Low")
-    field(INPA, "$(P):$(R):Thy:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:InterlockRaw MS")
     field(CALC, "(A>>3)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Thy:Interlock:TotalCurrentHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Thy Total I Too High")
-    field(INPA, "$(P):$(R):Thy:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:InterlockRaw MS")
     field(CALC, "(A>>4)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Thy:Interlock:TotalCurrentLow") {
+    field(SCAN, "1 second")
     field(DESC, "Thy Total I Too Low")
-    field(INPA, "$(P):$(R):Thy:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:InterlockRaw MS")
     field(CALC, "(A>>5)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Thy:Interlock:TempSwitch") {
+    field(SCAN, "1 second")
     field(DESC, "Thy Temperature Switch")
-    field(INPA, "$(P):$(R):Thy:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:InterlockRaw MS")
     field(CALC, "(A>>6)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
@@ -624,20 +632,23 @@ record(calc, "$(P):$(R):Thy:Interlock:TempSwitch") {
 # 0 = OFF/Not Ready, 1 = ON/Ready (normal operation bits)
 
 record(calc, "$(P):$(R):Thy:Status:Ready") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Ready")
-    field(INPA, "$(P):$(R):Thy:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:StatusRaw MS")
     field(CALC, "(A>>0)&1")
 }
 
 record(calc, "$(P):$(R):Thy:Status:ContactsOn") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Contacts On")
-    field(INPA, "$(P):$(R):Thy:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:StatusRaw MS")
     field(CALC, "(A>>1)&1")
 }
 
 record(calc, "$(P):$(R):Thy:Status:PreheatingRunning") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Preheating")
-    field(INPA, "$(P):$(R):Thy:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Thy:StatusRaw MS")
     field(CALC, "(A>>2)&1")
 }
 
@@ -646,128 +657,144 @@ record(calc, "$(P):$(R):Thy:Status:PreheatingRunning") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):Klys:Interlock:HeaterVoltageHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Heater V Too High")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>0)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:HeaterVoltageLow") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Heater V Too Low")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>1)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:HeaterCurrentHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Heater I Too High")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>2)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:HeaterCurrentLow") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Heater I Too Low")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>3)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:PreheatingError") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Preheating Error")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>4)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:VacuumWarning") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Vacuum Warning")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>5)&1")
     field(HIHI, "0.5")
     field(HHSV, "MINOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:TankOilLevel") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Tank Oil Level")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>6)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:DissipatedPowerError") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Dissipated Power Err")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>7)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:TankTemperature") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Tank Temperature")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>8)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:BodyWaterFlow") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Body Water Flow")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>9)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:CollectorWater") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Collector Water")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>10)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:MaxPulseVoltage") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Max Pulse Voltage")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>11)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:MaxPulseCurrent") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Max Pulse Current")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>12)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:VacuumAlarm") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Vacuum Alarm")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>13)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:BodyWaterInTemp") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Body Water In Temp")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>14)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Klys:Interlock:BodyWaterOutTemp") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Body Water Out Temp")
-    field(INPA, "$(P):$(R):Klys:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:InterlockRaw MS")
     field(CALC, "(A>>15)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
@@ -778,32 +805,37 @@ record(calc, "$(P):$(R):Klys:Interlock:BodyWaterOutTemp") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):Klys:Status:Ready") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Ready")
-    field(INPA, "$(P):$(R):Klys:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:StatusRaw MS")
     field(CALC, "(A>>0)&1")
 }
 
 record(calc, "$(P):$(R):Klys:Status:OnOff") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron On/Off")
-    field(INPA, "$(P):$(R):Klys:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:StatusRaw MS")
     field(CALC, "(A>>1)&1")
 }
 
 record(calc, "$(P):$(R):Klys:Status:Timer100Running") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Timer 100% Running")
-    field(INPA, "$(P):$(R):Klys:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:StatusRaw MS")
     field(CALC, "(A>>2)&1")
 }
 
 record(calc, "$(P):$(R):Klys:Status:HeaterVoltage80Percent") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Heater V 80%")
-    field(INPA, "$(P):$(R):Klys:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:StatusRaw MS")
     field(CALC, "(A>>3)&1")
 }
 
 record(calc, "$(P):$(R):Klys:Status:HeaterVoltage100Percent") {
+    field(SCAN, "1 second")
     field(DESC, "Klys Heater V 100%")
-    field(INPA, "$(P):$(R):Klys:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Klys:StatusRaw MS")
     field(CALC, "(A>>4)&1")
 }
 
@@ -812,120 +844,135 @@ record(calc, "$(P):$(R):Klys:Status:HeaterVoltage100Percent") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil1VoltageHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil1 V Too High")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>0)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil1VoltageLow") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil1 V Too Low")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>1)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil1CurrentHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil1 I Too High")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>2)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil1CurrentLow") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil1 I Too Low")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>3)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil2VoltageHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil2 V Too High")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>4)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil2VoltageLow") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil2 V Too Low")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>5)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil2CurrentHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil2 I Too High")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>6)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil2CurrentLow") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil2 I Too Low")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>7)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil3VoltageHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil3 V Too High")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>8)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil3VoltageLow") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil3 V Too Low")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>9)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil3CurrentHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil3 I Too High")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>10)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:Coil3CurrentLow") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil3 I Too Low")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>11)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:WaterFlowAlarm") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Water Flow Alarm")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>12)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:TemperatureAlarm") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Temperature Alarm")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>13)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Focus:Interlock:ShortCircuitGround") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Short Circuit Ground")
-    field(INPA, "$(P):$(R):Focus:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:InterlockRaw MS")
     field(CALC, "(A>>14)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
@@ -936,14 +983,16 @@ record(calc, "$(P):$(R):Focus:Interlock:ShortCircuitGround") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):Focus:Status:Ready") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Magnet Ready")
-    field(INPA, "$(P):$(R):Focus:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Focus:StatusRaw MS")
     field(CALC, "(A>>0)&1")
 }
 
 record(calc, "$(P):$(R):Focus:Status:OnOff") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Magnet On/Off")
-    field(INPA,  "$(P):$(R):Focus:StatusRaw CP MS")
+    field(INPA,  "$(P):$(R):Focus:StatusRaw MS")
     field(CALC, "(A>>1)&1")
 }
 
@@ -952,40 +1001,45 @@ record(calc, "$(P):$(R):Focus:Status:OnOff") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):Premag:Interlock:VoltageHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Premag V Too High")
-    field(INPA, "$(P):$(R):Premag:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Premag:InterlockRaw MS")
     field(CALC, "(A>>0)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Premag:Interlock:VoltageLow") {
+    field(SCAN, "1 second")
     field(DESC, "Premag V Too Low")
-    field(INPA, "$(P):$(R):Premag:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Premag:InterlockRaw MS")
     field(CALC, "(A>>1)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Premag:Interlock:CurrentHigh") {
+    field(SCAN, "1 second")
     field(DESC, "Premag I Too High")
-    field(INPA, "$(P):$(R):Premag:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Premag:InterlockRaw MS")
     field(CALC, "(A>>2)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Premag:Interlock:CurrentLow") {
+    field(SCAN, "1 second")
     field(DESC, "Premag I Too Low")
-    field(INPA, "$(P):$(R):Premag:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Premag:InterlockRaw MS")
     field(CALC, "(A>>3)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):Premag:Interlock:HVCableNotConnected") {
+    field(SCAN, "1 second")
     field(DESC, "Premag HV Cable Not Conn")
-    field(INPA, "$(P):$(R):Premag:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):Premag:InterlockRaw MS")
     field(CALC, "(A>>7)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
@@ -996,14 +1050,16 @@ record(calc, "$(P):$(R):Premag:Interlock:HVCableNotConnected") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):Premag:Status:Ready") {
+    field(SCAN, "1 second")
     field(DESC, "Premagnetisation Ready")
-    field(INPA, "$(P):$(R):Premag:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Premag:StatusRaw MS")
     field(CALC, "(A>>0)&1")
 }
 
 record(calc, "$(P):$(R):Premag:Status:OnOff") {
+    field(SCAN, "1 second")
     field(DESC, "Premagnetisation On/Off")
-    field(INPA, "$(P):$(R):Premag:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):Premag:StatusRaw MS")
     field(CALC, "(A>>1)&1")
 }
 
@@ -1012,64 +1068,72 @@ record(calc, "$(P):$(R):Premag:Status:OnOff") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):HVPS:Interlock:Internal") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Internal Interlock")
-    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw MS")
     field(CALC, "(A>>0)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):HVPS:Interlock:Line") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Line Alarm")
-    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw MS")
     field(CALC, "(A>>1)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):HVPS:Interlock:Overload") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Overload")
-    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw MS")
     field(CALC, "(A>>2)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):HVPS:Interlock:Temperature") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Temperature")
-    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw MS")
     field(CALC, "(A>>3)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):HVPS:Interlock:WaterTempError") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Water Temp Error")
-    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw MS")
     field(CALC, "(A>>4)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):HVPS:Interlock:OvervoltageProt") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Overvoltage Prot")
-    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw MS")
     field(CALC, "(A>>5)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):HVPS:Interlock:WaterFlow") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Water Flow")
-    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw MS")
     field(CALC, "(A>>6)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):HVPS:Interlock:MaxVoltageReached") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Max Voltage Reached")
-    field(INPA, "$(P):$(R):HVPS:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:InterlockRaw MS")
     field(CALC, "(A>>7)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
@@ -1080,20 +1144,23 @@ record(calc, "$(P):$(R):HVPS:Interlock:MaxVoltageReached") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):HVPS:Status:OnOff") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS On/Off")
-    field(INPA, "$(P):$(R):HVPS:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:StatusRaw MS")
     field(CALC, "(A>>0)&1")
 }
 
 record(calc, "$(P):$(R):HVPS:Status:Ready") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Ready")
-    field(INPA, "$(P):$(R):HVPS:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:StatusRaw MS")
     field(CALC, "(A>>1)&1")
 }
 
 record(calc, "$(P):$(R):HVPS:Status:HighVoltageOnOff") {
+    field(SCAN, "1 second")
     field(DESC, "High Voltage On/Off")
-    field(INPA, "$(P):$(R):HVPS:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):HVPS:StatusRaw MS")
     field(CALC, "(A>>2)&1")
 }
 
@@ -1102,40 +1169,45 @@ record(calc, "$(P):$(R):HVPS:Status:HighVoltageOnOff") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):General:Interlock:GroundSwitches") {
+    field(SCAN, "1 second")
     field(DESC, "Ground Switches Alarm")
-    field(INPA, "$(P):$(R):General:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):General:InterlockRaw MS")
     field(CALC, "(A>>0)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):General:Interlock:DoorsPFN") {
+    field(SCAN, "1 second")
     field(DESC, "Doors PFN Alarm")
-    field(INPA, "$(P):$(R):General:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):General:InterlockRaw MS")
     field(CALC, "(A>>1)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):General:Interlock:EmergencyOff") {
+    field(SCAN, "1 second")
     field(DESC, "Emergency Off Alarm")
-    field(INPA, "$(P):$(R):General:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):General:InterlockRaw MS")
     field(CALC, "(A>>8)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):General:Interlock:CircuitBreaker") {
+    field(SCAN, "1 second")
     field(DESC, "Circuit Breaker Alarm")
-    field(INPA,  "$(P):$(R):General:InterlockRaw CP MS")
+    field(INPA,  "$(P):$(R):General:InterlockRaw MS")
     field(CALC, "(A>>9)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
 }
 
 record(calc, "$(P):$(R):General:Interlock:SmokeDetection") {
+    field(SCAN, "1 second")
     field(DESC, "Smoke Detection Error")
-    field(INPA, "$(P):$(R):General:InterlockRaw CP MS")
+    field(INPA, "$(P):$(R):General:InterlockRaw MS")
     field(CALC, "(A>>10)&1")
     field(HIHI, "0.5")
     field(HHSV, "MAJOR")
@@ -1146,49 +1218,57 @@ record(calc, "$(P):$(R):General:Interlock:SmokeDetection") {
 # ==========================================================================
 
 record(calc, "$(P):$(R):General:Status:LocalRemote") {
+    field(SCAN, "1 second")
     field(DESC, "Local/Remote")
-    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):General:StatusRaw MS")
     field(CALC, "(A>>0)&1")
 }
 
 record(calc, "$(P):$(R):General:Status:CabinetDoors") {
+    field(SCAN, "1 second")
     field(DESC, "Cabinet Doors")
-    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):General:StatusRaw MS")
     field(CALC, "(A>>1)&1")
 }
 
 record(calc, "$(P):$(R):General:Status:EmergencyOffSystem") {
+    field(SCAN, "1 second")
     field(DESC, "Emergency Off System")
-    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):General:StatusRaw MS")
     field(CALC, "(A>>2)&1")
 }
 
 record(calc, "$(P):$(R):General:Status:MainContactor") {
+    field(SCAN, "1 second")
     field(DESC, "Main Contactor")
-    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):General:StatusRaw MS")
     field(CALC, "(A>>3)&1")
 }
 
 record(calc, "$(P):$(R):General:Status:SignalLightGreen") {
+    field(SCAN, "1 second")
     field(DESC, "Signal Light Green")
-    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):General:StatusRaw MS")
     field(CALC, "(A>>4)&1")
 }
 
 record(calc, "$(P):$(R):General:Status:SignalLightYellow") {
+    field(SCAN, "1 second")
     field(DESC, "Signal Light Yellow")
-    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):General:StatusRaw MS")
     field(CALC, "(A>>5)&1")
 }
 
 record(calc, "$(P):$(R):General:Status:SignalLightRed") {
+    field(SCAN, "1 second")
     field(DESC, "Signal Light Red")
-    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):General:StatusRaw MS")
     field(CALC, "(A>>6)&1")
 }
 
 record(calc, "$(P):$(R):General:Status:GroundRods") {
+    field(SCAN, "1 second")
     field(DESC, "Ground Rods")
-    field(INPA, "$(P):$(R):General:StatusRaw CP MS")
+    field(INPA, "$(P):$(R):General:StatusRaw MS")
     field(CALC, "(A>>7)&1")
 }

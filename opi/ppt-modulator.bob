@@ -1483,9 +1483,9 @@
       </actions>
       <text>RESET</text>
       <x>720</x>
-      <y>190</y>
-      <width>80</width>
-      <height>40</height>
+      <y>185</y>
+      <width>110</width>
+      <height>50</height>
       <font>
         <font family="Liberation Sans" style="BOLD" size="14.0">
         </font>
@@ -1495,7 +1495,7 @@
         </color>
       </foreground_color>
       <background_color>
-        <color red="180" green="0" blue="0">
+        <color name="Write_Background" red="128" green="255" blue="255">
         </color>
       </background_color>
       <tooltip>$(actions)</tooltip>
@@ -1627,34 +1627,6 @@ PVPool.releasePV(target_pv)
       </background_color>
       <format>1</format>
     </widget>
-    <widget type="action_button" version="3.0.0">
-      <name>ResetBtn_1</name>
-      <actions>
-        <action type="write_pv">
-          <description>Reset</description>
-          <pv_name>$(P):$(R):OFF:Cmd</pv_name>
-          <value>1</value>
-        </action>
-      </actions>
-      <text>OFF</text>
-      <x>620</x>
-      <y>190</y>
-      <width>80</width>
-      <height>40</height>
-      <font>
-        <font family="Liberation Sans" style="BOLD" size="14.0">
-        </font>
-      </font>
-      <foreground_color>
-        <color red="255" green="255" blue="255">
-        </color>
-      </foreground_color>
-      <background_color>
-        <color name="STOP" red="255" green="0" blue="0">
-        </color>
-      </background_color>
-      <tooltip>$(actions)</tooltip>
-    </widget>
     <widget type="textupdate" version="2.0.0">
       <name>HVPSVoltage_1</name>
       <pv_name>$(P):$(R):HVPS:ChargingVoltageRaw</pv_name>
@@ -1731,6 +1703,34 @@ PVPool.releasePV(target_pv)
       </background_color>
       <format>1</format>
       <precision>1</precision>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>AutoOffBtn_1</name>
+      <actions>
+        <action type="write_pv">
+          <description>OFF</description>
+          <pv_name>$(P):$(R):AutoOff:Cmd</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>OFF</text>
+      <x>590</x>
+      <y>185</y>
+      <width>110</width>
+      <height>50</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+      <foreground_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color red="139" green="0" blue="0">
+        </color>
+      </background_color>
+      <tooltip>Start automatic OFF sequence</tooltip>
     </widget>
   </widget>
   <widget type="group" version="3.0.0">

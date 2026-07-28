@@ -19,6 +19,7 @@ the real modulator.
 """
 
 import argparse
+import math
 import random
 import socket
 import struct
@@ -62,23 +63,46 @@ class Subsystem:
                 self.ready = True
 
     @property
+    def _preheat_display_total(self):
+        # Ceiling, not truncation: a real countdown holds "1" for the whole
+        # final second rather than dropping straight to "0" the instant
+        # remaining time dips below 1.0.
+        return math.ceil(self.preheat_remaining)
+
+    @property
     def preheat_min(self):
-        return int(self.preheat_remaining // 60)
+        return self._preheat_display_total // 60
 
     @property
     def preheat_sec(self):
-        return int(self.preheat_remaining % 60)
+        return self._preheat_display_total % 60
 
 
 class ModulatorState:
-    def __init__(self):
-        self.thy = Subsystem(preheat_seconds=10)
-        self.klys80 = Subsystem(preheat_seconds=8)
-        self.klys100 = Subsystem(preheat_seconds=15)
-        self.focus = Subsystem()
-        self.premag = Subsystem()
-        self.hvps = Subsystem(preheat_seconds=15)  # datasheet: ready 15s after ON
-        self.chargepfn = Subsystem()
+    def __init__(self, preheat_short=1.0, preheat_long=10.0):
+        # Real datasheet timings (Thy/Klys preheat minutes, HVPS 15s) are far
+        # too slow for interactive testing of the autoOnSequence/autoOffSequence
+        # state machine, so every subsystem here settles much faster. But the
+        # subsystems whose preheat/ready state actually GATES the next step in
+        # pptAutoSeq.st -- Thy (gates HVPS via autoOn_waitPreheat), Klys100
+        # (gates Focus), HVPS (gates ChargePFN) -- use preheat_long so that
+        # gating is actually observable rather than resolving instantly.
+        self.thy = Subsystem(preheat_seconds=preheat_long)
+        self.klys80 = Subsystem(preheat_seconds=preheat_short)
+        self.klys100 = Subsystem(preheat_seconds=preheat_long)
+        self.focus = Subsystem(preheat_seconds=preheat_short)
+        self.premag = Subsystem(preheat_seconds=preheat_short)
+        self.hvps = Subsystem(preheat_seconds=preheat_long)
+        self.chargepfn = Subsystem(preheat_seconds=preheat_short)
+
+        # Ordered per autoOnSequence in pptAutoSeq.st: Thy -> Klys80 -> Klys100
+        # -> Focus -> Premag -> HVPS -> ChargePFN. Each stage depends on every
+        # earlier one, so turning an earlier stage OFF cascades forward.
+        self._sequence = [
+            (0x01, self.thy), (0x02, self.klys80), (0x04, self.klys100),
+            (0x08, self.focus), (0x10, self.premag), (0x20, self.hvps),
+            (0x40, self.chargepfn),
+        ]
 
         self.hv_setpoint_raw = 0  # 0..500, raw units = kV * 10
         self.hv_actual_raw = 0.0
@@ -92,22 +116,17 @@ class ModulatorState:
             prev = self.prev_cmd_word
 
             # ON bits (0-6): rising edge only
-            for bit, sub in (
-                (0x01, self.thy), (0x02, self.klys80), (0x04, self.klys100),
-                (0x08, self.focus), (0x10, self.premag), (0x20, self.hvps),
-                (0x40, self.chargepfn),
-            ):
+            for bit, sub in self._sequence:
                 if (cmd_word & bit) and not (prev & bit):
                     sub.turn_on()
 
-            # OFF bits (8-14): level-triggered
-            for bit, sub in (
-                (0x0100, self.thy), (0x0200, self.klys80), (0x0400, self.klys100),
-                (0x0800, self.focus), (0x1000, self.premag), (0x2000, self.hvps),
-                (0x4000, self.chargepfn),
-            ):
-                if cmd_word & bit:
-                    sub.turn_off()
+            # OFF bits (8-14): level-triggered, and cascades forward -- turning
+            # an earlier stage off takes every later stage down with it, since
+            # each stage depends on the ones before it.
+            for i, (bit, sub) in enumerate(self._sequence):
+                if cmd_word & (bit << 8):
+                    for _, later_sub in self._sequence[i:]:
+                        later_sub.turn_off()
 
             self.prev_cmd_word = cmd_word
             self.hv_setpoint_raw = hv_bits & 0xFFFF
@@ -174,13 +193,13 @@ class ModulatorState:
             for off in (38, 42, 46):
                 analog(off, focus_i)
             status(48, 0)
-            status(50, (1 if self.focus.on else 0) | (2 if self.focus.on else 0))
+            status(50, (1 if self.focus.ready else 0) | (2 if self.focus.on else 0))
 
             # Premagnetisation (bytes 52-59)
             analog(52, 500 if self.premag.on else 0)  # 50.0 V *10
             analog(54, 150 if self.premag.on else 0)  # 15.0 A *10
             status(56, 0)
-            status(58, (1 if self.premag.on else 0) | (2 if self.premag.on else 0))
+            status(58, (1 if self.premag.ready else 0) | (2 if self.premag.on else 0))
 
             # Vacuum(ext)/Interlocks(ext)/EOLC (bytes 60-67) - no faults simulated
             status(60, 0)
@@ -194,7 +213,7 @@ class ModulatorState:
             status(72, 0)
             status(74, (1 if self.hvps.on else 0)
                        | (2 if self.hvps.ready else 0)
-                       | (4 if self.hvps.ready and self.hv_actual_raw > 0 else 0))
+                       | (4 if self.chargepfn.ready and self.hvps.ready else 0))
             status(76, 0)
             status(78, self.local_remote & 0x1)
 
@@ -203,15 +222,23 @@ class ModulatorState:
 
 def client_handler(conn, addr, state, interval):
     conn.settimeout(0.5)
+    conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
     stop = threading.Event()
 
     def sender():
+        time.sleep(interval)  # let the client settle before the first push
+        next_send = time.monotonic() + interval
         while not stop.is_set():
             try:
                 conn.sendall(state.build_packet())
             except OSError:
                 return
-            time.sleep(interval)
+            next_send += interval
+            sleep_for = next_send - time.monotonic()
+            if sleep_for > 0:
+                time.sleep(sleep_for)
+            else:
+                next_send = time.monotonic() + interval  # fell behind; resync
 
     threading.Thread(target=sender, daemon=True).start()
 
@@ -226,8 +253,16 @@ def client_handler(conn, addr, state, interval):
         if not data:
             break
         buf += data
+        print(f"[SIM] {addr} raw recv: {data.hex()}")
         while len(buf) >= 4:
-            cmd_word, hv_bits = struct.unpack_from("<HH", buf, 0)
+            # StreamDevice's "%.4r" writes the 32-bit register big-endian on
+            # the wire. pptEncodeCmd32 packs command bits in the high 16 bits
+            # and HV bits in the low 16 bits, so big-endian transmission puts
+            # the command word first on the wire (bytes 0-1), matching the
+            # datasheet's Command Packet layout (WORD0=command, WORD2=HV).
+            value = struct.unpack_from(">I", buf, 0)[0]
+            cmd_word = (value >> 16) & 0xFFFF
+            hv_bits = value & 0xFFFF
             print(f"[SIM] {addr} write: cmd=0x{cmd_word:04X} hv=0x{hv_bits:04X} "
                   f"({hv_bits / 10.0:.1f} kV)")
             state.apply_command(cmd_word, hv_bits)
@@ -250,9 +285,16 @@ def main():
     parser.add_argument("--port", type=int, default=2000)
     parser.add_argument("--interval", type=float, default=1.0,
                          help="status packet send interval, seconds")
+    parser.add_argument("--preheat-short", type=float, default=1.0,
+                         help="preheat seconds for contactor-style subsystems "
+                              "(Thy, Klys80, Focus, Premag, ChargePFN)")
+    parser.add_argument("--preheat-long", type=float, default=10.0,
+                         help="preheat seconds for warm-up/charge subsystems "
+                              "(Klys100, HVPS)")
     args = parser.parse_args()
 
-    state = ModulatorState()
+    state = ModulatorState(preheat_short=args.preheat_short,
+                            preheat_long=args.preheat_long)
     threading.Thread(target=ticker, args=(state,), daemon=True).start()
 
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

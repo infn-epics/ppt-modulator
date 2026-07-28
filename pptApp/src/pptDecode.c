@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <epicsExport.h>
+#include <epicsTypes.h>
 #include <aSubRecord.h>
 #include <registryFunction.h>
 
@@ -378,7 +379,47 @@ long pptDecodeWaveguideHVPS(aSubRecord *prec) {
     return 0;  /* Success */
 }
 
+/*
+ * pptEncodeCmd32
+ *
+ * Builds the 32-bit PPT command register value (bytes 0-3) and logs the
+ * result. Shared by every ON/OFF command and the HV-only update, replacing
+ * per-record CALC arithmetic in the control template.
+ *
+ * INPA: accumulated ON-state bits (bits 0-6, one per subsystem), from
+ *       CmdReg:OnBits -- persists across writes so every write reflects
+ *       every subsystem's current commanded state, not just this one
+ * INPB: this write's own extra bits (16-bit constant): bit15 (Reset-OFF) for
+ *       normal ON commands and the HV-only update, this subsystem's OFF bit
+ *       (8-14) + bit15 for OFF commands, or bit7 (Reset ON) alone for Reset
+ * INPC: current HV bits (0..500), from CmdReg:HVBits
+ * VALA: combined 32-bit register value = ((INPA|INPB) << 16) | INPC
+ *
+ * StreamDevice's writeFullCmd32 ("%.4r") sends this value big-endian on the
+ * wire (confirmed by raw capture against the simulator). The datasheet's
+ * Command Packet puts the ON/OFF word first (bytes 0-1) and the HV setpoint
+ * second (bytes 2-3), so the command word must occupy the HIGH 16 bits here
+ * for big-endian transmission to produce that byte order.
+ */
+long pptEncodeCmd32(aSubRecord *prec) {
+    epicsInt32 onBits    = *(epicsInt32 *)prec->a;
+    epicsInt32 extraBits = *(epicsInt32 *)prec->b;
+    epicsInt32 hvBits    = *(epicsInt32 *)prec->c;
+    epicsInt32 *out      = (epicsInt32 *)prec->vala;
+
+    epicsInt32 cmdBits = (onBits | extraBits) & 0xFFFF;
+    epicsInt32 value = (cmdBits << 16) | (hvBits & 0xFFFF);
+    *out = value;
+
+    printf("PPT %s: onBits=0x%04X extra=0x%04X cmd=0x%04X hv=0x%04X -> reg=0x%08X\n",
+           prec->name, (unsigned int)(onBits & 0xFFFF), (unsigned int)(extraBits & 0xFFFF),
+           (unsigned int)cmdBits, (unsigned int)(hvBits & 0xFFFF), (unsigned int)value);
+
+    return 0;
+}
+
 /* Register the functions */
 epicsRegisterFunction(pptDecodeThyratronKlystron);
 epicsRegisterFunction(pptDecodeMagnetsTimersStatus);
 epicsRegisterFunction(pptDecodeWaveguideHVPS);
+epicsRegisterFunction(pptEncodeCmd32);
