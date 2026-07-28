@@ -1573,13 +1573,29 @@
     <widget type="action_button" version="3.0.0">
       <name>ApplyBtn</name>
       <actions>
-        <action type="write_pv">
+        <action type="execute">
           <description>Apply Voltage</description>
-          <pv_name>$(pv_name)</pv_name>
-          <value>loc://loc_$(P):$(R):HVPS:VoltageSet</value>
+          <script file="EmbeddedPy">
+            <text><![CDATA[
+from org.phoebus.pv import PVPool
+from org.phoebus.framework.macros import MacroHandler
+from org.phoebus.core.vtypes import VTypeHelper
+
+macros = widget.getEffectiveMacros()
+local_name = MacroHandler.replace(macros, "loc://loc_$(P):$(R):HVPS:VoltageSet")
+target_name = MacroHandler.replace(macros, "$(P):$(R):HVPS:VoltageSet")
+
+local_pv = PVPool.getPV(local_name)
+val = VTypeHelper.toDouble(local_pv.read())
+PVPool.releasePV(local_pv)
+
+target_pv = PVPool.getPV(target_name)
+target_pv.write(val)
+PVPool.releasePV(target_pv)
+]]></text>
+          </script>
         </action>
       </actions>
-      <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>
       <text>APPLY</text>
       <x>860</x>
       <y>155</y>
@@ -1701,6 +1717,20 @@
       <height>100</height>
       <off_label>OFF</off_label>
       <on_label>ON</on_label>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>HVPSRawEntry_1</name>
+      <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>
+      <x>1199</x>
+      <y>125</y>
+      <width>120</width>
+      <height>30</height>
+      <background_color>
+        <color red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <format>1</format>
+      <precision>1</precision>
     </widget>
   </widget>
   <widget type="group" version="3.0.0">
