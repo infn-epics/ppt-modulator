@@ -1410,7 +1410,7 @@
               </color>
             </value>
           </exp>
-          <exp bool_exp="PvInt0==0">
+          <exp bool_exp="pvInt0==0">
             <value>
               <color red="0" green="128" blue="0">
               </color>
@@ -1518,7 +1518,7 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>HVPSRawLabel</name>
-      <text>HVPS raw</text>
+      <text>HVPS Setpoint</text>
       <x>860</x>
       <y>45</y>
       <width>120</width>
@@ -1559,7 +1559,7 @@
     </widget>
     <widget type="label" version="2.0.0">
       <name>HVPSDisplayLabel</name>
-      <text>HVPS</text>
+      <text>HVPS Raw</text>
       <x>975</x>
       <y>45</y>
       <width>120</width>
@@ -1575,10 +1575,11 @@
       <actions>
         <action type="write_pv">
           <description>Apply Voltage</description>
-          <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>
+          <pv_name>$(pv_name)</pv_name>
           <value>loc://loc_$(P):$(R):HVPS:VoltageSet</value>
         </action>
       </actions>
+      <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>
       <text>APPLY</text>
       <x>860</x>
       <y>155</y>
@@ -1666,8 +1667,8 @@
       </font>
     </widget>
     <widget type="textupdate" version="2.0.0">
-      <name>HVPSRawReadback_1</name>
-      <pv_name>loc://loc_$(P):$(R):HVPS:VoltageSet&lt;VDouble&gt;</pv_name>
+      <name>HVPSChargingVoltageReadback</name>
+      <pv_name>$(P):$(R):HVPS:ChargingVoltage</pv_name>
       <x>990</x>
       <y>115</y>
       <width>120</width>

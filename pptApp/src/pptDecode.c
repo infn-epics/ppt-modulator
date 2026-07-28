@@ -104,7 +104,7 @@ long pptDecodeThyratronKlystron(aSubRecord *prec) {
     //printf("Thyratron ReservoirVoltage: raw=%u scaled=%.1f V\n", rawVal, *outB);
 
     rawVal = getWord(rawData, 4);
-    *outC = rawVal / 100.0;  /* Thyratron Total Current (0..100A) */
+    *outC = rawVal / 10.0;  /* Thyratron Total Current (0..100A) */
     //printf("Thyratron TotalCurrent: raw=%u scaled=%.2f A\n", rawVal, *outC);
 
     /* Klystron Section (bytes 14-35) */

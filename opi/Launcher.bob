@@ -30,7 +30,6 @@
     <x>10</x>
     <y>40</y>
     <width>430</width>
-    <height>20</height>
     <font>
       <font family="Liberation Sans" style="ITALIC" size="11.0">
       </font>
@@ -132,13 +131,8 @@
       <color red="255" green="100" blue="0">
       </color>
     </foreground_color>
-    <background_color>
-      <color red="240" green="240" blue="240">
-      </color>
-    </background_color>
     <format>1</format>
     <precision>1</precision>
-    <show_units>true</show_units>
   </widget>
   <widget type="label" version="2.0.0">
     <name>ConnectionLabel</name>
@@ -173,7 +167,6 @@
     <text>(Green=OK)</text>
     <x>320</x>
     <y>125</y>
-    <width>100</width>
     <height>25</height>
     <font>
       <font family="Liberation Sans" style="ITALIC" size="10.0">
@@ -183,5 +176,37 @@
       <color red="100" green="100" blue="100">
       </color>
     </foreground_color>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>MainPanelBtn_1</name>
+    <actions>
+      <action type="open_display">
+        <description>PPT MOD002 - Main Panel</description>
+        <file>ppt-modulator.bob</file>
+        <macros>
+          <P>SPARC:MOD:PPT</P>
+          <R>MOD002</R>
+        </macros>
+        <target>window</target>
+      </action>
+    </actions>
+    <text>MOD002 Main Panel</text>
+    <x>20</x>
+    <y>140</y>
+    <width>200</width>
+    <height>40</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="255" green="255" blue="255">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color red="0" green="100" blue="180">
+      </color>
+    </background_color>
+    <tooltip>Open main monitoring and control panel</tooltip>
   </widget>
 </display>

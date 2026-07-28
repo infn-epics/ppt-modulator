@@ -128,6 +128,7 @@ record(aSub, "$(P):$(R):DecodeWaveguideHVPS") {
 # ==========================================================================
 
 record(ai, "$(P):$(R):Thy:HeaterVoltage") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Heater Voltage")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALA CP MS")
     field(EGU,  "V")
@@ -140,6 +141,7 @@ record(ai, "$(P):$(R):Thy:HeaterVoltage") {
 }
 
 record(ai, "$(P):$(R):Thy:ReservoirVoltage") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Reservoir Voltage")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALB CP MS")
     field(EGU,  "V")
@@ -149,6 +151,7 @@ record(ai, "$(P):$(R):Thy:ReservoirVoltage") {
 }
 
 record(ai, "$(P):$(R):Thy:TotalCurrent") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Total Current")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALC CP MS")
     field(EGU,  "A")
@@ -158,6 +161,7 @@ record(ai, "$(P):$(R):Thy:TotalCurrent") {
 }
 
 record(longin, "$(P):$(R):Thy:TimerPreheatMin") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Preheat Timer Min")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALI CP MS")
     field(EGU,  "min")
@@ -166,6 +170,7 @@ record(longin, "$(P):$(R):Thy:TimerPreheatMin") {
 }
 
 record(longin, "$(P):$(R):Thy:TimerPreheatSec") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Preheat Timer Sec")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALJ CP MS")
     field(EGU,  "s")
@@ -178,6 +183,7 @@ record(longin, "$(P):$(R):Thy:TimerPreheatSec") {
 # ==========================================================================
 
 record(ai, "$(P):$(R):Klys:HeaterVoltage") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Heater Voltage")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALD CP MS")
     field(EGU,  "V")
@@ -187,6 +193,7 @@ record(ai, "$(P):$(R):Klys:HeaterVoltage") {
 }
 
 record(ai, "$(P):$(R):Klys:HeaterCurrent") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Heater Current")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALE CP MS")
     field(EGU,  "A")
@@ -196,6 +203,7 @@ record(ai, "$(P):$(R):Klys:HeaterCurrent") {
 }
 
 record(ai, "$(P):$(R):Klys:BodyWaterInTemp") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Body Water In Temp")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALF CP MS")
     field(EGU,  "C")
@@ -205,6 +213,7 @@ record(ai, "$(P):$(R):Klys:BodyWaterInTemp") {
 }
 
 record(ai, "$(P):$(R):Klys:BodyWaterOutTemp") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Body Water Out Temp")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALG CP MS")
     field(EGU,  "C")
@@ -214,6 +223,7 @@ record(ai, "$(P):$(R):Klys:BodyWaterOutTemp") {
 }
 
 record(ai, "$(P):$(R):Klys:BodyWaterFlow") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Body Water Flow")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALH CP MS")
     field(EGU,  "L/Hour")
@@ -223,6 +233,7 @@ record(ai, "$(P):$(R):Klys:BodyWaterFlow") {
 }
 
 record(ai, "$(P):$(R):Klys:DissipatedPower") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Dissipated Power")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALI CP MS")
     field(EGU,  "kW")
@@ -232,6 +243,7 @@ record(ai, "$(P):$(R):Klys:DissipatedPower") {
 }
 
 record(ai, "$(P):$(R):Klys:OilTemp") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Oil Temperature")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALJ CP MS")
     field(EGU,  "C")
@@ -241,6 +253,7 @@ record(ai, "$(P):$(R):Klys:OilTemp") {
 }
 
 record(longin, "$(P):$(R):Klys:TimerPreheat100Min") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Preheat100 Timer Min")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALK CP MS")
     field(EGU,  "min")
@@ -253,6 +266,7 @@ record(longin, "$(P):$(R):Klys:TimerPreheat100Min") {
 # ==========================================================================
 
 record(ai, "$(P):$(R):Focus:Coil1Voltage") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil 1 Voltage")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALA CP MS")
     field(EGU,  "V")
@@ -262,6 +276,7 @@ record(ai, "$(P):$(R):Focus:Coil1Voltage") {
 }
 
 record(ai, "$(P):$(R):Focus:Coil1Current") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil 1 Current")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALB CP MS")
     field(EGU,  "A")
@@ -271,6 +286,7 @@ record(ai, "$(P):$(R):Focus:Coil1Current") {
 }
 
 record(ai, "$(P):$(R):Focus:Coil2Voltage") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil 2 Voltage")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALC CP MS")
     field(EGU,  "V")
@@ -280,6 +296,7 @@ record(ai, "$(P):$(R):Focus:Coil2Voltage") {
 }
 
 record(ai, "$(P):$(R):Focus:Coil2Current") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil 2 Current")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALD CP MS")
     field(EGU,  "A")
@@ -289,6 +306,7 @@ record(ai, "$(P):$(R):Focus:Coil2Current") {
 }
 
 record(ai, "$(P):$(R):Focus:Coil3Voltage") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil 3 Voltage")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALE CP MS")
     field(EGU,  "V")
@@ -298,6 +316,7 @@ record(ai, "$(P):$(R):Focus:Coil3Voltage") {
 }
 
 record(ai, "$(P):$(R):Focus:Coil3Current") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Coil 3 Current")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALF CP MS")
     field(EGU,  "A")
@@ -311,6 +330,7 @@ record(ai, "$(P):$(R):Focus:Coil3Current") {
 # ==========================================================================
 
 record(ai, "$(P):$(R):Premag:Voltage") {
+    field(SCAN, "1 second")
     field(DESC, "Premagnetisation Voltage")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALG CP MS")
     field(EGU,  "V")
@@ -320,6 +340,7 @@ record(ai, "$(P):$(R):Premag:Voltage") {
 }
 
 record(ai, "$(P):$(R):Premag:Current") {
+    field(SCAN, "1 second")
     field(DESC, "Premagnetisation Current")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALH CP MS")
     field(EGU,  "A")
@@ -337,6 +358,7 @@ record(ai, "$(P):$(R):Premag:Current") {
 
 # Thyratron Interlock (bytes 10-11, WORD5)
 record(longin, "$(P):$(R):Thy:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Interlock Word")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALK CP MS")
     field(EGU,  "")
@@ -344,6 +366,7 @@ record(longin, "$(P):$(R):Thy:InterlockRaw") {
 
 # Thyratron Status (bytes 12-13, WORD6)
 record(longin, "$(P):$(R):Thy:StatusRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Thyratron Status Word")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALL CP MS")
     field(EGU,  "")
@@ -351,6 +374,7 @@ record(longin, "$(P):$(R):Thy:StatusRaw") {
 
 # Klystron Interlock (bytes 32-33, WORD16)
 record(longin, "$(P):$(R):Klys:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Interlock Word")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALM CP MS")
     field(EGU,  "")
@@ -358,6 +382,7 @@ record(longin, "$(P):$(R):Klys:InterlockRaw") {
 
 # Klystron Status (bytes 34-35, WORD17)
 record(longin, "$(P):$(R):Klys:StatusRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Klystron Status Word")
     field(INP,  "$(P):$(R):DecodeThyKlys.VALN CP MS")
     field(EGU,  "")
@@ -365,6 +390,7 @@ record(longin, "$(P):$(R):Klys:StatusRaw") {
 
 # Focus Magnet Interlock (bytes 48-49, WORD24)
 record(longin, "$(P):$(R):Focus:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Magnet Interlock Word")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALL CP MS")
     field(EGU,  "")
@@ -372,6 +398,7 @@ record(longin, "$(P):$(R):Focus:InterlockRaw") {
 
 # Focus Magnet Status (bytes 50-51, WORD25)
 record(longin, "$(P):$(R):Focus:StatusRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Focus Magnet Status Word")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALM CP MS")
     field(EGU,  "")
@@ -379,6 +406,7 @@ record(longin, "$(P):$(R):Focus:StatusRaw") {
 
 # Premagnetisation Interlock (bytes 56-57, WORD28)
 record(longin, "$(P):$(R):Premag:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Premag Interlock Word")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALN CP MS")
     field(EGU,  "")
@@ -386,6 +414,7 @@ record(longin, "$(P):$(R):Premag:InterlockRaw") {
 
 # Premagnetisation Status (bytes 58-59, WORD29)
 record(longin, "$(P):$(R):Premag:StatusRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Premag Status Word")
     field(INP,  "$(P):$(R):DecodeMagTimers.VALO CP MS")
     field(EGU,  "")
@@ -393,6 +422,7 @@ record(longin, "$(P):$(R):Premag:StatusRaw") {
 
 # Waveguide Interlock (bytes 60-61, WORD30)
 record(longin, "$(P):$(R):Waveguide:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Waveguide Interlock Word")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALA CP MS")
     field(EGU,  "")
@@ -400,6 +430,7 @@ record(longin, "$(P):$(R):Waveguide:InterlockRaw") {
 
 # VSWR Interlock (bytes 62-63, WORD31)
 record(longin, "$(P):$(R):VSWR:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "VSWR Interlock Word")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALB CP MS")
     field(EGU,  "")
@@ -407,6 +438,7 @@ record(longin, "$(P):$(R):VSWR:InterlockRaw") {
 
 # Clipper Interlock (bytes 64-65, WORD32)
 record(longin, "$(P):$(R):Clipper:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "Clipper Interlock Word")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALC CP MS")
     field(EGU,  "")
@@ -414,6 +446,7 @@ record(longin, "$(P):$(R):Clipper:InterlockRaw") {
 
 # HVPS Interlock (bytes 72-73, WORD36)
 record(longin, "$(P):$(R):HVPS:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Interlock Word")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALG CP MS")
     field(EGU,  "")
@@ -421,6 +454,7 @@ record(longin, "$(P):$(R):HVPS:InterlockRaw") {
 
 # HVPS Status (bytes 74-75, WORD37)
 record(longin, "$(P):$(R):HVPS:StatusRaw") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Status Word")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALH CP MS")
     field(EGU,  "")
@@ -428,6 +462,7 @@ record(longin, "$(P):$(R):HVPS:StatusRaw") {
 
 # General Interlock (bytes 76-77, WORD38)
 record(longin, "$(P):$(R):General:InterlockRaw") {
+    field(SCAN, "1 second")
     field(DESC, "General Interlock Word")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALI CP MS")
     field(EGU,  "")
@@ -435,6 +470,7 @@ record(longin, "$(P):$(R):General:InterlockRaw") {
 
 # General Status (bytes 78-79, WORD39)
 record(longin, "$(P):$(R):General:StatusRaw") {
+    field(SCAN, "1 second")
     field(DESC, "General Status Word")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALJ CP MS")
     field(EGU,  "")
@@ -445,6 +481,7 @@ record(longin, "$(P):$(R):General:StatusRaw") {
 # ==========================================================================
 
 record(ai, "$(P):$(R):Counter") {
+    field(SCAN, "1 second")
     field(DESC, "Counter")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALD CP MS")
     field(EGU,  "")
@@ -454,6 +491,7 @@ record(ai, "$(P):$(R):Counter") {
 }
 
 record(ai, "$(P):$(R):HVPS:ChargingVoltageRaw") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Charging Voltage Raw")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALE CP MS")
     field(EGU,  "V")
@@ -470,6 +508,7 @@ record(calc, "$(P):$(R):HVPS:ChargingVoltage") {
    
 }
 record(ai, "$(P):$(R):HVPS:WaterTemperature") {
+    field(SCAN, "1 second")
     field(DESC, "HVPS Water Temperature")
     field(INP,  "$(P):$(R):DecodeWaveguideHVPS.VALF CP MS")
     field(EGU,  "C")

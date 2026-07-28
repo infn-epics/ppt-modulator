@@ -24,9 +24,26 @@ dbLoadRecords("../../db/ppt_control.template", "P=SPARC:MOD:PPT,R=MOD001, PORT=P
 dbLoadRecords("../../db/ppt_autoseq.template", "P=SPARC:MOD:PPT,R=MOD001")
 
 
+
+
+
+drvAsynIPPortConfigure("PPT2", "192.168.197.112:2000", 0, 0, 0)
+
+## Optional: Enable asyn tracing for debugging
+# asynSetTraceMask("PPT2", 0, 0x9)    # ASYN_TRACE_ERROR | ASYN_TRACEIO_DEVICE
+# asynSetTraceIOMask("PPT2", 0, 0x2)  # ASYN_TRACEIO_HEX
+epicsEnvSet("STREAM_PROTOCOL_PATH","../../db")
+
+## Load record instances (using corrected aSub approach per documentation)
+## HVMAX macro sets the maximum operational HV voltage (default: 37 kV)
+dbLoadRecords("../../db/ppt.template", "P=SPARC:MOD:PPT,R=MOD002, PORT=PPT2")
+dbLoadRecords("../../db/ppt_control.template", "P=SPARC:MOD:PPT,R=MOD002, PORT=PPT2, HVMAX=37")
+dbLoadRecords("../../db/ppt_autoseq.template", "P=SPARC:MOD:PPT,R=MOD002")
+
 # cd "${TOP}/iocBoot/${IOC}"
 iocInit
 
 ## Start any sequence programs
 ## RETRY_DELAY: time in seconds between command retries (default: 5.0)
-seq pptAutoSeq, "P=SPARC:MOD:PPT,R=MOD001,RETRY_DELAY=5.0"
+# seq pptAutoSeq, "P=SPARC:MOD:PPT,R=MOD001,RETRY_DELAY=5.0"
+# seq pptAutoSeq, "P=SPARC:MOD:PPT,R=MOD002,RETRY_DELAY=5.0"

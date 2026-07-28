@@ -34,6 +34,16 @@ record(longout, "$(P):$(R):CmdReg32") {
     info(autosaveFields, "VAL")
 }
 
+# HV-setpoint-only write path: same 32-bit value as CmdReg32, but the
+# StreamDevice protocol appends a trailing \xFF\xFF (see writeFullCmd32HV
+# in ppt.proto). Only CalcFullCmd32FromHV writes here.
+record(longout, "$(P):$(R):CmdReg32HV") {
+    field(DESC, "32-bit Command Register (HV path, +FFFF)")
+    field(DTYP, "stream")
+    field(OUT,  "@ppt.proto writeFullCmd32HV $(PORT)")
+    field(VAL,  "0")
+}
+
 # Shadow register for HV value
 # Must be longout to accept writes from calcout records
 record(longout, "$(P):$(R):CmdReg:HVBits") {
@@ -269,7 +279,7 @@ record(calcout, "$(P):$(R):CalcFullCmd32FromHV") {
     field(DESC, "Write 32-bit reg on HV change")
     field(INPA, "$(P):$(R):CmdReg:HVBits")
     field(CALC, "A<<16")
-    field(OUT,  "$(P):$(R):CmdReg32 PP")
+    field(OUT,  "$(P):$(R):CmdReg32HV PP")
     field(OOPT, "Every Time")
 }
 
