@@ -45,5 +45,5 @@ iocInit
 
 ## Start any sequence programs
 ## RETRY_DELAY: time in seconds between command retries (default: 5.0)
-# seq pptAutoSeq, "P=SPARC:MOD:PPT,R=MOD001,RETRY_DELAY=5.0"
-# seq pptAutoSeq, "P=SPARC:MOD:PPT,R=MOD002,RETRY_DELAY=5.0"
+seq pptAutoSeq, "P=SPARC:MOD:PPT,R=MOD001,RETRY_DELAY=5.0"
+seq pptAutoSeq, "P=SPARC:MOD:PPT,R=MOD002,RETRY_DELAY=5.0"
