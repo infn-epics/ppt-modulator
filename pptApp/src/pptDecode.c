@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <epicsExport.h>
+#include <epicsTypes.h>
 #include <aSubRecord.h>
 #include <registryFunction.h>
 
@@ -378,7 +379,35 @@ long pptDecodeWaveguideHVPS(aSubRecord *prec) {
     return 0;  /* Success */
 }
 
+/*
+ * pptEncodeCmd32
+ *
+ * Builds the 32-bit PPT command register value (bytes 0-3) and logs the
+ * result. Shared by every ON/OFF command and the HV-only update, replacing
+ * per-record CALC arithmetic in the control template.
+ *
+ * INPA: command bits for this write (16-bit; already includes bit15/Reset-OFF
+ *       where applicable -- see comment above each record in the template)
+ * INPB: current HV bits (0..500), from CmdReg:HVBits
+ * VALA: combined 32-bit register value = INPA | (INPB << 16)
+ */
+long pptEncodeCmd32(aSubRecord *prec) {
+    epicsInt32 cmdBits = *(epicsInt32 *)prec->a;
+    epicsInt32 hvBits  = *(epicsInt32 *)prec->b;
+    epicsInt32 *out    = (epicsInt32 *)prec->vala;
+
+    epicsInt32 value = (cmdBits & 0xFFFF) | ((hvBits & 0xFFFF) << 16);
+    *out = value;
+
+    printf("PPT %s: cmd=0x%04X hv=0x%04X -> reg=0x%08X\n",
+           prec->name, (unsigned int)(cmdBits & 0xFFFF),
+           (unsigned int)(hvBits & 0xFFFF), (unsigned int)value);
+
+    return 0;
+}
+
 /* Register the functions */
 epicsRegisterFunction(pptDecodeThyratronKlystron);
 epicsRegisterFunction(pptDecodeMagnetsTimersStatus);
 epicsRegisterFunction(pptDecodeWaveguideHVPS);
+epicsRegisterFunction(pptEncodeCmd32);
