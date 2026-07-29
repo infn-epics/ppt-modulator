@@ -1690,6 +1690,36 @@ PVPool.releasePV(target_pv)
       <off_label>OFF</off_label>
       <on_label>ON</on_label>
     </widget>
+    <widget type="label" version="2.0.0">
+      <name>GeneralFaultLabel</name>
+      <text>FAULT</text>
+      <x>740</x>
+      <y>30</y>
+      <width>90</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="18.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>GeneralFaultLED</name>
+      <pv_name>$(P):$(R):General:InterlockRaw</pv_name>
+      <x>730</x>
+      <y>70</y>
+      <width>100</width>
+      <height>100</height>
+      <off_label>OK</off_label>
+      <off_color>
+        <color red="0" green="170" blue="0">
+        </color>
+      </off_color>
+      <on_label>FAULT</on_label>
+      <on_color>
+        <color red="200" green="0" blue="0">
+        </color>
+      </on_color>
+    </widget>
     <widget type="textentry" version="3.0.0">
       <name>HVPSRawEntry_1</name>
       <pv_name>$(P):$(R):HVPS:VoltageSet</pv_name>

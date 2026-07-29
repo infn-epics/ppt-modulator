@@ -553,6 +553,10 @@ record(calcout, "$(P):$(R):HVPS:OffCmd:ClearBit") {
     field(FLNK, "$(P):$(R):HVPS:OffCmd:Write")
 }
 # bit13 (HVPS OFF, value 8192) + bit15 (Reset OFF), combined with accumulated on-bits
+# HVPS OFF also cascades into Charge PFN OFF: charging the PFN without an
+# HVPS is meaningless, and the auto-off sequence always turns Charge PFN
+# off before HVPS, so the manual OFF button follows the same rule instead
+# of leaving ChargePFN commanded on with the HVPS off underneath it.
 record(aSub, "$(P):$(R):HVPS:OffCmd:Write") {
     field(DESC, "HVPS OFF -> CmdReg32")
     field(SNAM, "pptEncodeCmd32")
@@ -568,6 +572,7 @@ record(aSub, "$(P):$(R):HVPS:OffCmd:Write") {
     field(FTVA, "LONG")
     field(NOVA, "1")
     field(OUTA, "$(P):$(R):CmdReg32 PP")
+    field(FLNK, "$(P):$(R):ChargePFN:OffCmd")
 }
 
 record(longout, "$(P):$(R):ChargePFN:OffCmd") {
